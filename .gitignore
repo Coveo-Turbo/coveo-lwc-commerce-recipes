@@ -36,6 +36,12 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
+# Static resources copied from node_modules
+force-app/main/default/staticresources/coveoheadless
+force-app/main/default/staticresources/coveobueno
+force-app/main/default/staticresources/marked
+force-app/main/default/staticresources/dompurify
+
 # Local environment variables
 .env
 

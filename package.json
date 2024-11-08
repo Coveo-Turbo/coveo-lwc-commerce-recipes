@@ -5,6 +5,7 @@
   "description": "Salesforce App",
   "scripts": {
     "lint": "eslint **/{aura,lwc}/**/*.js",
+    "build:staticresources": "node copy-static-resources.js",
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",
     "test:unit:watch": "sfdx-lwc-jest --watch",
@@ -13,7 +14,20 @@
     "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "prettier:verify": "prettier --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "postinstall": "husky install",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "scratch:create": "sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias \"LWC\"",
+    "deploy:main": "sf project deploy start --target-org LWC --source-dir force-app/main",
+    "deploy:examples": "sf project deploy start --target-org LWC --source-dir force-app/examples",
+    "scratch:dev": "npm run scratch:create && npm run deploy:main && npm run setup:examples"
+  },
+  "dependencies": {
+    "@coveo/bueno": "1.0.5",
+    "@coveo/headless": "^3.8.1",
+    "dompurify": "3.1.6",
+    "marked": "12.0.2"
+  },
+  "engines": {
+    "node": "^20.9.0 || ^22.11.0"
   },
   "devDependencies": {
     "@lwc/eslint-plugin-lwc": "^1.1.2",
@@ -22,13 +36,17 @@
     "@salesforce/eslint-plugin-aura": "^2.0.0",
     "@salesforce/eslint-plugin-lightning": "^1.0.0",
     "@salesforce/sfdx-lwc-jest": "^3.1.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8.11.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^27.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
+    "mkdirp": "^3.0.1",
+    "ncp": "^2.0.0",
     "prettier": "^3.1.0",
-    "prettier-plugin-apex": "^2.0.1"
+    "prettier-plugin-apex": "^2.0.1",
+    "ts-node": "^10.9.2"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
