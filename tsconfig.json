@@ -11,6 +11,15 @@
     "lib": ["es2019", "dom", "ES2018.Intl", "dom.Iterable", "ES2021.String"],
     "paths": {
       "c/exampleSearch": ["exampleSearch/exampleSearch"],
+      "c/commerceHeadlessLoader": [
+        "commerceHeadlessLoader/commerceHeadlessLoader.js"
+      ],
+      "c/commerceUtils": [
+        "commerceUtils/commerceUtils.js"
+      ],
+      "c/commerceInterface": [
+        "commerceInterface/commerceInterface.js"
+      ],
     }
   },
   "include": [

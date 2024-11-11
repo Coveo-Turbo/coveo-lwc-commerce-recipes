@@ -2,6 +2,7 @@ import {
   InsightEngine,
   SearchEngine,
   RecommendationEngine,
+  CommerceEngine,
 } from '@coveo/headless';
 import {LightningElement} from 'lwc';
 import * as BuenoTypes from './force-app/main/default/staticresources/coveobueno/definitions/index';
@@ -11,11 +12,13 @@ import * as HeadlessCaseAssistTypes from './force-app/main/default/staticresourc
 import * as HeadlessTypes from './force-app/main/default/staticresources/coveoheadless/definitions/index';
 import * as HeadlessInsightTypes from './force-app/main/default/staticresources/coveoheadless/definitions/insight.index';
 import * as HeadlessRecommendationTypes from './force-app/main/default/staticresources/coveoheadless/definitions/recommendation.index';
+import * as HeadlessCommerceTypes from './force-app/main/default/staticresources/coveoheadless/definitions/commerce.index';
 
 export * from './force-app/main/default/staticresources/coveoheadless/definitions/index';
 export * from './force-app/main/default/staticresources/coveoheadless/definitions/case-assist.index';
 export * from './force-app/main/default/staticresources/coveoheadless/definitions/insight.index';
 export * from './force-app/main/default/staticresources/coveoheadless/definitions/recommendation.index';
+export * from './force-app/main/default/staticresources/coveoheadless/definitions/commerce.index';
 export * from './force-app/main/default/staticresources/coveobueno/definitions/index';
 
 interface Bindings {
@@ -23,7 +26,8 @@ interface Bindings {
     | HeadlessTypes<CoreEngine>
     | HeadlessCaseAssistTypes<CoreEngine>
     | HeadlessInsightTypes<CoreEngine>
-    | HeadlessRecommendationTypes<CoreEngine>;
+    | HeadlessRecommendationTypes<CoreEngine>
+    | HeadlessCommerceTypes<CoreEngine>;
   store?: Record<String, unknown>;
 }
 
@@ -33,13 +37,15 @@ declare global {
   const CoveoHeadlessCaseAssist: typeof HeadlessCaseAssistTypes;
   const CoveoHeadlessInsight: typeof HeadlessInsightTypes;
   const CoveoHeadlessRecommendation: typeof HeadlessRecommendationTypes;
+  const CoveoHeadlessCommerce: typeof HeadlessCommerceTypes;
   type AnyHeadless =
     | CoveoHeadless
     | CoveoHeadlessCaseAssist
     | CoveoHeadlessInsight
-    | CoveoHeadlessRecommendation;
+    | CoveoHeadlessRecommendation
+    | CoveoHeadlessCommerce;
 
-  type AnyEngine = SearchEngine | InsightEngine | RecommendationEngine;
+  type AnyEngine = SearchEngine | InsightEngine | RecommendationEngine | CommerceEngine;
 
   interface Window {
     coveoHeadless: {
