@@ -89,10 +89,6 @@ const copyHeadless = async () => {
     './force-app/main/default/staticresources/coveoheadless/recommendation/headless.js'
   );
   await copy(
-    './node_modules/@coveo/headless/dist/quantic/recommendation/headless.js',
-    './force-app/main/default/staticresources/coveoheadless/recommendation/headless.js'
-  );
-  await copy(
     './node_modules/@coveo/headless/dist/browser/commerce/headless.js',
     './force-app/main/default/staticresources/coveoheadless/commerce/headless.js'
   );
