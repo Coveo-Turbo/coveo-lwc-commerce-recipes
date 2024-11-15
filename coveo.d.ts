@@ -22,6 +22,7 @@ export * from './force-app/main/default/staticresources/coveoheadless/definition
 export * from './force-app/main/default/staticresources/coveobueno/definitions/index';
 
 interface Bindings {
+  interfaceElement?: any;
   engine?:
     | HeadlessTypes<CoreEngine>
     | HeadlessCaseAssistTypes<CoreEngine>

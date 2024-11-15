@@ -88,8 +88,10 @@ const copyHeadless = async () => {
     './node_modules/@coveo/headless/dist/quantic/recommendation/headless.js',
     './force-app/main/default/staticresources/coveoheadless/recommendation/headless.js'
   );
+
+  //TODO: Remove this once the commerce bundle is available in the quantic folder
   await copy(
-    './node_modules/@coveo/headless/dist/browser/commerce/headless.js',
+    './quantic/commerce/headless.js',
     './force-app/main/default/staticresources/coveoheadless/commerce/headless.js'
   );
   await copy(
