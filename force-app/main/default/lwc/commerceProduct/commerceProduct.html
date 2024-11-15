@@ -1,0 +1,22 @@
+<template>
+  <c-commerce-product-template>
+      <div slot="badges" class="slds-grid slds-grid_vertical-align-center slds-var-m-vertical_xx-small slds-var-m-right_small">
+        <div class="slds-var-m-right_xx-small">
+          <c-commerce-product-tag variant="recommended" product={product}></c-commerce-product-tag>
+        </div>
+        <c-commerce-product-tag variant="featured" product={product}></c-commerce-product-tag>
+      </div>
+      <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
+        <img loading="lazy" src={productThumbnail}></img>
+      </div>
+      <div slot="name" class="slds-truncate">
+        {product.ec_name}
+      </div>
+      <div slot="description" class="slds-line-clamp">
+        {product.ec_description}
+      </div>
+      <div slot="bottom-metadata" class="slds-var-m-top_x-small">
+        bottom metadata
+      </div>
+    </c-commerce-product-template>
+</template>

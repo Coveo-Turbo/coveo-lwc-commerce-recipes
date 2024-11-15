@@ -222,6 +222,7 @@ function setEngineOptions(
   window.coveoHeadless[engineId].engineConstructor = engineConstructor;
   window.coveoHeadless[engineId].bundle = headlessBundle;
   window.coveoHeadless[engineId].options.resolve(options);
+  window.coveoHeadless[engineId].bindings.interfaceElement = element;
 }
 
 /**

@@ -1,0 +1,29 @@
+<template>
+  <!-- <div class={templateClass}> -->
+  <div class="slds-box slds-theme_default slds-text-align_center slds-var-p-vertical_medium slds-var-m-bottom_medium">
+    <div class={headerCssClass}>
+      <!-- <div aria-hidden={isAnyPreviewOpen} class="slds-col slds-m-right_small slds-order_2 slds-small-order_2 slds-medium-order_1 slds-large-order_1">
+        <slot name="label" onslotchange={handleHeaderSlotChange}></slot>
+      </div> -->
+      <div aria-hidden={isAnyPreviewOpen} class={badgesSlotCssClass}>
+        <slot name="badges" onslotchange={handleHeaderSlotChange}></slot>
+      </div>
+      <div aria-hidden={resultPreviewShouldNotBeAccessible} class="slds-col slds-order_3 slds-col_bump-left slds-p-right_xx-small">
+        <slot name="actions" onslotchange={handleHeaderSlotChange}></slot>
+      </div>
+    </div>
+    <div class="slds-grid slds-size_1-of-1 main-content__container">
+      <div class="slds-col slds-grid slds-grid_vertical main-content">
+        <slot name="visual"></slot>
+        <div class="title__container slds-var-m-bottom_x-small">
+          <slot name="name"></slot>
+        </div>
+        <slot name="metadata"></slot>
+        <slot name="emphasized"></slot>
+        <slot class="slds-wrap slds-text-align_left" name="description"></slot>
+        <slot class="slds-wrap" name="bottom-metadata"></slot>
+        <slot class="slds-wrap" name="children"></slot>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,25 @@
+<template>
+  <template lwc:if={hasInitializationError}>
+    <c-commerce-component-error component-name={template.host.localName}>
+    </c-commerce-component-error>
+  </template>
+  <template lwc:else>
+    <template if:true={showPlaceholder}>
+      <c-commerce-placeholder
+        variant="productList"
+        number-of-placeholders={numberOfPlaceholders}
+      ></c-commerce-placeholder>
+    </template>
+    <div class="slds-grid slds-gutters slds-wrap">
+      <template for:each={products} for:item="product">
+        <c-commerce-product
+          class="slds-col slds-size_1-of-1 slds-small-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-4"
+          key={product.keyProductList}
+          product={product}
+          product-templates-manager={productTemplatesManager}
+          engine-id={engineId}
+        ></c-commerce-product>
+      </template>
+    </div>
+  </template>
+</template>
