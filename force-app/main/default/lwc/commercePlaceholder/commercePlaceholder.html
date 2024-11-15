@@ -1,3 +1,36 @@
 <template>
-    
+  <template if:true={shouldDisplay}>
+    <div class="slds-var-p-horizontal_x-small">
+      <template if:true={isCardVariant}>
+        <div class="placeholder__card-container slds-var-p-vertical_medium slds-grid_vertical">
+          <div class="slds-col slds-var-m-bottom_large">
+            <div class="grey placeholder__card-header placeholder__rounded placeholder__animation"></div>
+          </div>
+          <template for:each={placeholders} for:item="item">
+            <div key={item} class="slds-col slds-grid slds-var-m-bottom_medium placeholder__animation">
+              <div class="slds-var-m-right_x-small grey placeholder__round"></div>
+              <div class="slds-col grey placeholder__card-row placeholder__rounded"></div>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template if:true={isProductListVariant}>
+        <div class="slds-grid slds-gutters slds-wrap">
+          <template for:each={placeholders} for:item="item">
+            <div key={item} class="slds-col slds-size_1-of-1 slds-small-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+              <div class="placeholder__product-container slds-box slds-theme_default slds-text-align_center slds-var-p-vertical_medium slds-var-m-bottom_medium">
+                <div class="grey placeholder__product-image slds-var-m-bottom_medium placeholder__product-header placeholder__animation"></div>
+                <div class="placeholder__product-row slds-grid_vertical">
+                  <div class="slds-col slds-var-m-bottom_medium slds-size_1-of-1 grey placeholder__product-header placeholder__rounded placeholder__animation"></div>
+                  <div class="slds-col slds-var-m-bottom_medium slds-size_10-of-12 light-grey placeholder__rounded placeholder__animation"></div>
+                  <div class="slds-col slds-var-m-bottom_medium slds-size_12-of-12 light-grey placeholder__rounded placeholder__animation"></div>
+                  <div class="slds-col slds-var-m-bottom_medium slds-size_11-of-12 light-grey placeholder__rounded placeholder__animation"></div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </template>
 </template>

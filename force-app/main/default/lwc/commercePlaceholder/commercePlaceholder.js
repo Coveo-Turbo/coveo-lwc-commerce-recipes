@@ -10,33 +10,48 @@ export default class CommercePlaceholder extends LightningElement {
   /**
    * The type of placeholder to display.
    * @api
-   * @type {'card'|'resultList'}
+   * @type {'card'|'productList'}
    */
   @api variant;
   /**
-   * Number of rows to display inside the placeholder.
+   * Number of placeholders to display.
    * @api
    * @type {number}
    */
-  @api numberOfRows;
+  @api numberOfPlaceholders;
+  // @api numberOfColumns = 4;     // Default 4 columns
+
+  // Track the list of placeholders dynamically
+  // @track placeholders = [];
 
   get shouldDisplay() {
-    return !!this.variant && !!this.numberOfRows;
+    return !!this.variant && !!this.numberOfPlaceholders;
   }
 
-  get rows() {
-    const rows = [];
-    for (let i = 0; i < this.numberOfRows; i++) {
-      rows.push({index: i});
-    }
-    return rows;
+  // Computed class to set the column width based on the columns property
+  // get columnClass() {
+  //   const columnSizeClass = `-size_1-of-${this.numberOfColumns}`;
+  //   return `slds-col slds-var-m-bottom_medium slds${columnSizeClass}`;
+  // }
+
+  // get rows() {
+  //   return Array.from({ length: (this.numberOfPlaceholders / this.numberOfColumns) }, (_, i) => i + 1);
+  // }
+
+  // get columns() {
+  //   return Array.from({ length: this.numberOfColumns }, (_, i) => i + 1);
+  // }
+
+  get placeholders() {
+    return Array.from({ length: this.numberOfPlaceholders }, (_, i) => i + 1);
   }
+
 
   get isCardVariant() {
     return this.variant === 'card';
   }
 
-  get isResultListVariant() {
-    return this.variant === 'resultList';
+  get isProductListVariant() {
+    return this.variant === 'productList';
   }
 }
