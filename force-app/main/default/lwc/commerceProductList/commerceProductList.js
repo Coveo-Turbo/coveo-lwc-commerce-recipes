@@ -65,7 +65,7 @@ export default class CommerceProductList extends LightningElement {
   unsubscribeSummary;
   /** @type {ProductTemplatesManager} */
   productTemplatesManager;
-  /** @type {AnyHeadless} */
+  /** @type {CoveoHeadlessCommerce} */
   headless;
   /** @type {bindings} */
   bindings;
@@ -136,7 +136,7 @@ export default class CommerceProductList extends LightningElement {
     this.showPlaceholder =
       this.summaryState?.isLoading &&
       !this.summaryState?.hasError &&
-      !this.summaryState?.firstSearchExecuted &&
+      !this.summaryState?.firstRequestExecuted &&
       this.summaryState?.hasProducts;
 
     if (this.showPlaceholder) {

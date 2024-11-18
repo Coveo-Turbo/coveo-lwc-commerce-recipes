@@ -1,0 +1,28 @@
+<template>
+  <template lwc:if={hasInitializationError}>
+      <c-commerce-component-error component-name={template.host.localName}>
+      </c-commerce-component-error>
+    </template>
+    <template lwc:else>
+      <template if:true={showPlaceholder}>
+        <template for:each={facetPlaceholders} for:item="item">
+          <c-commerce-placeholder
+            key={item}
+            variant="card"
+            number-of-placeholders="8"
+          ></c-commerce-placeholder>
+        </template>
+      </template>
+      <template for:each={facets} for:item="f">
+        <div key={f.key}>
+          <template lwc:if={f.isRegularFacet}> Regular Facet: {f.field} </template>
+          <template lwc:elseif={f.isNumericFacet}> Numeric Facet: {f.field} </template>
+          <template lwc:elseif={f.isDateFacet}> Date Facet: {f.field} </template>
+          <template lwc:elseif={f.isHierarchicalFacet}>
+            <c-commerce-category-facet lwc:spread={f.props}></c-commerce-category-facet>
+          </template>
+          <template lwc:else> unknown facet type {f.facet.state.type} </template>
+        </div>
+      </template>
+    </template>
+</template>

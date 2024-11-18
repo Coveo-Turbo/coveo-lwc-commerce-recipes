@@ -29,11 +29,10 @@ import pastWeek_plural from '@salesforce/label/c.commerce_PastWeek_plural';
 import pastYear from '@salesforce/label/c.commerce_PastYear';
 import pastYear_plural from '@salesforce/label/c.commerce_PastYear_plural';
 
-/** @typedef {import("coveo").Result} Result */
+/** @typedef {import("coveo").Product} Product */
 /** @typedef {import("coveo").SortCriterion} SortCriterion */
 
-// export * from './recentQueriesUtils';
-// export * from './markdownUtils';
+export * from './facetDependenciesUtils';
 
 export class Debouncer {
   _timeout;
@@ -88,33 +87,33 @@ export class Deferred {
   }
 }
 
-export class ResultUtils {
+export class ProductUtils {
   /**
    * Binds the logging of document
    * @returns An unbind function for the events
-   * @param {import("coveo").SearchEngine} engine An instance of an Headless Engine
-   * @param {import("coveo").Result} result The result object
+   * @param {import("coveo").CommerceEngine} engine An instance of an Headless Engine
+   * @param {import("coveo").Product} product The result object
    * @param {import("lwc").ShadowRootTheGoodPart} resultElement Parent result element
    * @param {string} selector Optional. Css selector that selects all links to the document. Default: "a" tags with the clickUri as "href" parameter.
    */
   static bindClickEventsOnResult(
     engine,
-    result,
+    product,
     resultElement,
     controllerBuilder,
     selector = undefined
   ) {
-    const interactiveResult = controllerBuilder(engine, {
-      options: {result: result},
+    const interactiveProduct = controllerBuilder(engine, {
+      options: {product: product},
     });
 
     const eventsMap = {
-      contextmenu: () => interactiveResult.select(),
-      click: () => interactiveResult.select(),
-      mouseup: () => interactiveResult.select(),
-      mousedown: () => interactiveResult.select(),
-      touchstart: () => interactiveResult.beginDelayedSelect(),
-      touchend: () => interactiveResult.cancelPendingSelect(),
+      contextmenu: () => interactiveProduct.select(),
+      click: () => interactiveProduct.select(),
+      mouseup: () => interactiveProduct.select(),
+      mousedown: () => interactiveProduct.select(),
+      touchstart: () => interactiveProduct.beginDelayedSelect(),
+      touchend: () => interactiveProduct.cancelPendingSelect(),
     };
     // @ts-ignore
     const elements = resultElement.querySelectorAll(selector || 'a');
@@ -847,18 +846,18 @@ export function readFromObject(object, key) {
 }
 
 /**
- * Generates a text from a result based on a given template.
+ * Generates a text from a product based on a given template.
  * @param {string} template
- * @param {Result} result
+ * @param {Product} product
  * @returns {string}
  */
-export function buildTemplateTextFromResult(template, result) {
+export function buildTemplateTextFromProduct(template, product) {
   if (!template) {
     return '';
   }
   return template.replace(/\$\{(.*?)\}/g, (value) => {
     const key = value.substring(2, value.length - 1);
-    const newValue = readFromObject(result, key);
+    const newValue = readFromObject(product, key);
     return newValue || '';
   });
 }
