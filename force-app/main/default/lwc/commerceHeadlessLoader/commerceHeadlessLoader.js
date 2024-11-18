@@ -26,19 +26,14 @@ const labels = {
 };
 
 const HeadlessBundleNames = {
-  commerce: 'commerce',
-  recommendation: 'recommendation'
+  commerce: 'commerce'
 };
 
 const headlessBundles = {
   [HeadlessBundleNames.commerce]: {
     libPath: '/commerce/headless.js',
     bundle: () => CoveoHeadlessCommerce,
-  },
-  [HeadlessBundleNames.recommendation]: {
-    libPath: '/recommendation/headless.js',
-    bundle: () => CoveoHeadlessRecommendation,
-  },
+  }
 };
 
 /**
@@ -53,7 +48,7 @@ const getBueno = (element) => {
 /**
  * Initiates dependency loading promises.
  * @param element The Lightning element to use to load dependencies.
- * @returns {Promise<AnyHeadless>}
+ * @returns {Promise<CoveoHeadlessCommerce>}
  */
 const loadDependencies = async (element, headlessUseCase) => {
   const bundleInfo = headlessUseCase
@@ -66,7 +61,7 @@ const loadDependencies = async (element, headlessUseCase) => {
     getBueno(element),
   ];
   await Promise.all(dependencyPromises);
-  /** @type {AnyHeadless} */
+  /** @type {CoveoHeadlessCommerce} */
   return bundleInfo.bundle();
 };
 
