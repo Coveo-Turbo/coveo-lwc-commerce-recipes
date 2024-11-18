@@ -1,0 +1,19 @@
+@import 'c/commerceFacetStyles';
+
+:host {
+  width: 100%;
+}
+
+li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.facet__value_selected{
+  font-weight: bold;
+}
+
+.facet__value-checkbox {
+  min-width: unset;
+}

@@ -15,7 +15,9 @@
       </template>
       <template for:each={facets} for:item="f">
         <div key={f.key}>
-          <template lwc:if={f.isRegularFacet}> Regular Facet: {f.field} </template>
+          <template lwc:if={f.isRegularFacet}>
+            <c-commerce-facet lwc:spread={f.props}></c-commerce-facet>
+          </template>
           <template lwc:elseif={f.isNumericFacet}> Numeric Facet: {f.field} </template>
           <template lwc:elseif={f.isDateFacet}> Date Facet: {f.field} </template>
           <template lwc:elseif={f.isHierarchicalFacet}>
