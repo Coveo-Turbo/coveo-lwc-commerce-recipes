@@ -83,18 +83,27 @@ export default class QuanticFacet extends LightningElement {
    */
   @api field;
   /**
-   * Specifies whether the facet is collapsed.
-   * @api
-   * @type {boolean}
-   */
-  @api isCollapsed = false;
-  /**
    * Whether this facet should not contain a search box.
    * @api
    * @type {boolean}
    * @defaultValue `false`
    */
   @api noSearch = false;
+
+  /**
+   * Whether the facet is collapsed.
+   * @api
+   * @type {boolean}
+   * @defaultValue `false`
+   */
+  @api get isCollapsed() {
+    return this._isCollapsed;
+  }
+  set isCollapsed(collapsed) {
+    this._isCollapsed = collapsed;
+  }
+  /** @type {boolean} */
+  _isCollapsed = false;
 
   /** @type {RegularFacetState} */
   @track state;

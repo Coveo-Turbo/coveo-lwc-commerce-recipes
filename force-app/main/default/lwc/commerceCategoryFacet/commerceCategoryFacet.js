@@ -81,18 +81,27 @@ export default class CommerceCategoryFacet extends LightningElement {
    */
   @api field;
   /**
-   * Specifies whether the facet is collapsed.
-   * @api
-   * @type {boolean}
-   */
-  @api isCollapsed = false;
-  /**
    * Whether this facet should contain a search box.
    * @api
    * @type {boolean}
    * @defaultValue `false`
    */
   @api withSearch = false;
+
+  /**
+   * Whether the facet is collapsed.
+   * @api
+   * @type {boolean}
+   * @defaultValue `false`
+   */
+  @api get isCollapsed() {
+    return this._isCollapsed;
+  }
+  set isCollapsed(collapsed) {
+    this._isCollapsed = collapsed;
+  }
+  /** @type {boolean} */
+  _isCollapsed = false;
   
   /** @type {CategoryFacetState} */
   @track state;
