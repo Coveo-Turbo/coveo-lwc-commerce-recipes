@@ -1,0 +1,68 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Search",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"4d6c8516-7dce-49f0-9e22-f721e716150e\",\"columns\":[{\"UUID\":\"e8e7e4ab-b4c7-4d06-86a1-f22a6701d952\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "disableStateInUrl" : false,
+                "engineId" : "example-commerce-search",
+                "trackingId" : "sports-ui-samples"
+              },
+              "definition" : "c:exampleCommerceSearch",
+              "id" : "27c5acc9-ed3d-4a4e-b957-2970a3ab58bc",
+              "type" : "component"
+            } ],
+            "id" : "e8e7e4ab-b4c7-4d06-86a1-f22a6701d952",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "4d6c8516-7dce-49f0-9e22-f721e716150e",
+          "type" : "component"
+        } ],
+        "id" : "c0575944-0480-4090-bb77-cbdb4980a766",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "c87cab7b-e76a-4209-a7fe-3a7986ec213f",
+          "type" : "component"
+        } ],
+        "id" : "6273ab6e-4565-4124-bfba-70c7ea6daea4",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "060cca38-a728-477a-8d30-aa96d8b14115",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "global-search"
+  },
+  "urlName" : "search"
+}
