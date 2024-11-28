@@ -32,6 +32,7 @@ import pastYear_plural from '@salesforce/label/c.commerce_PastYear_plural';
 /** @typedef {import("coveo").Product} Product */
 /** @typedef {import("coveo").SortCriterion} SortCriterion */
 
+export * from './recentQueriesUtils';
 export * from './facetDependenciesUtils';
 
 export class Debouncer {

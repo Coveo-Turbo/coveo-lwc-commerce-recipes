@@ -1,0 +1,9 @@
+@import 'c/commerceSearchBoxStyle';
+
+.searchbox__input-container {
+  display: flex;
+}
+
+/* input {
+  border: var(--slds-c-input-sizing-border-small, 1px) solid var(--slds-c-input-color-border, #0176d3);
+} */
