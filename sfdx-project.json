@@ -1,12 +1,19 @@
 {
   "packageDirectories": [
     {
-      "path": "force-app",
-      "default": true
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "path": "force-app/main",
+      "default": true,
+      "package": "coveo-lwc-commerce-recipes",
+      "versionDescription": "A collection of Coveo Commerce Lightning Web Components on Salesforce Platform"
     }
   ],
   "name": "coveo-lwc-commerce-recipes",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0"
+  "sourceApiVersion": "61.0",
+  "packageAliases": {
+    "coveo-lwc-commerce-recipes": "0HoKi000000000GKAQ"
+  }
 }

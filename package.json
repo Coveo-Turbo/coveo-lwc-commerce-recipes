@@ -1,8 +1,8 @@
 {
-  "name": "salesforce-app",
+  "name": "coveo-lwc-commerce-recipes",
   "private": true,
   "version": "1.0.0",
-  "description": "Salesforce App",
+  "description": "A collection of Coveo Commerce Lightning Web Components on Salesforce Platform",
   "scripts": {
     "lint": "eslint **/{aura,lwc}/**/*.js",
     "build:staticresources": "node copy-static-resources.js",
@@ -53,5 +53,12 @@
     "**/{aura,lwc}/**/*.js": [
       "eslint"
     ]
-  }
+  },
+  "files": [
+    "force-app/main/default/classes/*",
+    "force-app/main/default/labels/*",
+    "force-app/main/default/lwc/*",
+    "force-app/main/default/cspTrustedSites/*",
+    "force-app/main/default/staticresources/*"
+  ]
 }
