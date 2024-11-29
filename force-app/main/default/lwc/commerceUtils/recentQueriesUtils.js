@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export class RecentQueryUtils {
   /**
    * Highlights a recent query based on the letters that match the current query.
@@ -6,7 +7,7 @@ export class RecentQueryUtils {
    * @returns {String}
    */
   static formatRecentQuery(recentQuery, query) {
-    const highlightedValue = CoveoHeadless.HighlightUtils.highlightString({
+    const highlightedValue = CoveoHeadlessCommerce.HighlightUtils.highlightString({
       content: recentQuery,
       openingDelimiter: '<b>',
       closingDelimiter: '</b>',

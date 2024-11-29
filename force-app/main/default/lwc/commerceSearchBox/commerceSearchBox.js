@@ -13,6 +13,7 @@ import searchBox from './templates/searchBox.html';
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
 /** @typedef {import("coveo").SearchBoxState} SearchBoxState */
 /** @typedef {import("coveo").SearchBox} SearchBox */
+/** @typedef {import("coveo").SearchBoxOptions} SearchBoxOptions */
 /** @typedef {import("coveo").RecentQueriesList} RecentQueriesList */
 /** @typedef {import('c/commerceSearchBoxSuggestionsList').default} commerceSearchBoxSuggestionsList */
 /** @typedef {import("c/commerceSearchBoxInput").default} commerceSearchBoxInput */
@@ -106,8 +107,8 @@ export default class CommerceSearchBox extends LightningElement {
             close: '</b>',
           },
         },
-        clearFilters: !this.keepFiltersOnSearch,
-      },
+        clearFilters: !this.keepFiltersOnSearch
+      }
     });
 
     this.actions = {

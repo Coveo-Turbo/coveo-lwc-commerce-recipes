@@ -1,6 +1,6 @@
 <template>
-  <div class="slds-form-element z-index-high searchbox__container-wrapper">
-    <div class="slds-form-element__control searchbox_floating-container">
+  <div class="slds-is-relative slds-form-element z-index-high searchbox__container-wrapper">
+    <div class="slds-is-absolute slds-form-element__control slds-container_fluid searchbox_floating-container">
       <div class="slds-combobox_container">
         <div
           class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
@@ -9,10 +9,10 @@
             <div class={searchBoxContainerClass} role="none">
               <template if:true={withoutSubmitButton}>
                 <div
-                  class="slds-grid slds-align_absolute-center searchbox__icon-container searchbox__icon-container-left"
+                  class="slds-var-m-left_x-small slds-grid slds-align_absolute-center searchbox__icon-container searchbox__icon-container-left"
                 >
                   <lightning-icon
-                    class="slds-icon slds-input__icon slds-input__icon_left searchbox__search-icon"
+                    class="slds-m-top_none slds-icon slds-input__icon slds-input__icon_left searchbox__search-icon"
                     icon-name="utility:search"
                     size="x-small"
                     data-cy="search-box-search-icon"
@@ -42,7 +42,7 @@
 
               <template if:false={isQueryEmpty}>
                 <div
-                  class="slds-grid slds-align_absolute-center searchbox__icon-container searchbox__icon-container-right"
+                  class="slds-var-m-right_x-small slds-grid slds-align_absolute-center searchbox__icon-container searchbox__icon-container-right"
                 >
                   <lightning-button-icon
                     onclick={clearInput}

@@ -1,0 +1,29 @@
+<template>
+  <template if:true={isStandalone}>
+    <c-commerce-interface
+      engine-id={standaloneEngineId}
+      tracking-id={trackingId}
+      disable-state-in-url={disableStateInUrl}
+      type='search'
+    >
+      <c-commerce-search-box-input
+        input-value={searchBoxValue}
+        textarea={textarea}
+        without-submit-button={withoutSubmitButton}
+        placeholder={placeholder}
+        suggestions={suggestions}
+        data-cy="commerce-search-box-input"
+      ></c-commerce-search-box-input>
+    </c-commerce-interface>
+  </template>
+  <template if:false={isStandalone}>
+    <c-commerce-search-box
+      engine-id={engineId}
+      placeholder={placeholder}
+      without-submit-button={withoutSubmitButton}
+      number-of-suggestions={numberOfSuggestions}
+      textarea={textarea}
+      keep-filters-on-search={keepFiltersOnSearch}
+    ></c-commerce-search-box>
+  </template>
+</template>
