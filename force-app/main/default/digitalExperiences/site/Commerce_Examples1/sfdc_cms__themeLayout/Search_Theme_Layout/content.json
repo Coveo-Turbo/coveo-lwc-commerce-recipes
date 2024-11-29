@@ -1,0 +1,92 @@
+{
+  "type" : "sfdc_cms__themeLayout",
+  "title" : "Search Theme Layout",
+  "contentBody" : {
+    "component" : {
+      "attributes" : { },
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "1440px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"db17a8f2-9309-4a26-83bb-768020bff21c\",\"columns\":[{\"UUID\":\"57d00c1b-64ef-433e-9d38-a383ef0366b7\",\"columnName\":\"Column 1\",\"columnKey\":\"headerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "engineId" : "example-commerce-search",
+                "numberOfSuggestions" : 5,
+                "placeholder" : "search",
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "59260243-6e3d-4cc7-af32-3a710da6447c",
+              "type" : "component"
+            } ],
+            "id" : "57d00c1b-64ef-433e-9d38-a383ef0366b7",
+            "name" : "headerSection",
+            "title" : "Theme Header",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "db17a8f2-9309-4a26-83bb-768020bff21c",
+          "scopedBrandingSetId" : "empty",
+          "type" : "component"
+        } ],
+        "id" : "a8151eb3-3f4d-420e-bdc3-6f27c1126051",
+        "name" : "header",
+        "title" : "Theme Header",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"6719d9ca-3742-4e27-a339-48ee87ee029a\",\"columns\":[{\"UUID\":\"efc3cc2a-4249-44ad-9d46-bbbb500fc503\",\"columnName\":\"Column 1\",\"columnKey\":\"footerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "efc3cc2a-4249-44ad-9d46-bbbb500fc503",
+            "name" : "footerSection",
+            "title" : "Theme Footer",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "6719d9ca-3742-4e27-a339-48ee87ee029a",
+          "scopedBrandingSetId" : "empty",
+          "type" : "component"
+        } ],
+        "id" : "dfee22fe-1554-446f-848b-a65c646c7f38",
+        "name" : "footer",
+        "title" : "Theme Footer",
+        "type" : "region"
+      }, {
+        "id" : "4378f202-b9b8-4273-9814-799e612cce7f",
+        "name" : "sidebar",
+        "type" : "region"
+      } ],
+      "definition" : "c:customThemeLayout",
+      "id" : "fb774e9a-2a26-4c5a-8a3f-26bcfd4d8e89",
+      "type" : "component"
+    }
+  },
+  "urlName" : "search-theme-layout"
+}
