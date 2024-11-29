@@ -10,6 +10,9 @@
     }, {
       "layoutId" : "scopedHeaderAndFooter",
       "layoutType" : "Inner"
+    }, {
+      "layoutId" : "Search_Theme_Layout",
+      "layoutType" : "jSFv6I1RZ6gMcnDBIwAkedICTNeYAL"
     } ]
   },
   "urlName" : "build-your-own-lwr"

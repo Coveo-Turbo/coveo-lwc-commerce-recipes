@@ -17,13 +17,27 @@
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
             "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
+            "maxContentWidth" : "1440px",
             "sectionColumnGutterWidth" : "",
             "sectionConfig" : "{\"UUID\":\"7367b86a-cf1d-41ce-997c-7520f6268fd1\",\"columns\":[{\"UUID\":\"1ebc83bc-ecac-460d-95ab-d6a8e5868030\",\"columnName\":\"Column 1\",\"columnKey\":\"headerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
             "sectionMinHeight" : "",
             "sectionVerticalAlign" : "flex-start"
           },
           "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "engineId" : "example-commerce-search",
+                "numberOfSuggestions" : 5,
+                "placeholder" : "search",
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "fa194703-385c-48f8-bd3e-9c27ca2ee4c5",
+              "type" : "component"
+            } ],
             "id" : "1ebc83bc-ecac-460d-95ab-d6a8e5868030",
             "name" : "headerSection",
             "title" : "Theme Header",
@@ -31,6 +45,7 @@
           } ],
           "definition" : "community_layout:section",
           "id" : "7367b86a-cf1d-41ce-997c-7520f6268fd1",
+          "scopedBrandingSetId" : "empty",
           "type" : "component"
         } ],
         "id" : "d01492a6-2b73-422d-a3fa-350270b2a6d6",
@@ -60,6 +75,7 @@
           } ],
           "definition" : "community_layout:section",
           "id" : "64b19e7c-73aa-42a2-bb7d-aa184d20e27d",
+          "scopedBrandingSetId" : "empty",
           "type" : "component"
         } ],
         "id" : "3c20aeec-ad4a-4fdb-819f-ac6afb4b2e01",
