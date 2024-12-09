@@ -2,13 +2,13 @@ import {
   CommerceEngine
 } from '@coveo/headless';
 import {LightningElement} from 'lwc';
-import * as BuenoTypes from './force-app/main/default/staticresources/coveobueno/definitions/index';
-import {CoreEngine} from './force-app/main/default/staticresources/coveoheadless/definitions/app/engine';
-import {ExternalEngineOptions} from './force-app/main/default/staticresources/coveoheadless/definitions/app/engine-configuration';
-import * as HeadlessCommerceTypes from './force-app/main/default/staticresources/coveoheadless/definitions/commerce.index';
+import * as BuenoTypes from './force-app/main/default/staticresources/coveobuenocommerce/definitions/index';
+import {CoreEngine} from './force-app/main/default/staticresources/coveoheadlesscommerce/definitions/app/engine';
+import {ExternalEngineOptions} from './force-app/main/default/staticresources/coveoheadlesscommerce/definitions/app/engine-configuration';
+import * as HeadlessCommerceTypes from './force-app/main/default/staticresources/coveoheadlesscommerce/definitions/commerce.index';
 
-export * from './force-app/main/default/staticresources/coveoheadless/definitions/commerce.index';
-export * from './force-app/main/default/staticresources/coveobueno/definitions/index';
+export * from './force-app/main/default/staticresources/coveoheadlesscommerce/definitions/commerce.index';
+export * from './force-app/main/default/staticresources/coveobuenocommerce/definitions/index';
 
 interface Bindings {
   interfaceElement?: any;

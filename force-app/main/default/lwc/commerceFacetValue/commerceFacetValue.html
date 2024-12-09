@@ -34,15 +34,22 @@
       </span>
     </template>
     <template if:false={isChecked}>
-      <span
-        class="slds-truncate slds-var-m-right_xx-small slds-var-m-top_xxx-small facet__value-text facet__value_idle"
-        title={formattedFacetValue}
-      >
-        <lightning-formatted-rich-text
-          value={item.highlightedResult}
-          disable-linkify
-        ></lightning-formatted-rich-text>
-      </span>
+      <template if:true={isStandardFacet}>
+        <span
+          class="slds-truncate slds-var-m-right_xx-small slds-var-m-top_xxx-small facet__value-text facet__value_idle"
+          title={formattedFacetValue}
+        >
+          <lightning-formatted-rich-text value={item.highlightedResult} disable-linkify></lightning-formatted-rich-text>
+        </span>
+      </template>
+      <template if:false={isStandardFacet}>
+        <span
+          class="slds-truncate slds-var-m-right_xx-small slds-var-m-top_xxx-small facet__value-text facet__value_idle"
+          title={formattedFacetValue}
+        >
+          {formattedFacetValue}
+        </span>
+      </template>
       <span class="slds-var-m-top_xxx-small facet__number-of-results"
         >({numberOfResults})</span
       >

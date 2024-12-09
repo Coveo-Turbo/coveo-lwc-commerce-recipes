@@ -18,7 +18,9 @@
           <template lwc:if={f.isRegularFacet}>
             <c-commerce-facet lwc:spread={f.props}></c-commerce-facet>
           </template>
-          <template lwc:elseif={f.isNumericFacet}> Numeric Facet: {f.field} </template>
+          <template lwc:elseif={f.isNumericFacet}>
+            <c-commerce-numeric-facet lwc:spread={f.props}></c-commerce-numeric-facet>
+          </template>
           <template lwc:elseif={f.isDateFacet}> Date Facet: {f.field} </template>
           <template lwc:elseif={f.isHierarchicalFacet}>
             <c-commerce-category-facet lwc:spread={f.props}></c-commerce-category-facet>

@@ -41,6 +41,13 @@ export default class CommerceFacetValue extends LightningElement {
   @api formattingFunction;
 
   /**
+   * Whether the facet value belongs to a range facet.
+   * @api
+   * @type {boolean}
+   * @defaultValue `false`
+   */
+  @api isRangeFacet;
+  /**
    * A function used to set focus to the value.
    * @api
    * @type {VoidFunction}
@@ -69,6 +76,10 @@ export default class CommerceFacetValue extends LightningElement {
 
   get numberOfResults() {
     return new Intl.NumberFormat(LOCALE).format(this.item.numberOfResults);
+  }
+
+  get isStandardFacet() {
+    return !this.isRangeFacet;
   }
 
   get ariaLabelValue() {

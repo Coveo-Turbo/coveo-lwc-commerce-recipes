@@ -133,6 +133,7 @@ export default class CommerceProductList extends LightningElement {
       ? this.productListing?.state
       : this.search?.state;
 
+    this.summaryState = this.summary?.state;
     this.showPlaceholder =
       this.summaryState?.isLoading &&
       !this.summaryState?.hasError &&
