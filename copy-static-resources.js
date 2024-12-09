@@ -21,22 +21,22 @@ const copyHeadless = async () => {
   console.info('Begin copy Headless.');
 
   await mkdir(
-    './force-app/main/default/staticresources/coveoheadless/commerce',
+    './force-app/main/default/staticresources/coveoheadlesscommerce/commerce',
     {recursive: true}
   );
   await mkdir(
-    './force-app/main/default/staticresources/coveoheadless/definitions/',
+    './force-app/main/default/staticresources/coveoheadlesscommerce/definitions/',
     {recursive: true}
   );
 
   //TODO: Remove this once the commerce bundle is available in the quantic folder
   await copy(
-    './quantic/commerce/headless.js',
-    './force-app/main/default/staticresources/coveoheadless/commerce/headless.js'
+    './node_modules/@coveo/headless/dist/quantic/commerce/headless.js',
+    './force-app/main/default/staticresources/coveoheadlesscommerce/commerce/headless.js'
   );
   await copy(
     './node_modules/@coveo/headless/dist/definitions',
-    './force-app/main/default/staticresources/coveoheadless/definitions'
+    './force-app/main/default/staticresources/coveoheadlesscommerce/definitions'
   );
 
   console.info('Headless copied.');
@@ -45,22 +45,22 @@ const copyHeadless = async () => {
 const copyBueno = async () => {
   console.info('Begin copy Bueno.');
 
-  await mkdir('./force-app/main/default/staticresources/coveobueno/browser', {
+  await mkdir('./force-app/main/default/staticresources/coveobuenocommerce/browser', {
     recursive: true,
   });
   await mkdir(
-    './force-app/main/default/staticresources/coveobueno/definitions',
+    './force-app/main/default/staticresources/coveobuenocommerce/definitions',
     {
       recursive: true,
     }
   );
   await copy(
     './node_modules/@coveo/bueno/dist/browser/bueno.js',
-    './force-app/main/default/staticresources/coveobueno/browser/bueno.js'
+    './force-app/main/default/staticresources/coveobuenocommerce/browser/bueno.js'
   );
   await copy(
     './node_modules/@coveo/bueno/dist/definitions',
-    './force-app/main/default/staticresources/coveobueno/definitions'
+    './force-app/main/default/staticresources/coveobuenocommerce/definitions'
   );
 
   console.info('Bueno copied.');

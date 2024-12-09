@@ -2,8 +2,8 @@
 import componentInitializationError from '@salesforce/label/c.commerce_ComponentInitializationError';
 import lookAtDeveloperConsole from '@salesforce/label/c.commerce_LookAtDeveloperConsole';
 import unableToInitializeComponent from '@salesforce/label/c.commerce_UnableToInitializeComponent';
-import BuenoPath from '@salesforce/resourceUrl/coveobueno';
-import HeadlessPath from '@salesforce/resourceUrl/coveoheadless';
+import BuenoPath from '@salesforce/resourceUrl/coveobuenocommerce';
+import HeadlessPath from '@salesforce/resourceUrl/coveoheadlesscommerce';
 // @ts-ignore
 import {Debouncer, Deferred, Store} from 'c/commerceUtils';
 import {I18nUtils} from 'c/commerceUtils';

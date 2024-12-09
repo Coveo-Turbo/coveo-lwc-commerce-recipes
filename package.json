@@ -18,11 +18,14 @@
     "scratch:create": "sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias \"LWC\"",
     "deploy:main": "sf project deploy start --target-org LWC --source-dir force-app/main",
     "deploy:examples": "sf project deploy start --target-org LWC --source-dir force-app/examples",
-    "scratch:dev": "npm run scratch:create && npm run deploy:main && npm run setup:examples"
+    "scratch:dev": "npm run scratch:create && npm run deploy:main && npm run deploy:examples",
+    "package:version": "sf package version create --installation-key coveops --package \"coveo-lwc-commerce-recipes\"",
+    "package:list": "sf package version list",
+    "package:install": "sf package install --package 04tKi0000004eRZIAY  --target-org jfallaire.dev@coveo.com --installation-key coveops"
   },
   "dependencies": {
     "@coveo/bueno": "1.0.5",
-    "@coveo/headless": "^3.8.1"
+    "@coveo/headless": "^3.11.0"
   },
   "engines": {
     "node": "^20.9.0 || ^22.11.0"

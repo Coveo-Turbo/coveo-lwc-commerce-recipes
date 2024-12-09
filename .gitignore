@@ -38,8 +38,8 @@ ehthumbs.db
 $RECYCLE.BIN/
 
 # Static resources copied from node_modules
-force-app/main/default/staticresources/coveoheadless
-force-app/main/default/staticresources/coveobueno
+force-app/main/default/staticresources/coveoheadlesscommerce
+force-app/main/default/staticresources/coveobuenocommerce
 force-app/main/default/staticresources/marked
 force-app/main/default/staticresources/dompurify
 
