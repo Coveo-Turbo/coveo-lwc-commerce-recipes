@@ -43,6 +43,33 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   */
   @api trackingId;
   /**
+  * The commerce url to add in context for your Coveo-powered ecommerce site or application.
+  * @api
+  * @type {string}
+  */
+   @api commerceUrl;
+
+   /**
+    * The language to add in context for your Coveo-powered ecommerce site or application.
+    * @api
+    * @type {string}
+    */
+   @api language = 'en';
+
+   /**
+    * The country to add in context for your Coveo-powered ecommerce site or application.
+    * @api
+    * @type {string}
+    */
+   @api country = 'US';
+
+   /**
+    * The currency to add in context for your Coveo-powered ecommerce site or application.
+    * @api
+    * @type {string}
+    */
+   @api currency = 'USD';
+  /**
    * The placeholder text to display in the search box input area.
    * @api
    * @type {string}

@@ -41,6 +41,34 @@ export default class CommerceInterface extends LightningElement {
    * @type {string}
    */
   @api trackingId;
+
+  /**
+   * The commerce url to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api commerceUrl;
+
+  /**
+   * The language to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api language = 'en';
+
+  /**
+   * The country to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api country = 'US';
+
+  /**
+   * The currency to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api currency = 'USD';
   /**
    * Whether the state should not be reflected in the URL parameters.
    * @api
@@ -93,11 +121,11 @@ export default class CommerceInterface extends LightningElement {
                       trackingId: this.trackingId
                     },
                     context: {
-                      language: "en",
-                      country: "US",
-                      currency: "USD",
+                      language: this.language,
+                      country: this.country,
+                      currency: this.currency,
                       view: {
-                        url: "https://sports.barca.group"
+                        url: this.commerceUrl
                       }
                     },
                     ...rest,
@@ -143,7 +171,7 @@ export default class CommerceInterface extends LightningElement {
     
     this.initRequestStatus(engine);
     this.initContext(engine);
-    this.initLanguage();
+    // this.initLanguage();
     this.initUrlManager();
    
     // @ts-ignore
@@ -199,11 +227,11 @@ export default class CommerceInterface extends LightningElement {
     this.context = CoveoHeadlessCommerce.buildContext(engine);
   }
 
-  initLanguage() {
-    if (!this.language) {
-      this.language = this.context.state.language;
-    }
-  }
+  // initLanguage() {
+  //   if (!this.language) {
+  //     this.language = this.context.state.language;
+  //   }
+  // }
 
 
   initUrlManager() {

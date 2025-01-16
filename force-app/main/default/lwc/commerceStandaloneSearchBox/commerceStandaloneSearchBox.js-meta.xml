@@ -8,8 +8,12 @@
   </targets>
   <targetConfigs>
     <targetConfig targets="lightningCommunity__Default">
-      <property name="engineId" type="String" default="example-commerce-search" label="The Coveo Commerce Headless engine ID" />
+      <property name="engineId" type="String" default="example-commerce-engine" label="The Coveo Commerce Headless engine ID" />
       <property name="trackingId" type="String" default="sports-ui-samples" label="The search interface search hub"/>
+      <property name="language" type="String" default="en" label="Language"/>
+      <property name="country" type="String" default="US" label="Country"/>
+      <property name="currency" type="String" default="USD" label="Currency"/>
+      <property name="commerceUrl" type="String" default="https://sports.barca.group/commerce-search" label="Commerce URL"/>
       <property name="placeholder" type="String" label="Placeholder" />
       <property name="redirectUrl" type="String" default="/global-search/%40uri" label="Redirect URL" />
       <property name="numberOfSuggestions" type="Integer" default="5" label="Maximum number of suggestions" />
