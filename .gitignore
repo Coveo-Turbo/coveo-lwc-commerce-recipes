@@ -50,3 +50,6 @@ force-app/main/default/staticresources/dompurify
 **/__pycache__/
 **/.venv/
 **/venv/
+
+
+temp.txt

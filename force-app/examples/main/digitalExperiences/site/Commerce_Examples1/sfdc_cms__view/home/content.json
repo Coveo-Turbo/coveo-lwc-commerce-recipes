@@ -14,7 +14,87 @@
             "layoutDirectionTablet" : "column",
             "maxContentWidth" : "",
             "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"3034c5d3-e01a-4a71-a55b-50bd2eefb45e\",\"columns\":[{\"UUID\":\"44212301-c00f-42bf-9f93-120afaae5339\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "backgroundColor" : "",
+                "isLinkable" : false,
+                "linkAssistiveText" : "",
+                "paddingHorizontal" : "x-large",
+                "paddingVertical" : "none",
+                "text" : "Home",
+                "textAlign" : "left",
+                "textDecoration" : "{}",
+                "textDisplayInfo" : "{\"textStyle\":\"heading-xlarge\",\"headingTag\":\"h1\"}"
+              },
+              "definition" : "dxp_base:textBlock",
+              "id" : "41ef478c-845f-4700-becd-a43898034c67",
+              "type" : "component"
+            } ],
+            "id" : "44212301-c00f-42bf-9f93-120afaae5339",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "3034c5d3-e01a-4a71-a55b-50bd2eefb45e",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "920px",
+            "sectionColumnGutterWidth" : "",
             "sectionConfig" : "{\"UUID\":\"b25471b7-64be-4327-9652-4d1c1af98033\",\"columns\":[{\"UUID\":\"8e188f8c-bd1f-44c9-91df-e43a98180202\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/commerce-search",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "numberOfSuggestions" : 5,
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "fc06473f-9918-40b4-8a67-2f509a6d07d8",
+              "type" : "component"
+            } ],
+            "id" : "8e188f8c-bd1f-44c9-91df-e43a98180202",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "b25471b7-64be-4327-9652-4d1c1af98033",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"c5c7ff0b-53e0-4d07-a1e1-d8819dbd43b0\",\"columns\":[{\"UUID\":\"c19b1826-32e0-40bf-94ef-fa5c5a206e7a\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
             "sectionMinHeight" : "",
             "sectionVerticalAlign" : "flex-start"
           },
@@ -25,16 +105,16 @@
                 "richTextValue" : "<div style=\"display: flex; justify-content: center; align-items: center; margin: 50px 0; flex-direction: column; text-align: center;\"><div style=\"background-image: url(assets/img/desert.svg) !important; background-size: cover; background-position: center; height: 300px; width: 100%; max-width: 600px; min-width: 300px;\"></div><h1 class=\"slds-text-heading_medium slds-p-bottom_x-small\">Start Building Your Page</h1> <div>Drag and drop a component into the content slots.</div></div>"
               },
               "definition" : "community_builder:htmlEditor",
-              "id" : "0647a6d8-0a24-42dd-9a1a-b277b480a88c",
+              "id" : "0b525bee-02f0-44c7-893e-16ec6d498eac",
               "type" : "component"
             } ],
-            "id" : "8e188f8c-bd1f-44c9-91df-e43a98180202",
+            "id" : "c19b1826-32e0-40bf-94ef-fa5c5a206e7a",
             "name" : "col1",
             "title" : "Column 1",
             "type" : "region"
           } ],
           "definition" : "community_layout:section",
-          "id" : "b25471b7-64be-4327-9652-4d1c1af98033",
+          "id" : "c5c7ff0b-53e0-4d07-a1e1-d8819dbd43b0",
           "type" : "component"
         } ],
         "id" : "a451270a-bed0-4a73-a783-603cd453f30d",
@@ -46,6 +126,7 @@
           "attributes" : {
             "customHeadTags" : "",
             "description" : "",
+            "dxpStyle" : { },
             "pageTitle" : "Home",
             "recordId" : "{!recordId}"
           },

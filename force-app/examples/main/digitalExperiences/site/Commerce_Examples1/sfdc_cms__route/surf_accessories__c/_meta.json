@@ -1,0 +1,5 @@
+{
+  "apiName" : "surf_accessories__c",
+  "type" : "sfdc_cms__route",
+  "path" : "routes"
+}

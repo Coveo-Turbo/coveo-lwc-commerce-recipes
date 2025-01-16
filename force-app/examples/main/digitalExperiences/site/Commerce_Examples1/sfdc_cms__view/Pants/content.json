@@ -1,6 +1,6 @@
 {
   "type" : "sfdc_cms__view",
-  "title" : "Forgot Password",
+  "title" : "Pants",
   "contentBody" : {
     "component" : {
       "children" : [ {
@@ -15,46 +15,50 @@
             "layoutDirectionTablet" : "column",
             "maxContentWidth" : "",
             "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"60d63229-3156-435f-be3c-627fa0ff34f8\",\"columns\":[{\"UUID\":\"334f7a7b-964e-41d8-8b3c-db70280b5ae7\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionConfig" : "{\"UUID\":\"6f6bcd67-2f30-4cc8-915f-c551d03496a5\",\"columns\":[{\"UUID\":\"d76f61ef-c3af-4e40-97c4-dd5823e76ded\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
             "sectionMinHeight" : "",
             "sectionVerticalAlign" : "flex-start"
           },
           "children" : [ {
             "children" : [ {
               "attributes" : {
-                "alignment" : "left",
-                "dxpStyle" : { },
-                "imageInfo" : "",
-                "imageInfoMobile" : "",
-                "logoWidth" : 250
+                "backgroundColor" : "",
+                "isLinkable" : false,
+                "linkAssistiveText" : "",
+                "paddingHorizontal" : "x-large",
+                "paddingVertical" : "none",
+                "text" : "Pants",
+                "textAlign" : "left",
+                "textDecoration" : "{}",
+                "textDisplayInfo" : "{\"textStyle\":\"heading-xlarge\",\"headingTag\":\"h1\"}"
               },
-              "definition" : "dxp_content_layout:siteLogo",
-              "id" : "ab99695e-9a80-445e-a985-461192108564",
+              "definition" : "dxp_base:textBlock",
+              "id" : "43ee724d-b8a7-4ec1-abc8-f578fafbf7bb",
               "type" : "component"
             }, {
               "attributes" : {
-                "cancelButtonLabel" : "Cancel",
-                "checkEmailUrl" : "./CheckPasswordResetEmail",
-                "dxpStyle" : { },
-                "instructionsLabel" : "To reset your password, enter your username. We'll send a reset-password link to the email address associated with your account.",
-                "submitButtonLabel" : "Reset",
-                "titleLabel" : "Forgot your password?",
-                "usernameLabel" : "Username"
+                "commerceUrl" : "https://sports.barca.group/browse/promotions/clothing/pants",
+                "country" : "US",
+                "currency" : "USD",
+                "disableStateInUrl" : false,
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "trackingId" : "sports-ui-samples"
               },
-              "definition" : "community_login:forgotPassword",
-              "id" : "487a69bd-2b50-48fd-b1aa-94c81740308f",
+              "definition" : "c:exampleCommerceListing",
+              "id" : "beac1b0d-7be3-4072-a657-26ac1ca31ea5",
               "type" : "component"
             } ],
-            "id" : "334f7a7b-964e-41d8-8b3c-db70280b5ae7",
+            "id" : "d76f61ef-c3af-4e40-97c4-dd5823e76ded",
             "name" : "col1",
             "title" : "Column 1",
             "type" : "region"
           } ],
           "definition" : "community_layout:section",
-          "id" : "60d63229-3156-435f-be3c-627fa0ff34f8",
+          "id" : "6f6bcd67-2f30-4cc8-915f-c551d03496a5",
           "type" : "component"
         } ],
-        "id" : "1e17c96c-bfe7-48fc-a471-b8d5ebe99738",
+        "id" : "8f59fd95-0711-4e0d-b858-09de4e0c2b83",
         "name" : "content",
         "title" : "Content",
         "type" : "region"
@@ -64,25 +68,25 @@
             "customHeadTags" : "",
             "description" : "",
             "dxpStyle" : { },
-            "pageTitle" : "Forgot Password",
+            "pageTitle" : "Pants",
             "recordId" : "{!recordId}"
           },
           "definition" : "community_builder:seoAssistant",
-          "id" : "9d86e000-3a49-4079-b829-b2eb6f4027cd",
+          "id" : "306a3a83-4b20-4ee9-844a-63f4d553d48b",
           "type" : "component"
         } ],
-        "id" : "8963fe1e-4e6e-4a3a-99c1-57830fc41906",
+        "id" : "8de1d8b1-6909-41f1-948e-cfd95baacb62",
         "name" : "sfdcHiddenRegion",
         "title" : "sfdcHiddenRegion",
         "type" : "region"
       } ],
       "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "9ca8add9-7421-46d8-84d2-79c27aba71d7",
+      "id" : "1a281067-f9ce-4673-86ab-3aae1e0df5c6",
       "type" : "component"
     },
     "dataProviders" : [ ],
     "themeLayoutType" : "Inner",
-    "viewType" : "forgot-password"
+    "viewType" : "custom-pants"
   },
-  "urlName" : "forgot-password"
+  "urlName" : "pants"
 }

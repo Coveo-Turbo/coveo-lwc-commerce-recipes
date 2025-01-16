@@ -1,0 +1,5 @@
+{
+  "apiName" : "Pants",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

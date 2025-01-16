@@ -23,8 +23,8 @@
     <redirectToCustomDomain>false</redirectToCustomDomain>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
-    <siteAdmin>test-gg3al02oghmb@example.com</siteAdmin>
-    <siteGuestRecordDefaultOwner>test-gg3al02oghmb@example.com</siteGuestRecordDefaultOwner>
+    <siteAdmin>test-igysc4nft5ay@example.com</siteAdmin>
+    <siteGuestRecordDefaultOwner>test-igysc4nft5ay@example.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <urlPathPrefix>vforcesite</urlPathPrefix>
 </CustomSite>

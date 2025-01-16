@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Surf Accessories",
+  "contentBody" : {
+    "activeViewId" : "surf_accessories",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-surf-accessories",
+    "urlPrefix" : "surf-accessories"
+  },
+  "urlName" : "surf-accessories"
+}

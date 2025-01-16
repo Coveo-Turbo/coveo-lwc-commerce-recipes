@@ -1,6 +1,6 @@
 {
   "type" : "sfdc_cms__view",
-  "title" : "Forgot Password",
+  "title" : "surf-accessories",
   "contentBody" : {
     "component" : {
       "children" : [ {
@@ -15,46 +15,50 @@
             "layoutDirectionTablet" : "column",
             "maxContentWidth" : "",
             "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"60d63229-3156-435f-be3c-627fa0ff34f8\",\"columns\":[{\"UUID\":\"334f7a7b-964e-41d8-8b3c-db70280b5ae7\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionConfig" : "{\"UUID\":\"8136c278-7a48-4be8-a077-9da9d911df19\",\"columns\":[{\"UUID\":\"6e8134b0-70d6-4192-8165-836938c3a8aa\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
             "sectionMinHeight" : "",
             "sectionVerticalAlign" : "flex-start"
           },
           "children" : [ {
             "children" : [ {
               "attributes" : {
-                "alignment" : "left",
-                "dxpStyle" : { },
-                "imageInfo" : "",
-                "imageInfoMobile" : "",
-                "logoWidth" : 250
+                "backgroundColor" : "",
+                "isLinkable" : false,
+                "linkAssistiveText" : "",
+                "paddingHorizontal" : "x-large",
+                "paddingVertical" : "none",
+                "text" : "Surf Accessories",
+                "textAlign" : "left",
+                "textDecoration" : "{}",
+                "textDisplayInfo" : "{\"textStyle\":\"heading-xlarge\",\"headingTag\":\"h1\"}"
               },
-              "definition" : "dxp_content_layout:siteLogo",
-              "id" : "ab99695e-9a80-445e-a985-461192108564",
+              "definition" : "dxp_base:textBlock",
+              "id" : "7dad2f9c-ff44-40b3-9ca3-2ca7ecc2358e",
               "type" : "component"
             }, {
               "attributes" : {
-                "cancelButtonLabel" : "Cancel",
-                "checkEmailUrl" : "./CheckPasswordResetEmail",
-                "dxpStyle" : { },
-                "instructionsLabel" : "To reset your password, enter your username. We'll send a reset-password link to the email address associated with your account.",
-                "submitButtonLabel" : "Reset",
-                "titleLabel" : "Forgot your password?",
-                "usernameLabel" : "Username"
+                "commerceUrl" : "https://sports.barca.group/browse/promotions/surf-accessories",
+                "country" : "US",
+                "currency" : "USD",
+                "disableStateInUrl" : false,
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "trackingId" : "sports-ui-samples"
               },
-              "definition" : "community_login:forgotPassword",
-              "id" : "487a69bd-2b50-48fd-b1aa-94c81740308f",
+              "definition" : "c:exampleCommerceListing",
+              "id" : "c98f99ca-a652-442f-8bbc-cc6dd9afffb4",
               "type" : "component"
             } ],
-            "id" : "334f7a7b-964e-41d8-8b3c-db70280b5ae7",
+            "id" : "6e8134b0-70d6-4192-8165-836938c3a8aa",
             "name" : "col1",
             "title" : "Column 1",
             "type" : "region"
           } ],
           "definition" : "community_layout:section",
-          "id" : "60d63229-3156-435f-be3c-627fa0ff34f8",
+          "id" : "8136c278-7a48-4be8-a077-9da9d911df19",
           "type" : "component"
         } ],
-        "id" : "1e17c96c-bfe7-48fc-a471-b8d5ebe99738",
+        "id" : "dcb2ed58-4dcc-4438-b117-b46ddbffb31c",
         "name" : "content",
         "title" : "Content",
         "type" : "region"
@@ -64,25 +68,25 @@
             "customHeadTags" : "",
             "description" : "",
             "dxpStyle" : { },
-            "pageTitle" : "Forgot Password",
+            "pageTitle" : "surf-accessories",
             "recordId" : "{!recordId}"
           },
           "definition" : "community_builder:seoAssistant",
-          "id" : "9d86e000-3a49-4079-b829-b2eb6f4027cd",
+          "id" : "ca75cb53-7a12-4704-8101-067357a92e72",
           "type" : "component"
         } ],
-        "id" : "8963fe1e-4e6e-4a3a-99c1-57830fc41906",
+        "id" : "626effb4-7fb0-4685-b150-8c76c3caceed",
         "name" : "sfdcHiddenRegion",
         "title" : "sfdcHiddenRegion",
         "type" : "region"
       } ],
       "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "9ca8add9-7421-46d8-84d2-79c27aba71d7",
+      "id" : "53560e42-0f97-4924-9411-de2b832ad2a7",
       "type" : "component"
     },
     "dataProviders" : [ ],
     "themeLayoutType" : "Inner",
-    "viewType" : "forgot-password"
+    "viewType" : "custom-surf-accessories"
   },
-  "urlName" : "forgot-password"
+  "urlName" : "surf-accessories"
 }

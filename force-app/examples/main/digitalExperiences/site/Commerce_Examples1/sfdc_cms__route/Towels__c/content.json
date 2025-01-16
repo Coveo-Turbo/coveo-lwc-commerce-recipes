@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Towels",
+  "contentBody" : {
+    "activeViewId" : "Towels",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-towels",
+    "urlPrefix" : "towels"
+  },
+  "urlName" : "towels"
+}
