@@ -90,23 +90,38 @@ export class Deferred {
 }
 
 export class ProductUtils {
+
+  static interactiveProductProps(controllerBuilder, product) {
+    const interactiveProduct = controllerBuilder.interactiveProduct({
+      options: {product},
+    });
+
+    return {
+      oncontextmenu: () => interactiveProduct.select(),
+      onclick: () => interactiveProduct.select(),
+      onmouseup: () => interactiveProduct.select(),
+      onmousedown: () => interactiveProduct.select(),
+      ontouchstart: () => interactiveProduct.beginDelayedSelect(),
+      ontouchend: () => interactiveProduct.cancelPendingSelect()
+    }
+
+
+  }
   /**
    * Binds the logging of document
    * @returns An unbind function for the events
-   * @param {import("coveo").CommerceEngine} engine An instance of an Headless Engine
    * @param {import("coveo").Product} product The result object
    * @param {import("lwc").ShadowRootTheGoodPart} resultElement Parent result element
    * @param {string} selector Optional. Css selector that selects all links to the document. Default: "a" tags with the clickUri as "href" parameter.
    */
-  static bindClickEventsOnResult(
-    engine,
+  static bindClickEventsOnProduct(
     product,
     resultElement,
-    controllerBuilder,
+    interactiveProductController,
     selector = undefined
   ) {
-    const interactiveProduct = controllerBuilder(engine, {
-      options: {product: product},
+    const interactiveProduct = interactiveProductController({
+      options: {product},
     });
 
     const eventsMap = {

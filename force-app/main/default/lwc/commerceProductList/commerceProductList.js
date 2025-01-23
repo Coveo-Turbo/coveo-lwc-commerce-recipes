@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import loadingResults from '@salesforce/label/c.commerce_LoadingResults';
 import {
   registerComponentForInit,
@@ -6,7 +7,7 @@ import {
   getHeadlessBundle,
   getHeadlessBindings
 } from 'c/commerceHeadlessLoader';
-import { AriaLiveRegion } from 'c/commerceUtils';
+import { AriaLiveRegion, ProductUtils } from 'c/commerceUtils';
 import { LightningElement, api, track } from 'lwc';
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
@@ -49,18 +50,14 @@ export default class CommerceProductList extends LightningElement {
   /** @type {ProductListingSummaryState | SearchSummaryState} */
   @track summaryState;
 
-  /** @type {ProductListing} */
-  productListing;
-  /** @type {Search} */
-  search;
+  /** @type {ProductListing | Search} */
+  controller;
   /** @type {Summary<ProductListingSummaryState | SearchSummaryState>} */
   summary;
   /** @type {boolean} */
   showPlaceholder = true;
   /** @type {Function} */
-  unsubscribeProductListing;
-  /** @type {Function} */
-  unsubscribeSearch;
+  unsubscribeController;
   /** @type {Function} */
   unsubscribeSummary;
   /** @type {ProductTemplatesManager} */
@@ -94,22 +91,14 @@ export default class CommerceProductList extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
+    console.log('bindings', JSON.stringify(this.bindings));
 
-    if (this.bindings?.interfaceElement?.type === 'product-listing') {
-      this.productListing = this.headless.buildProductListing(engine);
-      this.summary = this.productListing.summary();
-      this.unsubscribeProductListing = this.productListing.subscribe(() => this.updateState());
-    } else {
-      this.search = this.headless.buildSearch(engine);
-      this.summary = this.search.summary();
-      this.unsubscribeSearch = this.search.subscribe(() => this.updateState());
-    }
-
+    this.controller = this.controllerBuilder(engine);
+    this.summary = this.controller.summary();
+    this.unsubscribeController = this.controller.subscribe(() => this.updateState());
     this.unsubscribeSummary = this.summary.subscribe(() => this.updateState());
 
-    console.log('bindings', this.bindings);
-
-    this.productTemplatesManager = this.headless.buildProductTemplatesManager(engine);
+    this.productTemplatesManager = this.headless.buildProductTemplatesManager();
     this.registerTemplates();
 
   };
@@ -124,15 +113,12 @@ export default class CommerceProductList extends LightningElement {
   }
 
   disconnectedCallback() {
-    this.unsubscribeProductListing?.();
-    this.unsubscribeSearch?.();
+    this.unsubscribeController?.();
+    this.unsubscribeSummary?.();
   }
 
   updateState() {
-    this.state = this.bindings?.interfaceElement?.type === 'product-listing'
-      ? this.productListing?.state
-      : this.search?.state;
-
+    this.state = this.controller?.state;
     this.summaryState = this.summary?.state;
     this.showPlaceholder =
       this.summaryState?.isLoading &&
@@ -148,6 +134,14 @@ export default class CommerceProductList extends LightningElement {
 
   get hasProducts() {
     return this.summaryState?.hasProducts;
+  }
+
+  get isProductListing() {
+    return this.bindings?.interfaceElement?.type === 'product-listing';
+  }
+
+  get controllerBuilder() {
+    return this.isProductListing ? this.headless.buildProductListing : this.headless.buildSearch;
   }
 
   get columnClass() {
@@ -170,10 +164,13 @@ export default class CommerceProductList extends LightningElement {
     return (
       this.state?.products?.map((product) => ({
         ...product,
-        keyProductList: `${responseId}_${product.uniqueId}`,
+        keyProductList: `${responseId}_${product.permanentid}`,
+        interactiveProduct: this.controller.interactiveProduct,
+        // interactiveProductProps: ProductUtils.interactiveProductProps(this.controller, product),
       })) || []
     );
   }
+
   /**
    * Sets the component in the initialization error state.
    */

@@ -4,8 +4,9 @@ import defaultTemplate from './commerceProduct.html';
 
 /** @typedef {import("coveo").Product} Product */
 /** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager */
-/** @typedef {import("coveo").FoldedCollection} FoldedCollection */
-/** @typedef {import("coveo").FoldedResultList} FoldedResultList */
+/** @typedef {import("coveo").InteractiveProduct} InteractiveProduct */
+// /** @typedef {import("coveo").FoldedProductList} FoldedCollection */
+// /** @typedef {import("coveo").FoldedResultList} FoldedResultList */
 
 
 export default class CommerceProduct extends LightningElement {
@@ -22,23 +23,29 @@ export default class CommerceProduct extends LightningElement {
    */
   @api product;
   /**
+   * The interactive product controller
+   * @api
+   * @type {InteractiveProduct}
+   */
+  @api interactiveProduct;
+  /**
    * The template manager from which to get registered custom templates.
    * @api
    * @type {ProductTemplatesManager}
    */
   @api productTemplatesManager;
-  /**
-   * The folded result list controller responsible for executing the actions of the folded collection.
-   * @api
-   * @type {FoldedResultList}
-   */
-  @api foldedResultListController;
-  /**
-   * The folded collection containing the result and its children.
-   * @api
-   * @type {FoldedCollection}
-   */
-  @api collection;
+  // /**
+  //  * The folded result list controller responsible for executing the actions of the folded collection.
+  //  * @api
+  //  * @type {FoldedResultList}
+  //  */
+  // @api foldedResultListController;
+  // /**
+  //  * The folded collection containing the result and its children.
+  //  * @api
+  //  * @type {FoldedCollection}
+  //  */
+  // @api collection;
   /**
    * The id of the template that should be used to display the result.
    * @api
@@ -64,8 +71,22 @@ export default class CommerceProduct extends LightningElement {
     return defaultTemplate;
   }
 
+  handleClick() {
+    // @ts-ignore
+    console.log('Product clicked', this.product, this.linkContainer);
+    this.linkContainer?.click();
+  }
+
   get productThumbnail() {
     return this.product?.ec_thumbnails?.[0];
+  }
+
+  get interactiveProductController() {
+    return this.interactiveProduct;
+  }
+
+  get linkContainer() {
+    return this.template.querySelector('.link-container > c-commerce-product-link a');
   }
 
 }

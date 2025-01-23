@@ -12,13 +12,18 @@
     </template>
     <div class="slds-grid slds-gutters slds-wrap">
       <template for:each={products} for:item="product">
-        <c-commerce-product
-          class="slds-col slds-size_1-of-1 slds-small-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-4"
-          key={product.keyProductList}
-          product={product}
-          product-templates-manager={productTemplatesManager}
-          engine-id={engineId}
-        ></c-commerce-product>
+        <div 
+          key={product.keyProductList} 
+          class="slds-col slds-size_1-of-1 slds-small-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+          <div class="slds-box slds-theme_default slds-text-align_center slds-var-p-vertical_medium slds-var-m-bottom_medium product-item__content">
+            <c-commerce-product
+              product={product}
+              interactive-product={product.interactiveProduct}
+              product-templates-manager={productTemplatesManager}
+              engine-id={engineId}
+            ></c-commerce-product>
+          </div>
+        </div>
       </template>
     </div>
   </template>
