@@ -118,3 +118,20 @@ After you have cloned the repository and have run `npm install`, run the followi
 - [lwc.dev](https://lwc.dev/)
 - [Components reference](https://developer.salesforce.com/docs/component-library/overview/components). Make sure you stay in the "Lightning web components section". Aura does not apply. Aura is the older UI library that is being deprecated by Salesforce.
 - [Lightning design system](https://www.lightningdesignsystem.com/). Reference for styling, CSS utilities, icons, and more.
+
+
+## Encountered Issues
+
+- Community Navigation Menu not visible for guest users 
+https://salesforce.stackexchange.com/questions/330014/community-navigation-menu-item-not-present-for-guest-users
+https://help.salesforce.com/s/articleView?id=experience.rss_tile_menu.htm&type=5
+
+```
+You must add 'read' permission on the 'Documents' object for the guest user profile associated with the site in order for tile menus to display for guest users.
+
+The fix I discovered elsewhere suggests that because tile menus can (or used to) use document pictures, this setting is required.
+
+I just ran into this again today when attempting to use a tile menu to display a menu within a new Experience (LWR) site and was stumped. In my testing even opening all the permissions for navigation items, the tile menus (and only tile menus) would not display to unauthenticated guest users until this permission was opened up.
+```
+
+
