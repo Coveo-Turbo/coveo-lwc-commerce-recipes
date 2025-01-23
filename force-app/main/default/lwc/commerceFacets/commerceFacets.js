@@ -96,12 +96,12 @@ export default class CommerceFacets extends LightningElement {
       this.summaryState?.hasProducts;
   }
 
-  isProductListing() {
+  get isProductListing() {
     return this.bindings?.interfaceElement?.type === 'product-listing';
   }
 
   get controllerBuilder() {
-    return this.isProductListing() ? this.headless.buildProductListing : this.headless.buildSearch;
+    return this.isProductListing ? this.headless.buildProductListing : this.headless.buildSearch;
   }
 
   shouldCollapseFacet(index) {
