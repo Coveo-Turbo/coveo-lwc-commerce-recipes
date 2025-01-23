@@ -8,20 +8,20 @@ Commerce Examples Community : `https://jfallaire-dev-ed.my.site.com/`
 
 ### Home Page with Recommendations
 
-> Not yet ready (WIP)
+![Commerce Examples - Home](example_home.png)
 
 
 ### Product Search Page 
 
-> Not yet ready (WIP)
-
-![alt text](example_search.png)
+![Commerce Examples - Search](example_search.png)
 
 ### Listing Page
 
-> Not yet ready (WIP)
+![Commerce Examples - Listing](example_listing.png)
 
 ## Using the Library
+
+> **⚠ Warning:** Package `0HoKi000000000GKAQ` has not been released yet.
 
 This library is released as an [unlocked package](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_unlocked_pkg_install_pkg.htm). You can install it using the following links:
 
