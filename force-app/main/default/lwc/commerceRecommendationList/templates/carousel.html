@@ -1,0 +1,37 @@
+<template>
+  <template lwc:if={recommendations.length}>
+    <div class="slds-text-heading_medium slds-var-p-bottom_x-small">
+      <c-commerce-heading
+        data-cy="recommendations__label"
+        level={headingLevel}
+        label={label}
+      ></c-commerce-heading>
+    </div>
+    <c-commerce-carousel
+      label={label}
+      data-cy="recommendations__carousel"
+      items-per-page={productsPerPage}
+    >
+      <template for:each={recommendations} for:item="recommendation">
+        <div
+          slot="carousel-item"
+          data-cy="recommendations__item"
+          key={recommendation.permanentId}
+          class={recommendation.class}
+          role="group"
+          aria-roledescription={labels.slide}
+          aria-label={recommendation.label}
+        >
+          <div class="slds-box slds-box_small recommendation-item__content">
+            <c-commerce-product
+              product={recommendation}
+              interactive-product={recommendation.interactiveRec}
+              product-templates-manager={productTemplatesManager}
+              engine-id={engineId}
+            ></c-commerce-product>
+          </div>
+        </div>
+      </template>
+    </c-commerce-carousel>
+  </template>
+</template>

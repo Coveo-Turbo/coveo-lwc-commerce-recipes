@@ -1,0 +1,40 @@
+<template>
+
+    <c-commerce-recommendation-interface
+        engine-id={engineId}
+        tracking-id={trackingId}
+        commerce-url={commerceUrl}
+        language={language}
+        country={country}
+        currency={currency}
+      >
+      <c-commerce-recommendation-list 
+        engine-id={engineId}
+        slot-id='af4fb7ba-6641-4b67-9cf9-be67e9f30174'
+        label='Customers often buy'
+        products-per-page='4'
+        heading-level='2'
+        variant="carousel"
+      >
+      </c-commerce-recommendation-list>
+    </c-commerce-recommendation-interface>
+
+    <c-commerce-recommendation-interface
+        engine-id={engineId}
+        tracking-id={trackingId}
+        commerce-url={commerceUrl}
+        language={language}
+        country={country}
+        currency={currency}
+      >
+      <c-commerce-recommendation-list 
+        engine-id={engineId}
+        slot-id='d73afbd2-8521-4ee6-a9b8-31f064721e73'
+        label='You might be interested in'
+        products-per-page='4'
+        heading-level='2'
+        variant="carousel"
+      >
+      </c-commerce-recommendation-list>
+    </c-commerce-recommendation-interface>
+</template>
