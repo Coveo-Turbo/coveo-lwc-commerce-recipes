@@ -1,0 +1,34 @@
+<template>
+    <div class="slds-grid slds-grid_vertical-align-center">
+      <template if:true={error}>
+        <div class="error-message slds-text-color_destructive">{error}</div>
+      </template>
+      <template if:true={isValid}>
+        <div class="slds-is-relative product-rating__stars-container">
+          <div class="slds-grid product-rating__inactive-stars">
+            <template for:each={emptyIconsToDisplay} for:item="star">
+              <lightning-icon
+                key={star.key}
+                icon-name="utility:favorite_alt"
+                size="xx-small"
+                class="product-rating__icon-inactive"
+              ></lightning-icon>
+            </template>
+          </div>
+          <div class="slds-scrollable_none slds-is-absolute slds-grid product-rating__active-stars" style={activeStarsStyle}>
+            <template for:each={emptyIconsToDisplay} for:item="star">
+              <lightning-icon
+                key={star.key}
+                icon-name="utility:favorite"
+                size="xx-small"
+                class="product-rating__icon-active"
+              ></lightning-icon>
+            </template>
+          </div>
+        </div>
+        <template if:true={ratingDetails}>
+          <span class="product-text__rating-details slds-m-right_xx-small">{ratingDetails}</span>
+        </template>
+      </template>
+    </div>
+  </template>

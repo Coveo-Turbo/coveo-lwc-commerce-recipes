@@ -1,0 +1,28 @@
+:host {
+    --product-rating__icon-active-color: #f6ce3c;
+}
+.product-text__label {
+    font-weight: var(--lwc-fontWeightBold, 700);
+}
+
+.product-rating__stars-container {
+    width: max-content;
+}
+
+.product-rating__inactive-stars {
+    z-index: 0;
+    gap: 0.125rem;
+}
+
+.product-rating__active-stars {
+    z-index: 1;
+    gap: 0.125rem;
+    left: 0; 
+    top: 0;
+}
+
+.product-rating__icon-active {
+    --slds-c-icon-color-foreground-default: var(--product-rating__icon-active-color, #f6ce3c);
+    --sds-c-icon-color-foreground: var(--product-rating__icon-active-color, #f6ce3c);
+    --slds-c-icon-color-foreground: var(--product-rating__icon-active-color, #f6ce3c);
+}

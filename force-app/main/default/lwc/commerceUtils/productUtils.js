@@ -39,3 +39,19 @@ export const defaultCurrencyFormatter = (currency) => (value, languages) => {
     currency,
   });
 };
+
+/**
+* @param {unknown} value,
+* @param {string} field
+* @return {number|null}
+*/
+export const computeNumberOfStars = (value, field) => {
+  if (value === null) {
+    return null;
+  }
+  const valueAsNumber = parseFloat(`${value}`);
+  if (Number.isNaN(valueAsNumber)) {
+    throw new FieldValueIsNaNError(field, value);
+  }
+  return valueAsNumber;
+};
