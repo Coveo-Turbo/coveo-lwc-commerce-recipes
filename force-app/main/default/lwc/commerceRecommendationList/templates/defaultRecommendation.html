@@ -9,14 +9,14 @@
    <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
      <img loading="lazy" src={productThumbnail}></img>
    </div>
-   <div slot="name" class="slds-truncate">
+   <div slot="name" class="slds-truncate slds-text-align_left">
     <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
    </div>
-   <div slot="description" class="slds-line-clamp">
+   <div slot="description" class="slds-line-clamp slds-text-align_left slds-var-m-top_x-small">
      {product.ec_description}
    </div>
-   <div slot="emphasized" class="slds-text-heading_large slds-var-m-top_x-small">
-     <c-commerce-product-price engine-id={engineId} product={product}></c-commerce-product-price>
+   <div slot="emphasized" class="slds-var-m-top_x-small">
+     <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_large"></c-commerce-product-price>
    </div>
    <!-- <div slot="bottom-metadata" class="slds-var-m-top_x-small">
      bottom metadata
