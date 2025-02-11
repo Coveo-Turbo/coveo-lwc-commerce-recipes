@@ -21,6 +21,6 @@
 }
 
 .children-label {
-  color:#626971;
+  color:var(--slds-g-color-palette-neutral-50);
   font-weight: 600;
 }
