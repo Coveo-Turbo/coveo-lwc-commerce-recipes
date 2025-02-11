@@ -24,3 +24,7 @@
   color:var(--slds-g-color-palette-neutral-50);
   font-weight: 600;
 }
+
+.children-container-empty {
+  min-height: 2.5rem;
+}

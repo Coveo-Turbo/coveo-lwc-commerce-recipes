@@ -1,7 +1,7 @@
 <template>
-  <template if:true={hasChildren}>
+  <template lwc:if={hasChildren}>
     <div class="children-label slds-text-align_left">{childrenLabel}</div>
-    <div class="children-container slds-grid slds-wrap">
+    <div class="children-container slds-grid slds-wrap slds-media_center">
       <template for:each={children} for:item="child">
         <div key={child.permanentId} class={cssChildrenGrid}>
           <button if:false={child.isLastChild}
@@ -28,5 +28,9 @@
         </div>
       </template>
     </div>
+  </template>
+  <template lwc:else>
+    <div class="children-label slds-text-align_left">&ZeroWidthSpace;</div>
+    <div class="slds-media_center children-container children-container-empty slds-grid slds-wrap">&ZeroWidthSpace;</div>
   </template>
 </template>
