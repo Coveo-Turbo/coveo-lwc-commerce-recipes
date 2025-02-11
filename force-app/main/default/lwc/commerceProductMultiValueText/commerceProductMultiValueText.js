@@ -1,9 +1,6 @@
 import nMore from '@salesforce/label/c.commerce_NMore';
 import {
-  getBueno,
-  registerComponentForInit,
-  initializeWithHeadless,
-  getHeadlessBundle,
+  getBueno
 } from 'c/commerceHeadlessLoader';
 import {I18nUtils} from 'c/commerceUtils';
 import {LightningElement, api} from 'lwc';
@@ -13,21 +10,15 @@ import {LightningElement, api} from 'lwc';
 /**
  * The `CommerceProductMultiValueText` component displays a given result multi-value field value.
  * Make sure the field specified in this component is also included in the field array for the relevant template. See the this example: [Quantic usage](https://docs.coveo.com/en/quantic/latest/usage/#javascript).
- * @category Result Template
+ * @category Product Template
  * @example
- * <template if:true={result.raw.language}>
- *   <c-quantic-result-multi-value-text result={result} label="Languages" field="language" max-values-to-display="4"></c-quantic-result-multi-value-text>
+ * <template if:true={product.additionalFields.language}>
+ *   <c-commerce-product-multi-value-text product={product} label="Languages" field="language" max-values-to-display="4"></c-commerce-product-multi-value-text>
  * </template>
  */
 export default class CommerceProductMultiValueText extends LightningElement {
   /**
-   * The ID of the engine instance the component registers to.
-   * @api
-   * @type {string}
-   */
-  @api engineId;
-  /**
-   * The [result item](https://docs.coveo.com/en/headless/latest/reference/search/controllers/result-list/#result) to use.
+   * The [product item](https://docs.coveo.com/en/headless/latest/reference/commerce/controllers/product-listing/#product).
    * @api
    * @type {Product}
    */
@@ -65,11 +56,7 @@ export default class CommerceProductMultiValueText extends LightningElement {
   /** @type {string} */
   joinSeparator = ', ';
   /** @type {boolean} */
-  isInitialized = false;
-  /** @type {boolean} */
   validated = false;
-  /** @type {CoveoHeadlessCommerce} */
-  headless;
 
   labels = {
     nMore,
@@ -77,17 +64,7 @@ export default class CommerceProductMultiValueText extends LightningElement {
 
   connectedCallback() {
     this.validateProps();
-    registerComponentForInit(this, this.engineId);
   }
-
-  renderedCallback() {
-    initializeWithHeadless(this, this.engineId, this.initialize);
-  }
-
-  initialize = () => {
-    this.headless = getHeadlessBundle(this.engineId);
-    this.isInitialized = true;
-  };
 
   validateProps() {
     getBueno(this).then(() => {
@@ -103,7 +80,7 @@ export default class CommerceProductMultiValueText extends LightningElement {
         console.error(`The "${this.label}" label is not a valid string.`);
         this.setError();
       }
-      if (!this.fieldValue && this.isInitialized) {
+      if (!this.fieldValue) {
         console.error(
           `Could not parse value from field "${this.field}" as a string array.`
         );
@@ -125,10 +102,6 @@ export default class CommerceProductMultiValueText extends LightningElement {
     return this.validated && !this.error;
   }
 
-  get shouldDisplayFieldValue() {
-    return this.isValid && this.isInitialized;
-  }
-
   /**
    * The value of the given result field.
    * @returns {string[]}
@@ -138,11 +111,8 @@ export default class CommerceProductMultiValueText extends LightningElement {
       return undefined;
     }
 
-    if( !this.isInitialized ) {
-      return undefined;
-    }
-
-    const value = this.headless.ProductTemplatesHelpers.getProductProperty(
+    // eslint-disable-next-line no-undef
+    const value = CoveoHeadlessCommerce.ProductTemplatesHelpers.getProductProperty(
       this.product,
       this.field
     );

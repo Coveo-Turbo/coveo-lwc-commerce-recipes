@@ -25,7 +25,7 @@ export default class CommerceProductHighlightedTextField extends LightningElemen
    */
   @api engineId;
   /**
-   * The [result item](https://docs.coveo.com/en/headless/latest/reference/search/controllers/result-list/#result) to use.
+   * The [product item](https://docs.coveo.com/en/headless/latest/reference/commerce/controllers/product-listing/#product).
    * @api
    * @type {Product}
    */

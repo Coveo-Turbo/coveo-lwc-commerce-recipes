@@ -15,8 +15,9 @@
       <div slot="description" class="slds-line-clamp slds-text-align_left slds-var-m-top_x-small">
         {product.ec_description}
       </div>
-      <div slot="metadata" class="slds-var-m-top_x-small">
-        <c-commerce-product-multi-value-text engine-id={engineId} product={product} field="cat_available_sizes"></c-commerce-product-multi-value-text>
+      <div slot="metadata" class="slds-var-m-top_x-small slds-text-body_small">
+        <c-commerce-product-text product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
+        <c-commerce-product-multi-value-text product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
       </div>
       <div slot="emphasized" class="slds-var-m-top_x-small">
         <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_large"></c-commerce-product-price>
