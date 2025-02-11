@@ -15,12 +15,12 @@
       <div slot="description" class="slds-line-clamp slds-text-align_left slds-var-m-top_x-small">
         {product.ec_description}
       </div>
+      <div slot="metadata" class="slds-var-m-top_x-small">
+        <c-commerce-product-multi-value-text engine-id={engineId} product={product} field="cat_available_sizes"></c-commerce-product-multi-value-text>
+      </div>
       <div slot="emphasized" class="slds-var-m-top_x-small">
         <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_large"></c-commerce-product-price>
       </div>
-      <!-- <div slot="bottom-metadata" class="slds-var-m-top_x-small">
-        bottom metadata
-      </div> -->
       <div slot="children" class="slds-var-m-top_x-small">
         <c-commerce-product-children product={product} engine-id={engineId}></c-commerce-product-children>
       </div>
