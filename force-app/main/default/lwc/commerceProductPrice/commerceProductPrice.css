@@ -1,0 +1,7 @@
+.product-price-original{
+  text-decoration-line: line-through;
+}
+
+.product-price {
+  word-break: keep-all;
+}

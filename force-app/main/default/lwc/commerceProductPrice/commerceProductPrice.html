@@ -1,0 +1,20 @@
+<template>
+  <template lwc:if={error}>
+    <div class="error-message slds-text-color_destructive">{error}</div>
+  </template>
+  <template lwc:if={shouldDisplayPrice}>
+    <div class="slds-grid slds-wrap slds-m-around_xx-small">
+      <div class={cssMainPrice}>
+        {mainPrice}
+      </div>
+      <template lwc:if={originalPrice}>
+        <div class={cssOriginalPrice}>{originalPrice}</div>
+      </template>
+      <template lwc:else>
+        <div class={cssOriginalPrice}>&ZeroWidthSpace;</div>
+      </template>
+      
+    </div>
+  </template>
+
+</template>

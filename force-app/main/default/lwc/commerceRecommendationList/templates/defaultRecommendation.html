@@ -15,9 +15,12 @@
    <div slot="description" class="slds-line-clamp">
      {product.ec_description}
    </div>
-   <div slot="bottom-metadata" class="slds-var-m-top_x-small">
-     bottom metadata
+   <div slot="emphasized" class="slds-text-heading_large slds-var-m-top_x-small">
+     <c-commerce-product-price engine-id={engineId} product={product}></c-commerce-product-price>
    </div>
+   <!-- <div slot="bottom-metadata" class="slds-var-m-top_x-small">
+     bottom metadata
+   </div> -->
    <div slot="children" class="slds-var-m-top_x-small">
      <c-commerce-product-children product={product} engine-id={engineId}></c-commerce-product-children>
    </div>

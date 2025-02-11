@@ -35,6 +35,7 @@ import pastYear_plural from '@salesforce/label/c.commerce_PastYear_plural';
 export * from './recentQueriesUtils';
 export * from './facetDependenciesUtils';
 export * from './facetUtils';
+export * from './productUtils';
 
 
 export function filterProtocol(uri) {
