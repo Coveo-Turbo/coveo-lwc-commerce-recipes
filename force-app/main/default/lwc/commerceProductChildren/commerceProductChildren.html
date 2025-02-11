@@ -1,0 +1,32 @@
+<template>
+  <template if:true={hasChildren}>
+    <div class="children-label slds-text-align_left">{childrenLabel}</div>
+    <div class="children-container slds-grid slds-wrap">
+      <template for:each={children} for:item="child">
+        <div key={child.permanentId} class={cssChildrenGrid}>
+          <button if:false={child.isLastChild}
+            title={child.productName} 
+            class={child.cssClass}
+            onkeypress={onKeyPress}
+            onmouseenter={onMouseEnter}
+            ontouchstart={onTouchStart}
+            data-child-id={child.permanentid}
+            >
+            <img
+              src={child.imageUrl}
+              alt={child.productName}
+              class="slds-p-around_xx-small"
+              loading="lazy"
+            />
+          </button>
+          <button if:true={child.isLastChild}
+            title={child.productName} 
+            class="slds-button slds-button_neutral slds-p-horizontal_x-small product-child plus-button"
+            >
+            +{child.remainingChildren}
+          </button>
+        </div>
+      </template>
+    </div>
+  </template>
+</template>

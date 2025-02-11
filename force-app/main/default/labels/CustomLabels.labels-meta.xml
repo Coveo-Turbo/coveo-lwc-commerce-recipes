@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
   <labels>
+    <fullName>commerce_AvailableIn</fullName>
+    <value>Available in</value>
+    <language>en_US</language>
+    <protected>false</protected>
+    <shortDescription>Available in</shortDescription>
+  </labels>
+  <labels>
     <fullName>commerce_ShowingResultsOf</fullName>
     <value>Result {{0}} of {{1}}</value>
     <language>en_US</language>

@@ -153,6 +153,8 @@ export default class CommerceRecommendationList extends LightningElement {
   connectedCallback() {
     registerComponentForInit(this, this.engineId);
     this.setRecommendationWidth();
+
+    this.addEventListener('commerce__selectchildproduct', this.onSelectChildProduct.bind(this));
   }
 
   renderedCallback() {
@@ -198,6 +200,8 @@ export default class CommerceRecommendationList extends LightningElement {
 
   disconnectedCallback() {
     this.unsubscribe?.();
+
+    this.removeEventListener('commerce__selectchildproduct', this.onSelectChildProduct.bind(this));
   }
 
   updateState() {
@@ -298,5 +302,12 @@ export default class CommerceRecommendationList extends LightningElement {
       return carouselLayout;
     }
     return gridLayout;
+  }
+
+  onSelectChildProduct(event) {
+    event.stopPropagation();
+    const { child } = event.detail.selectedChild;
+
+    this.recommendationList?.promoteChildToParent(child);
   }
 }

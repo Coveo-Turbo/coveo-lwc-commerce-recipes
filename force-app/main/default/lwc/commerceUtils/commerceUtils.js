@@ -36,6 +36,14 @@ export * from './recentQueriesUtils';
 export * from './facetDependenciesUtils';
 export * from './facetUtils';
 
+
+export function filterProtocol(uri) {
+  const isAbsolute = /^(https?|ftp|file|mailto|tel|sip):/i.test(uri);
+  const isRelative = /^\//.test(uri);
+
+  return isAbsolute || isRelative ? uri : '';
+}
+
 export class Debouncer {
   _timeout;
 

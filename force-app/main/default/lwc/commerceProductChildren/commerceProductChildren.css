@@ -1,0 +1,21 @@
+.children-container .product-child img {
+  aspect-ratio: 1/1;
+}
+
+.children-container .product-child {
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
+.product-child.active,
+.product-child.active:hover,
+.product-child.active:focus {
+  --slds-c-button-color-background: transparent;
+  --slds-c-button-color-background-hover: transparent;
+  --slds-c-button-outline-brand-color-background: transparent;
+  --slds-c-button-outline-brand-color-background-hover: transparent;
+}
+
+.product-child.plus-button {
+  border:none;
+}

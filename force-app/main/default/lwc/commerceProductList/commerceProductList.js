@@ -7,7 +7,7 @@ import {
   getHeadlessBundle,
   getHeadlessBindings
 } from 'c/commerceHeadlessLoader';
-import { AriaLiveRegion, ProductUtils } from 'c/commerceUtils';
+import { AriaLiveRegion } from 'c/commerceUtils';
 import { LightningElement, api, track } from 'lwc';
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
@@ -77,6 +77,8 @@ export default class CommerceProductList extends LightningElement {
 
   connectedCallback() {
     registerComponentForInit(this, this.engineId);
+
+    this.addEventListener('commerce__selectchildproduct', this.onSelectChildProduct.bind(this));
   }
 
   renderedCallback() {
@@ -115,6 +117,8 @@ export default class CommerceProductList extends LightningElement {
   disconnectedCallback() {
     this.unsubscribeController?.();
     this.unsubscribeSummary?.();
+
+    this.removeEventListener('commerce__selectchildproduct', this.onSelectChildProduct.bind(this));
   }
 
   updateState() {
@@ -176,5 +180,13 @@ export default class CommerceProductList extends LightningElement {
    */
   setInitializationError() {
     this.hasInitializationError = true;
+  }
+
+
+  onSelectChildProduct(event) {
+    event.stopPropagation();
+    const { child } = event.detail.selectedChild;
+    
+    this.controller?.promoteChildToParent(child);
   }
 }

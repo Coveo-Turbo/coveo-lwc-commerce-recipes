@@ -18,6 +18,9 @@
       <div slot="bottom-metadata" class="slds-var-m-top_x-small">
         bottom metadata
       </div>
+      <div slot="children" class="slds-var-m-top_x-small">
+        <c-commerce-product-children product={product} engine-id={engineId}></c-commerce-product-children>
+      </div>
     </c-commerce-product-template>
     <div class="slds-hide link-container">
       <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
