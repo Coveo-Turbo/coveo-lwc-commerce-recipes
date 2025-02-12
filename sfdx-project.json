@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "versionName": "Version 1.0",
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.0.1.NEXT",
       "path": "force-app/main",
       "default": true,
       "package": "coveo-lwc-commerce-recipes",

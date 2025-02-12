@@ -21,18 +21,16 @@ Commerce Examples Community : `https://jfallaire-dev-ed.my.site.com/`
 
 ## Using the Library
 
-> **⚠ Warning:** Package `0HoKi000000000GKAQ` has not been released yet.
-
 This library is released as an [unlocked package](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_unlocked_pkg_install_pkg.htm). You can install it using the following links:
 
-* [Install coveo-lwc-commerce-recipes in a production environment]().
+* [Install coveo-lwc-commerce-recipes in a production environment](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKi0000004eZoIAI).
 
-* [Install coveo-lwc-commerce-recipes in a sandbox environment]().
+* [Install coveo-lwc-commerce-recipes in a sandbox environment](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKi0000004eZoIAI).
 
 You can also install coveo-lwc-commerce-recipes with the Salesforce CLI package install command:
 
 ```
-sf package install --package 0HoKi000000000GKAQ --target-org <USER_NAME>
+sf package install --package 04tKi0000004eZoIAI --target-org <USER_NAME>
 ```
 
 where you replace `<USER_NAME>` with your username in the target Salesforce organization.
@@ -40,7 +38,7 @@ where you replace `<USER_NAME>` with your username in the target Salesforce orga
 > Note: 
 > You should always keep your Apex code clean and compiled. However, if you only want to compile the package Apex code during the installation, use the --apex-compile package option.
 >```
-> sf package install --apex-compile package --package 0HoKi000000000GKAQ --target-org <USER_NAME>
+> sf package install --apex-compile package --package 04tKi0000004eZoIAI --target-org <USER_NAME>
 > ```
 
 
