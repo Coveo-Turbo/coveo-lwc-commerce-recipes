@@ -1,0 +1,21 @@
+<template>
+<c-commerce-product-template variant='compact' onclick={handleClick}>
+  <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
+    <img loading="lazy" src={productThumbnail}></img>
+  </div>
+  <div slot="name" class="slds-truncate slds-text-align_left">
+   <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
+  </div>
+  <div slot="metadata" class="slds-var-m-top_x-small slds-text-body_small">
+    <c-commerce-product-text product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
+    <c-commerce-product-multi-value-text product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
+    <c-commerce-product-rating product={product} class="slds-grid"></c-commerce-product-rating>
+  </div>
+  <div slot="emphasized" class="slds-var-m-top_x-small">
+    <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_medium"></c-commerce-product-price>
+  </div>
+</c-commerce-product-template>
+<div class="slds-hide link-container">
+  <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
+</div>   
+</template>

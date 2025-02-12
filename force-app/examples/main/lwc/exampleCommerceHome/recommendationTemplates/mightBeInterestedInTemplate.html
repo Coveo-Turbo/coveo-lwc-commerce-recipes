@@ -1,0 +1,13 @@
+<template>
+<c-commerce-product-template variant='compact' onclick={handleClick}>
+  <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
+    <img loading="lazy" src={productThumbnail}></img>
+  </div>
+  <div slot="name" class="slds-truncate slds-text-align_left">
+   <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
+  </div>
+</c-commerce-product-template>
+<div class="slds-hide link-container">
+  <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
+</div>   
+</template>

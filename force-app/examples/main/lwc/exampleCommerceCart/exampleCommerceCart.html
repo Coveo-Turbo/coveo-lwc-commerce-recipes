@@ -1,0 +1,121 @@
+<template>
+  <div 
+      class="slds-m-around_medium"
+      oncommerce__registerrecommendationtemplates={handleRecommendationTemplateRegistration}
+    >
+    <c-commerce-recommendation-interface
+        engine-id={engineId}
+        tracking-id={trackingId}
+        commerce-url={commerceUrl}
+        language={language}
+        country={country}
+        currency={currency}
+      >
+      <c-commerce-recommendation-list 
+        engine-id={engineId}
+        slot-id='d8118c04-ff59-4f03-baca-2fc5f3b81221'
+        label='You may also need'
+        products-per-page='4'
+        heading-level='2'
+        variant="carousel"
+      >
+      </c-commerce-recommendation-list>
+    </c-commerce-recommendation-interface>
+    
+    <h2 class="slds-text-heading_medium slds-m-bottom_medium">Your Cart ({cartItems.length} items)</h2>
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={augmentedCartItems} for:item="item">
+                <tr key={item.id}>
+                    <td>
+                        <img src={item.image} class="slds-avatar slds-avatar_medium slds-m-right_small" />
+                        <strong>{item.name}</strong>
+                        <p class="slds-text-color_weak">{item.details}</p>
+                        <p class="slds-text-color_success">{item.estimatedShipDate}</p>
+                    </td>
+                    <td>${item.price}</td>
+                    <td>
+                      <div class="slds-grid slds-media_center">
+                        <lightning-button-icon
+                          icon-name="utility:ban"
+                          variant="bare"
+                          alternative-text="Decrease"
+                          title="Decrease"
+                          data-id={item.id} 
+                          data-action="decrease" 
+                          onclick={handleQuantityChange}>
+                        </lightning-button-icon>
+                        <!-- <button 
+                          class="slds-button slds-button_icon slds-button_icon-small"
+                          data-id={item.id} 
+                          data-action="decrease" 
+                          onclick={handleQuantityChange}>
+                          <lightning-icon
+                            icon-name="utility:ban"
+                            size="xx-small"
+                            alternative-text="Decrease"
+                            title="Decrease"
+                          ></lightning-icon>
+                        </button> -->
+                        <input type="number" value={item.quantity} class="slds-input slds-input_counter" placeholder="1" readonly />
+                        <lightning-button-icon
+                          icon-name="utility:new"
+                          variant="bare"
+                          alternative-text="Increase"
+                          title="Increase"
+                          data-id={item.id} 
+                          data-action="increase" 
+                          onclick={handleQuantityChange}>
+                        </lightning-button-icon>
+                        <!-- <button 
+                          class="slds-button slds-button_icon slds-button_icon-small"
+                          data-id={item.id} 
+                          data-action="increase" 
+                          onclick={handleQuantityChange}>
+                          <lightning-icon
+                            icon-name="utility:new"
+                            size="xx-small"
+                            alternative-text="Increase"
+                            title="Increase"
+                          ></lightning-icon>
+                        </button> -->
+                      </div>
+                      
+                      <!-- <div class="slds-form-element">
+                        <label class="slds-form-element__label slds-m-right_none" for="default1">Counter Label</label>
+                        <div class="slds-form-element__control">
+                          
+                        </div>
+                      </div> -->
+                    </td>
+                    <td>${item.total}</td>
+                    <td>
+                        <!-- <button data-id={item.id} onclick={handleRemove} class="slds-button slds-button_icon slds-button_icon-border">🗙</button> -->
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+
+    <div class="slds-m-top_large slds-grid slds-grid_align-end">
+        <div>
+            <p>Subtotal: ${subtotalToDisplay}</p>
+            <p>Sales Tax: ${salesTaxToDisplay}</p>
+            <p>
+                Coupon Code: <input type="text" value={couponCode} class="slds-input slds-m-horizontal_small" />
+            </p>
+            <h2 class="slds-text-heading_large">Grand total: ${grandTotalToDisplay}</h2>
+            <button class="slds-button slds-button_brand slds-m-top_medium">Check Out</button>
+        </div>
+    </div>
+  </div>
+</template>

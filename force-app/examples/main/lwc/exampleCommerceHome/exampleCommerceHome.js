@@ -1,5 +1,8 @@
 import { LightningElement, api } from 'lwc';
-
+// @ts-ignore
+import customersOftenBuyTemplate from './recommendationTemplates/customersOftenBuyTemplate.html';
+// @ts-ignore
+import mightBeInterestedInTemplate from './recommendationTemplates/mightBeInterestedInTemplate.html';
 export default class ExampleCommerceHome extends LightningElement {
   /** @type {string} */
   @api engineId = 'example-commerce-recommendation-engine';
@@ -14,4 +17,31 @@ export default class ExampleCommerceHome extends LightningElement {
   /** @type {string} */
   @api commerceUrl = 'https://sports.barca.group';
 
+  handleCustomersOftenBuyTemplateRegistration(event) {
+    event.stopPropagation();
+
+    const productTemplatesManager = event.detail;
+
+    productTemplatesManager.registerTemplates(
+      {
+        content: customersOftenBuyTemplate,
+        conditions: [],
+        priority: 1
+      }
+    );
+  }
+
+  handleMightBeInterestedInTemplateRegistration(event) {
+    event.stopPropagation();
+
+    const productTemplatesManager = event.detail;
+
+    productTemplatesManager.registerTemplates(
+      {
+        content: mightBeInterestedInTemplate,
+        conditions: [],
+        priority: 1
+      }
+    );
+  }
 }
