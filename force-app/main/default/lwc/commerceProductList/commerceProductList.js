@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import loadingResults from '@salesforce/label/c.commerce_LoadingResults';
 import {
   registerComponentForInit,
@@ -64,7 +63,7 @@ export default class CommerceProductList extends LightningElement {
   productTemplatesManager;
   /** @type {CoveoHeadlessCommerce} */
   headless;
-  /** @type {bindings} */
+  /** @type {Bindings} */
   bindings;
   /** @type {import('c/commerceUtils').AriaLiveUtils} */
   loadingAriaLiveMessage;
@@ -92,8 +91,6 @@ export default class CommerceProductList extends LightningElement {
     this.loadingAriaLiveMessage = AriaLiveRegion('loading', this);
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
-
-    console.log('bindings', JSON.stringify(this.bindings));
 
     this.controller = this.controllerBuilder(engine);
     this.summary = this.controller.summary();
@@ -133,7 +130,7 @@ export default class CommerceProductList extends LightningElement {
     if (this.showPlaceholder) {
       this.loadingAriaLiveMessage.dispatchMessage(this.labels.loadingResults);
     }
-    console.log('updateState', this.state, this.summary);
+    // console.log('updateState', this.state, this.summary);
   }
 
   get hasProducts() {
