@@ -43,6 +43,82 @@
           "definition" : "community_layout:section",
           "id" : "28971e5e-57b7-4232-8da9-19e5dd095681",
           "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "920px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"c101c77d-dbeb-459d-8677-8dbc351b9bdc\",\"columns\":[{\"UUID\":\"eeafffb7-f81d-4098-8bf3-c020464a4ba1\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/commerce-search",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "numberOfSuggestions" : 5,
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "0a5978a8-baa4-4135-a306-30de2c840806",
+              "type" : "component"
+            } ],
+            "id" : "eeafffb7-f81d-4098-8bf3-c020464a4ba1",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "c101c77d-dbeb-459d-8677-8dbc351b9bdc",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "1440px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"10ec932f-0e25-42ce-a34a-be4db8411bed\",\"columns\":[{\"UUID\":\"331092d2-dcd7-49d3-9999-aa89ff91dd02\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/cart",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "trackingId" : "sports-ui-samples"
+              },
+              "definition" : "c:exampleCommerceCart",
+              "id" : "465c8d35-290a-42a8-a1c5-9109d163a9aa",
+              "type" : "component"
+            } ],
+            "id" : "331092d2-dcd7-49d3-9999-aa89ff91dd02",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "10ec932f-0e25-42ce-a34a-be4db8411bed",
+          "type" : "component"
         } ],
         "id" : "99588f63-ebaf-450a-a3b3-704481037295",
         "name" : "content",

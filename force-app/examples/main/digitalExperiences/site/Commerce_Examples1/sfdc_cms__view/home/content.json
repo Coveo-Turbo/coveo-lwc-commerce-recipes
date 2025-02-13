@@ -92,7 +92,7 @@
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
             "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
+            "maxContentWidth" : "1440px",
             "sectionColumnGutterWidth" : "",
             "sectionConfig" : "{\"UUID\":\"c5c7ff0b-53e0-4d07-a1e1-d8819dbd43b0\",\"columns\":[{\"UUID\":\"c19b1826-32e0-40bf-94ef-fa5c5a206e7a\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
             "sectionMinHeight" : "",
