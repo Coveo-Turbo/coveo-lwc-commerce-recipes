@@ -10,5 +10,10 @@
         "node": true
       }
     }
-  ]
+  ],
+  "globals": {
+    "CoveoHeadlessCommerce": "readonly",
+    "Bindings": "readonly",
+    "Bueno": "readonly"
+  }
 }

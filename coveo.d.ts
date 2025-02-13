@@ -19,6 +19,7 @@ interface Bindings {
 declare global {
   const Bueno: typeof BuenoTypes;
   const CoveoHeadlessCommerce: typeof HeadlessCommerceTypes;
+  const Bindings: Bindings;
 
   interface Window {
     coveoHeadless: {
