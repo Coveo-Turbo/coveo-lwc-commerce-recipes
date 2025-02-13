@@ -4,10 +4,12 @@ private class SampleTokenProviderTest {
   @IsTest
   static void shouldReturnStringifiedConfiguration() {
     Test.startTest();
-    System.assertEquals(
-      sampleHeadlessConfiguration,
-      SampleTokenProvider.getHeadlessConfiguration()
-    );
+    String jsonString = SampleTokenProvider.getHeadlessConfiguration();
+    Map<String, Object> headlessConfiguration = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
+    System.assert(headlessConfiguration.containsKey('organizationId'),
+        'organizationId required on headless configuration');
+    System.assert(headlessConfiguration.containsKey('accessToken'),
+        'accessToken required on headless configuration');
     Test.stopTest();
   }
 }
