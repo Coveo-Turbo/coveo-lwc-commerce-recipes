@@ -7,9 +7,9 @@
    <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
   </div>
   <div slot="metadata" class="slds-var-m-top_x-small slds-text-body_small">
-    <c-commerce-product-text product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
-    <c-commerce-product-multi-value-text product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
-    <c-commerce-product-rating product={product} class="slds-grid"></c-commerce-product-rating>
+    <c-commerce-product-text lwc:if={product.ec_brand} product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
+    <c-commerce-product-multi-value-text lwc:if={product.additionalFields.cat_available_sizes} product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
+    <c-commerce-product-rating lwc:if={product.ec_rating} product={product} class="slds-grid"></c-commerce-product-rating>
   </div>
   <div slot="emphasized" class="slds-var-m-top_x-small">
     <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_medium"></c-commerce-product-price>
