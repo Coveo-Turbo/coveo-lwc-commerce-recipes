@@ -77,6 +77,13 @@ export default class CommerceInterface extends LightningElement {
    */
   @api disableStateInUrl = false;
   /**
+   * Whether not to perform a search once the interface and its components are initialized.
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api skipFirstSearch = false;
+  /**
    * The type of the interface.
    * - 'search': Indicates that the interface is used for Search.
    * - 'product-listing': Indicates that the interface is used for Product listing.
@@ -177,23 +184,25 @@ export default class CommerceInterface extends LightningElement {
     // @ts-ignore
     if (this.type === 'search') {
 
-      const redirectData = window.localStorage.getItem(
-        STANDALONE_SEARCH_BOX_STORAGE_KEY
-      );
+      if (!this.skipFirstSearch) {
 
-      if (!redirectData) {
+        const redirectData = window.localStorage.getItem(
+          STANDALONE_SEARCH_BOX_STORAGE_KEY
+        );
+
+        if (!redirectData) {
+          // @ts-ignore
+          this.searchOrListing.executeFirstSearch();
+          return 
+        }
+
+        window.localStorage.removeItem(STANDALONE_SEARCH_BOX_STORAGE_KEY);
+        const {value} = JSON.parse(redirectData);
+
+        engine.dispatch(CoveoHeadlessCommerce.loadQueryActions(engine).updateQuery({query: value}));
         // @ts-ignore
         this.searchOrListing.executeFirstSearch();
-        return 
       }
-
-      window.localStorage.removeItem(STANDALONE_SEARCH_BOX_STORAGE_KEY);
-      const {value} = JSON.parse(redirectData);
-
-      engine.dispatch(
-        CoveoHeadlessCommerce.loadQueryActions(engine).updateQuery({query: value}));
-      // @ts-ignore
-      this.searchOrListing.executeFirstSearch();
     } else {
       // @ts-ignore
       this.searchOrListing.executeFirstRequest();
