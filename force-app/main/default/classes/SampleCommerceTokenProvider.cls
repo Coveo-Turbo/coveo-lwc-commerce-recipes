@@ -1,9 +1,9 @@
 /**
  * Return a static sample configuration with pre-configured value for the sample organization.
  */
-global with sharing class SampleTokenProvider implements ITokenProvider {
+global with sharing class SampleCommerceTokenProvider implements ICommerceTokenProvider {
   /**
-   * @see `ITokenProvider.getHeadlessConfiguration`.
+   * @see `ICommerceTokenProvider.getHeadlessConfiguration`.
    */
   public static String getHeadlessConfiguration() {
     Map<String, Object> headlessConfiguration = new Map<String, Object>();

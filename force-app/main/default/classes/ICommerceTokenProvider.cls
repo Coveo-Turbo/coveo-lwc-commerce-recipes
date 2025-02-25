@@ -1,4 +1,4 @@
-global interface ITokenProvider {
+global interface ICommerceTokenProvider {
   /**
    * Get the configuration object (serialized) for the initialization of Coveo Headless.
    * @return {String} A serialized object containing the following keys:
