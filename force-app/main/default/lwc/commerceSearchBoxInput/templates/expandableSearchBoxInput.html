@@ -81,10 +81,12 @@
           </div>
           <template if:true={shouldDisplaySuggestions}>
             <c-commerce-search-box-suggestions-list
-              onquantic__selection={handleSelection}
+              oncommerce__selection={handleSelection}
               suggestions={suggestions}
               query={inputValue}
               recent-queries={recentQueries}
+              product-suggestions={productSuggestions}
+              product-bindings={productBindings}
               max-number-of-suggestions={maxNumberOfSuggestions}
             ></c-commerce-search-box-suggestions-list>
           </template>
