@@ -11,6 +11,9 @@ import {LightningElement, api} from 'lwc';
 const optionCSSClass =
   'slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-grid option';
 
+/** @typedef {import("coveo").Product} Product */
+/** @typedef {import("coveo").InstantProducts} InstantProducts */
+/** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager  */
 /**
  * @typedef Suggestion
  * @property {number} key
@@ -19,9 +22,18 @@ const optionCSSClass =
  */
 
 /**
+* @typedef ProductBindings
+* @property {InstantProducts} instantProductsController
+* @property {ProductTemplatesManager} productTemplatesManager
+* @property {string} engineId
+* @property {Product[]} products
+*/
+
+/**
  * The `CommerceSearchBoxSuggestionsList` is used internally by search box components to display the query suggestions in an omnibox.
  * @fires CustomEvent#commerce__selection
  * @fires CustomEvent#commerce__clearrecentqueries
+ * @fires CustomEvent#commerce__suggestedquerychange
  * @category Commerce
  * @example
  * <c-commerce-search-box-suggestions-list suggestions={suggestions} oncommerce__selection={handleSuggestionSelection}></c-commmerce-search-box-suggestions-list>
@@ -40,6 +52,18 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
    */
   @api recentQueries = [];
   /**
+   * The list containing the product suggestions.
+   * @api
+   * @type {Product[]}
+   */
+  @api productSuggestions = [];
+  /**
+   * The list containing the product suggestions.
+   * @api
+   * @type {ProductBindings}
+   */
+  @api productBindings;
+  /**
    * The current search query value.
    * @api
    * @type {string}
@@ -52,6 +76,13 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
    * @defaultValue 7
    */
   @api maxNumberOfSuggestions = 7;
+  /**
+   * The maximum number of product suggestions to display.
+   * @api
+   * @type {number}
+   * @defaultValue 5
+   */
+  @api maxNumberOfProductSuggestions = 5;
 
   labels = {
     clear,
@@ -61,6 +92,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     suggestionsNotFound,
     recentQueryAriaLabel,
     querySuggestionAriaLabel,
+    seeAllProducts: 'See all products',
   };
 
   /** @type {import('c/commerceUtils').AriaLiveUtils} */
@@ -71,10 +103,19 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
    */
   @api
   selectionUp() {
-    this.selectionIndex--;
-    if (this.selectionIndex < 0) {
-      this.selectionIndex = this.allOptions.length - 1;
+    if (this.rightSideSelectionActivated) {
+      this.productSelectionIndex--;
+      if (this.productSelectionIndex < 0) {
+        this.productSelectionIndex = this.productOptions.length - 1;
+      }
+    } else {
+      this.productSelectionIndex = -1;
+      this.selectionIndex--;
+      if (this.selectionIndex < 0) {
+        this.selectionIndex = this.allOptions.length - 1;
+      }
     }
+    
     return {
       id: this.allOptionsHTMLElements[this.selectionIndex].getAttribute('id'),
       value: this.allOptions[this.selectionIndex].rawValue,
@@ -86,10 +127,42 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
    */
   @api
   selectionDown() {
-    this.selectionIndex++;
-    if (this.selectionIndex >= this.allOptions.length) {
-      this.selectionIndex = 0;
+
+    if (this.rightSideSelectionActivated) {
+      this.productSelectionIndex++;
+      if (this.productSelectionIndex >= this.productOptions.length) {
+        this.productSelectionIndex = 0;
+      }
+    } else {
+      this.productSelectionIndex = -1;
+      this.selectionIndex++;
+      if (this.selectionIndex >= this.allOptions.length) {
+        this.selectionIndex = 0;
+      }
     }
+    
+    return {
+      id: this.allOptionsHTMLElements[this.selectionIndex].getAttribute('id'),
+      value: this.allOptions[this.selectionIndex].rawValue,
+    };
+  }
+
+  @api
+  selectionRight() {
+    this.rightSideSelectionActivated = true;
+    if (this.productSelectionIndex < 0) {
+      this.productSelectionIndex = 0;
+    }
+    return {
+      id: this.allOptionsHTMLElements[this.selectionIndex].getAttribute('id'),
+      value: this.allOptions[this.selectionIndex].rawValue,
+    };
+  }
+
+  @api
+  selectionLeft() {
+    this.rightSideSelectionActivated = false;
+    
     return {
       id: this.allOptionsHTMLElements[this.selectionIndex].getAttribute('id'),
       value: this.allOptions[this.selectionIndex].rawValue,
@@ -116,12 +189,27 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
 
   /** @type {number} */
   selectionIndex = -1;
+  /** @type {number} */
+  productSelectionIndex = -1;
   /** @type {boolean} */
   initialRender = true;
   /** @type {string} */
   previousQuery = '';
+  /** @type {string} */
+  previousSuggestedQuery = '';
+  /** @type {boolean} */
+  rightSideSelectionActivated = false;
 
   renderedCallback() {
+    
+    if (this.allOptions?.length) {
+      const suggestedQuery = this.allOptions?.[this.selectionIndex] || this.allOptions?.[this.shouldDisplayRecentQueries ? 1 : 0]
+      if (suggestedQuery?.rawValue && this.previousSuggestedQuery !== suggestedQuery?.rawValue) {
+        this.previousSuggestedQuery = suggestedQuery.rawValue;
+        this.sendSuggestedQueryChange(suggestedQuery);
+      }
+    }
+
     if (this.initialRender) {
       this.suggestionsAriaLiveMessage = AriaLiveRegion(
         'suggestions',
@@ -172,6 +260,15 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     this.dispatchEvent(suggestionListEvent);
   }
 
+  sendSuggestedQueryChange(suggestedQuery) {
+    const suggestedQueryChangeEvent = new CustomEvent('commerce__suggestedquerychange', {
+      detail: suggestedQuery,
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(suggestedQueryChangeEvent);
+  }
+
   /**
    * Returns all the options to be displayed inside the suggestion list, recent queries and query suggestions.
    * @returns {Array<Object>}
@@ -199,8 +296,34 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     return options;
   }
 
+  get productOptions() {
+    const options = this.productSuggestions
+      ?.map(this.buildProductSuggestionListOption)
+      .slice(0, this.maxNumberOfProductSuggestions);
+
+    if (options.length) {
+      const showAllProductsOption = {
+        product: {},
+        key: options.length,
+        id: 'product-selection-show-all',
+        isSelected: this.productSelectionIndex === options.length,
+        isSeeAllProductsButton: true,
+        interactiveProduct: null,
+        productTemplatesManager: null,
+        engineId: null,
+        containerCSSClass: null,
+        onClick: (event) => {
+          this.handleSelection(event, options.length);
+        }
+      }
+      options.push(showAllProductsOption);
+    }
+    
+    return options;
+  }
+
   get allOptionsHTMLElements() {
-    return this.template.querySelectorAll('.slds-listbox__item');
+    return this.template.querySelectorAll('.slds-listbox__item.suggestions-option');
   }
 
   /**
@@ -229,6 +352,32 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
   };
 
   /**
+  * Augments a product suggestion with the necessary information needed to display the product as an option in the product suggestion list
+  */
+  buildProductSuggestionListOption = (product, index) => {
+
+    const optionIsSelected = this.productSelectionIndex === index;
+    const {engineId, productTemplatesManager} = this.productBindings;
+    const interactiveProduct = this.productBindings?.instantProductsController?.interactiveProduct({
+      options: {product}
+    });
+    
+    return {
+      product,
+      id: `product-selection-${index}`,
+      key: index,
+      isSelected: optionIsSelected,
+      isSeeAllProductsButton: false,
+      interactiveProduct,
+      productTemplatesManager,
+      engineId,
+      containerCSSClass: `${optionCSSClass} ${
+        optionIsSelected && this.rightSideSelectionActivated ? 'slds-has-focus' : ''
+      }`
+    }
+  }
+
+  /**
    * Returns the query suggestions that are not already in the recent queries list.
    */
   getQuerySuggestionsNotInRecentQueries() {
@@ -242,13 +391,28 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     );
   }
 
+  // handleProductSelection = (event, index) => {
+  //   event.preventDefault();
+  //   const {permanentid, isSeeAllProductsButton} = this.productOptions[index];
+  //   const selection = {
+  //     value: permanentid,
+  //     isSeeAllProductsButton
+  //   };
+  //   const productSuggestionSelectedEvent = new CustomEvent('commerce__productselection', {
+  //     detail: {selection},
+  //   });
+  //   this.dispatchEvent(productSuggestionSelectedEvent);
+  // }
+
   handleSelection = (event, index) => {
     event.preventDefault();
-    const {rawValue, isClearRecentQueryButton, isRecentQuery} =
-      this.allOptions[index];
+
+    const {rawValue, isClearRecentQueryButton, isRecentQuery} = this.allOptions[index];
+    const {isSeeAllProductsButton} = this.productOptions?.[index] || {};
     const selection = {
       value: rawValue,
       isClearRecentQueryButton: isClearRecentQueryButton,
+      isSeeAllProductsButton: isSeeAllProductsButton,
       isRecentQuery: isRecentQuery,
     };
     const suggestionSelectedEvent = new CustomEvent('commerce__selection', {
@@ -286,9 +450,22 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     } recent-searches__label`;
   }
 
+  get seeAllProductsOptionCSSClass() {
+    return `${optionCSSClass} ${
+      this.productSelectionIndex === this.productOptions.length - 1 ? 'slds-has-focus' : ''
+    } see-all-products__label`;
+  }
+
   get listboxCssClass() {
-    return `slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid quantic-suggestions-list ${
+    // return `slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid commerce-suggestions-list ${
+    //   this.allOptions?.length ? '' : 'slds-hidden'
+    // }`;
+    return `slds-dropdown slds-dropdown_fluid commerce-suggestions-list ${
       this.allOptions?.length ? '' : 'slds-hidden'
     }`;
+  }
+
+  get querySuggestionsCssClass() {
+    return `slds-col slds-size_1-of-1`;
   }
 }
