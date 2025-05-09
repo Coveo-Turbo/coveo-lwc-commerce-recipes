@@ -3,7 +3,7 @@
     <div class="children-label slds-text-align_left">{childrenLabel}</div>
     <div class="children-container slds-grid slds-wrap slds-media_center">
       <template for:each={children} for:item="child">
-        <div key={child.permanentId} class={cssChildrenGrid}>
+        <div key={child.key} class={cssChildrenGrid}>
           <button if:false={child.isLastChild}
             title={child.productName} 
             class={child.cssClass}

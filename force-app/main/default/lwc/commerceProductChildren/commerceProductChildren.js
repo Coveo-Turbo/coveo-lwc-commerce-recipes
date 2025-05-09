@@ -69,6 +69,7 @@ export default class CommerceProductChildren extends LightningElement {
     return (
       this.product.children.map((child, i) => ({
         ...child,
+        key: i,
         imageUrl: this.getImageUrl(child),
         productName: child.ec_name || undefined,
         cssClass: this.getCssClass(child),

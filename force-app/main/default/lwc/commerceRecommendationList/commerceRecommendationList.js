@@ -249,6 +249,7 @@ export default class CommerceRecommendationList extends LightningElement {
     }
     return {
       ...rec,
+      key: index,
       interactiveRec: this.recommendationList.interactiveProduct,
       class: this.generateCSSClassForCarouselRecommendation(index),
       label: I18nUtils.format(this.labels.xOfY, index + 1, recs.length),

@@ -163,9 +163,9 @@ export default class CommerceProductList extends LightningElement {
     // If the unique key is only the result uniqueId, the LWC will not re-render when the results change AND the same result is still in the results.
     const responseId = this?.state?.responseId || Math.random();
     return (
-      this.state?.products?.map((product) => ({
+      this.state?.products?.map((product, index) => ({
         ...product,
-        keyProductList: `${responseId}_${product.permanentid}`,
+        key: `${responseId}_${index}`,
         interactiveProduct: this.controller.interactiveProduct,
         // interactiveProductProps: ProductUtils.interactiveProductProps(this.controller, product),
       })) || []
