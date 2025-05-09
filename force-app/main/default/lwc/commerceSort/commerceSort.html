@@ -9,7 +9,7 @@
     <!-- <slot name="sortOption"></slot> -->
     <template for:each={sortOptions} for:item="option">
       <c-commerce-sort-option
-        key={option.value}
+        key={option.key}
         value={option.value}
         label={option.label}
         criterion={option.criterion}
