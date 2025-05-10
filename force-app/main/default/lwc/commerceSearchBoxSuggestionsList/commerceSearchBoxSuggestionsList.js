@@ -150,6 +150,10 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
 
   @api
   selectionRight() {
+    if(this.selectionIndex === -1)  {
+      return {};
+    }
+
     this.rightSideSelectionActivated = true;
     if (this.productSelectionIndex < 0) {
       this.productSelectionIndex = 0;
@@ -162,6 +166,10 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
 
   @api
   selectionLeft() {
+    if(this.selectionIndex === -1)  {
+      return {};
+    }
+
     this.rightSideSelectionActivated = false;
     
     return {
@@ -336,7 +344,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         engineId: null,
         containerCSSClass: null,
         onClick: (event) => {
-          this.handleSelection(event, options.length);
+          this.handleSelection(event, options.length-1);
         }
       }
       options.push(showAllProductsOption);
@@ -422,13 +430,6 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     // @ts-ignore
     return this.template.querySelector(`[id^='product-selection-${index}'] c-commerce-product`);
   }
-
-  handleKeyDown = (event) => {
-    console.log('Key down event!!!!!', event);
-    if (event.key === keys.ENTER) {
-      this.handleProductSelection(event, this.productSelectionIndex);
-    }
-  } 
 
   handleProductSelection = (event, index) => {
     event.preventDefault();

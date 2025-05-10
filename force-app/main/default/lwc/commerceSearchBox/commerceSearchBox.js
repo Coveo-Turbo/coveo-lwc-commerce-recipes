@@ -300,7 +300,7 @@ export default class CommerceSearchBox extends LightningElement {
     const {value, isRecentQuery, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
     
     if (isSeeAllProductsButton) {
-      this.searchBox?.submit();
+      this.searchBox?.selectSuggestion(this.instantProducts.state.query);
     } else if (isClearRecentQueryButton) {
       this.recentQueriesList.clear();
     } else if (isRecentQuery) {

@@ -222,13 +222,14 @@ export default class CommerceSearchBoxInput extends LightningElement {
     const isLineBreak = this.textarea && event.shiftKey;
     if (!(this.ignoreNextEnterKeyPress || isLineBreak)) {
       const selectedSuggestion = this.suggestionListElement?.getCurrentSelectedValue();
-      const {isProductSuggestion, productSelectionIndex} = selectedSuggestion;
-      
-      if (selectedSuggestion && isProductSuggestion) {
-        this.suggestionListElement?.selectProduct(productSelectionIndex);
-      }
-      else if (selectedSuggestion && !isProductSuggestion) {
-        this.sendSelectSuggestionEvent(selectedSuggestion);
+      if (selectedSuggestion) {
+        const {isProductSuggestion = false, isSeeAllProductsButton, productSelectionIndex = -1} = selectedSuggestion;
+        
+        if (!isSeeAllProductsButton && isProductSuggestion && productSelectionIndex >= 0) {
+          this.suggestionListElement?.selectProduct(productSelectionIndex);
+        } else {
+          this.sendSelectSuggestionEvent(selectedSuggestion);
+        }
       } else {
         this.sendSubmitSearchEvent();
       }
