@@ -50,7 +50,7 @@
                             </li>
                         </template>
                         <template lwc:else>
-                            <li id={option.id} key={option.key} tabindex="-1" 
+                            <li id={option.id} key={option.key} tabindex="-1" onmousedown={option.onClick}
                                 data-cy="product-suggestions-option" role="option" class="slds-listbox__item product-suggestions-option"
                                 aria-selected={option.isSelected}>
                                 <div class={option.containerCSSClass}>

@@ -5,7 +5,7 @@ import recentQueryAriaLabel from '@salesforce/label/c.commerce_RecentQueryAriaLa
 import suggestionFound from '@salesforce/label/c.commerce_SuggestionFound';
 import suggestionFound_plural from '@salesforce/label/c.commerce_SuggestionFound_Plural';
 import suggestionsNotFound from '@salesforce/label/c.commerce_SuggestionNotFound';
-import {AriaLiveRegion, I18nUtils, RecentQueryUtils} from 'c/commerceUtils';
+import {AriaLiveRegion, I18nUtils, keys, RecentQueryUtils} from 'c/commerceUtils';
 import {LightningElement, api} from 'lwc';
 
 const optionCSSClass =
@@ -14,6 +14,7 @@ const optionCSSClass =
 /** @typedef {import("coveo").Product} Product */
 /** @typedef {import("coveo").InstantProducts} InstantProducts */
 /** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager  */
+/** @typedef {import("c/commerceProduct").default} commerceProduct */
 /**
  * @typedef Suggestion
  * @property {number} key
@@ -170,12 +171,28 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
   }
 
   /**
+   * Select and trigger the click on the given index product. 
+   * @returns {Object}
+   */
+  @api
+  selectProduct(index) {
+    this.getProductElement(index)?.click();
+  }
+
+  /**
    * Return the currently selected suggestion.
    * @returns {Object}
    */
   @api
   getCurrentSelectedValue() {
-    if (this.allOptions?.[this.selectionIndex]) {
+    if (this.rightSideSelectionActivated && this.productOptions?.[this.productSelectionIndex]) {
+      const {isSeeAllProductsButton} = this.productOptions[this.productSelectionIndex];
+      return {
+        productSelectionIndex: this.productSelectionIndex,
+        isProductSuggestion: true,
+        isSeeAllProductsButton
+      };
+    } else if (this.allOptions?.[this.selectionIndex]) {
       const {rawValue, isClearRecentQueryButton, isRecentQuery} =
         this.allOptions[this.selectionIndex];
       return {
@@ -184,9 +201,9 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         isRecentQuery,
       };
     }
-    return null;
+    return null; 
   }
-
+  
   /** @type {number} */
   selectionIndex = -1;
   /** @type {number} */
@@ -200,8 +217,14 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
   /** @type {boolean} */
   rightSideSelectionActivated = false;
 
+  connectedCallback() {
+  }
+
+  disconnectedCallback() {
+  }
+
   renderedCallback() {
-    
+
     if (this.allOptions?.length) {
       const suggestedQuery = this.allOptions?.[this.selectionIndex] || this.allOptions?.[this.shouldDisplayRecentQueries ? 1 : 0]
       if (suggestedQuery?.rawValue && this.previousSuggestedQuery !== suggestedQuery?.rawValue) {
@@ -304,7 +327,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     if (options.length) {
       const showAllProductsOption = {
         product: {},
-        key: options.length,
+        key: `product-selection-${options.length}`,
         id: 'product-selection-show-all',
         isSelected: this.productSelectionIndex === options.length,
         isSeeAllProductsButton: true,
@@ -336,7 +359,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     return {
       ...suggestion,
       id: `selection-${optionIndex}`,
-      key: optionIndex,
+      key: `selection-${optionIndex}`,
       isSelected: optionIsSelected,
       containerCSSClass: `${optionCSSClass} ${
         optionIsSelected ? 'slds-has-focus' : ''
@@ -347,7 +370,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         : this.labels.querySuggestionAriaLabel,
       onClick: (event) => {
         this.handleSelection(event, optionIndex);
-      },
+      }
     };
   };
 
@@ -358,14 +381,12 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
 
     const optionIsSelected = this.productSelectionIndex === index;
     const {engineId, productTemplatesManager} = this.productBindings;
-    const interactiveProduct = this.productBindings?.instantProductsController?.interactiveProduct({
-      options: {product}
-    });
+    const interactiveProduct = this.productBindings?.instantProductsController?.interactiveProduct;
     
     return {
       product,
       id: `product-selection-${index}`,
-      key: index,
+      key: `product-selection-${index}`,
       isSelected: optionIsSelected,
       isSeeAllProductsButton: false,
       interactiveProduct,
@@ -373,7 +394,10 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
       engineId,
       containerCSSClass: `${optionCSSClass} ${
         optionIsSelected && this.rightSideSelectionActivated ? 'slds-has-focus' : ''
-      }`
+      }`,
+      onClick: (event) => {
+        this.handleProductSelection(event, index);
+      }
     }
   }
 
@@ -391,18 +415,26 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     );
   }
 
-  // handleProductSelection = (event, index) => {
-  //   event.preventDefault();
-  //   const {permanentid, isSeeAllProductsButton} = this.productOptions[index];
-  //   const selection = {
-  //     value: permanentid,
-  //     isSeeAllProductsButton
-  //   };
-  //   const productSuggestionSelectedEvent = new CustomEvent('commerce__productselection', {
-  //     detail: {selection},
-  //   });
-  //   this.dispatchEvent(productSuggestionSelectedEvent);
-  // }
+  /**
+   * @returns {commerceProduct}
+   */
+  getProductElement(index) {
+    // @ts-ignore
+    return this.template.querySelector(`[id^='product-selection-${index}'] c-commerce-product`);
+  }
+
+  handleKeyDown = (event) => {
+    console.log('Key down event!!!!!', event);
+    if (event.key === keys.ENTER) {
+      this.handleProductSelection(event, this.productSelectionIndex);
+    }
+  } 
+
+  handleProductSelection = (event, index) => {
+    event.preventDefault();
+    const productElement = this.getProductElement(index);
+    productElement?.click();
+  }
 
   handleSelection = (event, index) => {
     event.preventDefault();
@@ -413,7 +445,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
       value: rawValue,
       isClearRecentQueryButton: isClearRecentQueryButton,
       isSeeAllProductsButton: isSeeAllProductsButton,
-      isRecentQuery: isRecentQuery,
+      isRecentQuery: isRecentQuery
     };
     const suggestionSelectedEvent = new CustomEvent('commerce__selection', {
       detail: {selection},
