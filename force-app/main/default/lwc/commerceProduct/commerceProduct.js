@@ -53,6 +53,16 @@ export default class CommerceProduct extends LightningElement {
    */
   @api templateId;
 
+  /**
+   * Simulates a mouse click on the button.
+   */
+  @api
+  click() {
+    // @ts-ignore
+    this.linkContainer?.click();
+  }
+
+
   /** @type {boolean} */
   isHovered = false;
 
@@ -74,6 +84,7 @@ export default class CommerceProduct extends LightningElement {
   handleClick() {
     // @ts-ignore
     console.log('Product clicked', this.product, this.linkContainer);
+    // @ts-ignore
     this.linkContainer?.click();
   }
 
