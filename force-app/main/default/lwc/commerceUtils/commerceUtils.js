@@ -36,6 +36,7 @@ export * from './recentQueriesUtils';
 export * from './facetDependenciesUtils';
 export * from './facetUtils';
 export * from './productUtils';
+export * from './pagerUtils';
 
 
 export function filterProtocol(uri) {

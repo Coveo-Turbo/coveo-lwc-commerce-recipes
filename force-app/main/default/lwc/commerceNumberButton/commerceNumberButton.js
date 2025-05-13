@@ -17,7 +17,7 @@ export default class CommerceNumberButton extends LightningElement {
   /**
    * The selected number in the set of buttons.
    * @api
-   * @type {number}
+   * @type {boolean}
    */
   @api selected;
   /**
