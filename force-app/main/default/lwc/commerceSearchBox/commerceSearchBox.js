@@ -245,6 +245,8 @@ export default class CommerceSearchBox extends LightningElement {
     if (!state.isLoading) {
       if (state.products.length) {
         this.productSuggestions = state.products;
+      } else {
+        this.productSuggestions = [];
       }
     }
   }
