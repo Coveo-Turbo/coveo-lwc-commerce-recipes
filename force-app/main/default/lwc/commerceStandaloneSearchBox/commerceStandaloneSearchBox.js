@@ -424,21 +424,12 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   selectSuggestion = (event) => {
     event.stopPropagation();
   
-    const {value, isRecentQuery, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
+    const {value, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
 
     if (isSeeAllProductsButton) {
       this.standaloneSearchBox?.selectSuggestion(this.instantProducts.state.query);
     } else if (isClearRecentQueryButton) {
       this.recentQueriesList.clear();
-    } else if (isRecentQuery) {
-      this.recentQueriesList.executeRecentQuery(
-        this.recentQueries.indexOf(value)
-      );
-      this.standaloneEngine.dispatch(
-        this.actions.clearQuerySuggest({
-          id: this.state.searchBoxId,
-        })
-      );
     } else {
       this.standaloneSearchBox?.selectSuggestion(value);
     }
