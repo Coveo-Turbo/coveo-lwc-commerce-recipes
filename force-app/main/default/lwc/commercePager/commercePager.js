@@ -133,10 +133,8 @@ export default class CommercePager extends LightningElement {
   }
 
   get currentPagesObjects() {
-    // We need to add a unique key to each currentPages to make sure to re-render the LWC when the results change.
-    const uniqueKeyPrefix = Math.random();
     return this.currentPages.map((page) => ({
-      key: `${uniqueKeyPrefix}-${page}`,
+      key: page,
       number: page + 1,
       selected: page === this.pager.state.page,
       ariaLabelValue: I18nUtils.format(this.labels.goToPage, page + 1),
