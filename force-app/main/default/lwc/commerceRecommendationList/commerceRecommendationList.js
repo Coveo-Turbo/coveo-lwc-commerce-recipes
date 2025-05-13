@@ -247,9 +247,12 @@ export default class CommerceRecommendationList extends LightningElement {
     if (this.variant === 'grid') {
       return rec;
     }
+    // We need to add a unique key to each result to make sure to re-render the LWC when the results change.
+    // If the unique key is only the result uniqueId, the LWC will not re-render when the results change AND the same result is still in the results.
+    const responseId = this?.state?.responseId || Math.random();
     return {
       ...rec,
-      key: index,
+      key: `${responseId}_${rec.permanentid}`,
       interactiveRec: this.recommendationList.interactiveProduct,
       class: this.generateCSSClassForCarouselRecommendation(index),
       label: I18nUtils.format(this.labels.xOfY, index + 1, recs.length),
