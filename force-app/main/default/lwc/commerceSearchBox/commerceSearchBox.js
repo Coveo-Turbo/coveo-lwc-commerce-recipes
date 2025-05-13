@@ -103,6 +103,8 @@ export default class CommerceSearchBox extends LightningElement {
   unsubscribe;
   /** @type {Function} */
   unsubscribeInstantProducts;
+  /** @type {Function} */
+  unsubscribeRecentQueriesList;
   /** @type {CoveoHeadlessCommerce} */
   headless;
   /** @type {Array} */
