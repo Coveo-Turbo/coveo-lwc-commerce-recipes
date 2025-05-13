@@ -1,4 +1,4 @@
-.quantic-suggestions-list {
+.commerce-suggestions-list {
   margin-top: 0;
 }
 
@@ -13,4 +13,13 @@
 .recent-searches__label {
   justify-content: space-between;
   font-size: 14px;
+}
+
+.see-all-products__label {
+  justify-content: center;
+  font-size: 14px;
+}
+
+.product-suggestions-option {
+  width: 100%;
 }

@@ -5,20 +5,32 @@ import {
   getHeadlessBundle,
   destroyEngine,
 } from 'c/commerceHeadlessLoader';
-import {STANDALONE_SEARCH_BOX_STORAGE_KEY} from 'c/commerceUtils';
+import {STANDALONE_SEARCH_BOX_STORAGE_KEY, getItemFromLocalStorage, setItemInLocalStorage} from 'c/commerceUtils';
 import {CurrentPageReference, NavigationMixin} from 'lightning/navigation';
 import {LightningElement, api, track, wire} from 'lwc';
 // @ts-ignore
 import errorTemplate from './templates/errorTemplate.html';
 // @ts-ignore
 import standaloneSearchBox from './templates/standaloneSearchBox.html';
+// @ts-ignore
+import productSuggestionTemplate from './templates/productSuggestionTemplate.html';
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
 /** @typedef {import("coveo").StandaloneSearchBoxState} StandaloneSearchBoxState */
 /** @typedef {import("coveo").StandaloneSearchBox} StandaloneSearchBox */
+/** @typedef {import("coveo").RecentQueriesList} RecentQueriesList */
+/** @typedef {import("coveo").Product} Product */
+/** @typedef {import("coveo").InstantProducts} InstantProducts */
+/** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager  */
 /** @typedef {import("c/commerceSearchBoxSuggestionsList").default} commerceSearchBoxSuggestionsList */
 /** @typedef {import("c/commerceSearchBoxInput").default} commerceSearchBoxInput */
 /** @typedef {{key: number, value: string}} Suggestion */
+/**
+* @typedef ProductBindings
+* @property {InstantProducts} instantProductsController
+* @property {ProductTemplatesManager} productTemplatesManager
+* @property {string} engineId
+*/
 
 /**
  * The `CommerceStandaloneSearchBox` component creates a search box with built-in support for query suggestions.
@@ -97,6 +109,20 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    */
   @api keepFiltersOnSearch = false;
   /**
+   * Whether to disable rendering the recent queries as suggestions.
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api disableRecentQueries = false;
+  /**
+   * Whether to disable rendering the product suggestions as suggestions.
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api disableProductSuggestions = false;
+  /**
    * The url of the search page to redirect to when a query is made.
    * The target search page should contain a `QuanticSearchInterface` with the same engine ID as the one specified for this component.
    * @api
@@ -129,14 +155,26 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   headless;
   /** @type {StandaloneSearchBox} */
   standaloneSearchBox;
+  /** @type {InstantProducts} */
+  instantProducts;
   /** @type {Function} */
   unsubscribe;
+  /** @type {Function} */
+  unsubscribeInstantProducts;
   /** @type {boolean} */
   isInitialized = false;
   /** @type {Suggestion[]} */
   suggestions = [];
   /** @type {boolean} */
   hasInitializationError = false;
+  /** @type {RecentQueriesList} */
+  recentQueriesList;
+  /** @type {String[]} */
+  recentQueries;
+  /** @type {Product[]} */
+  productSuggestions = [];
+  /** @type {ProductBindings} */
+  productBindings;
 
   /** @type {string} */
   get standaloneEngineId() {
@@ -153,6 +191,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     this.addEventListener('commerce__submitsearch', this.handleSubmit);
     this.addEventListener('commerce__showsuggestions', this.showSuggestions);
     this.addEventListener('commerce__selectsuggestion', this.selectSuggestion);
+    this.addEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   renderedCallback() {
@@ -198,7 +237,47 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
         overwrite: true
       },
     });
+    this.actions = {
+      ...this.headless.loadQuerySuggestActions(engine),
+    };
     this.standaloneEngine = engine;
+
+    if (!this.disableRecentQueries && this.headless.buildRecentQueriesList) {
+      this.localStorageKey = `${this.engineId}_commerce-recent-queries`;
+      this.recentQueriesList = this.headless.buildRecentQueriesList(engine, {
+        initialState: {
+          queries: getItemFromLocalStorage(this.localStorageKey) ?? [],
+        },
+        options: {
+          maxLength: 100,
+        },
+      });
+      this.unsubscribeRecentQueriesList = this.recentQueriesList.subscribe(() =>
+        this.updateRecentQueriesListState()
+      );
+    }
+
+    if (!this.disableProductSuggestions && this.headless.buildInstantProducts) {
+
+      this.instantProducts = this.headless.buildInstantProducts(engine, {
+        options: {},
+      });
+
+      this.productTemplatesManager = this.headless.buildProductTemplatesManager();
+      this.registerTemplates();
+
+      this.productBindings = {
+        instantProductsController: this.instantProducts,
+        productTemplatesManager: this.productTemplatesManager,
+        engineId: this.standaloneEngineId
+      };
+
+      this.unsubscribeInstantProducts = this.instantProducts.subscribe(() =>
+        this.updateInstantProductsState()
+      );
+    }
+
+
     this.unsubscribe = this.standaloneSearchBox.subscribe(() =>
       this.updateStandaloneState()
     );
@@ -206,17 +285,16 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
 
   disconnectedCallback() {
     this.unsubscribe?.();
-
+    this.unsubscribeInstantProducts?.();
+    this.unsubscribeRecentQueriesList?.();
     this.removeEventListener(
       'commerce__inputvaluechange',
       this.handleInputValueChange
     );
     this.removeEventListener('commerce__submitsearch', this.handleSubmit);
     this.removeEventListener('commerce__showsuggestions', this.showSuggestions);
-    this.removeEventListener(
-      'commerce__selectsuggestion',
-      this.selectSuggestion
-    );
+    this.removeEventListener('commerce__selectsuggestion', this.selectSuggestion);
+    this.removeEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   get searchBoxValue() {
@@ -245,6 +323,38 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
       })
     );
     this.navigateToSearchPage();
+  }
+
+  updateInstantProductsState() {
+    const state = this.instantProducts.state;
+    if (!state.isLoading) {
+      if (state.products.length) {
+        this.productSuggestions = state.products;
+      }
+    }
+  }
+
+  updateRecentQueriesListState() {
+    if (this.recentQueriesList.state?.queries) {
+      this.recentQueries = this.recentQueriesList.state.queries;
+      setItemInLocalStorage(
+        this.localStorageKey,
+        this.recentQueriesList.state.queries
+      );
+    }
+  }
+
+  registerTemplates() {
+    this.productTemplatesManager.registerTemplates({
+      content: productSuggestionTemplate,
+      conditions: [],
+    });
+    this.dispatchEvent(
+      new CustomEvent('commerce__registerproductsuggestiontemplates', {
+        bubbles: true,
+        detail: this.productTemplatesManager,
+      })
+    );
   }
 
   resetStandaloneSearchboxState() {
@@ -302,13 +412,36 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     this.standaloneSearchBox?.showSuggestions();
   };
 
+  suggestedQueryChange = (event) => {
+    event.stopPropagation();
+    const {rawValue} = event.detail;
+    this.instantProducts.updateQuery(rawValue);
+  }
+
   /**
    * Handles the selection of a suggestion.
    */
   selectSuggestion = (event) => {
     event.stopPropagation();
-    const {value} = event.detail.selectedSuggestion;
-    this.standaloneSearchBox?.selectSuggestion(value);
+  
+    const {value, isRecentQuery, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
+
+    if (isSeeAllProductsButton) {
+      this.standaloneSearchBox?.selectSuggestion(this.instantProducts.state.query);
+    } else if (isClearRecentQueryButton) {
+      this.recentQueriesList.clear();
+    } else if (isRecentQuery) {
+      this.recentQueriesList.executeRecentQuery(
+        this.recentQueries.indexOf(value)
+      );
+      this.standaloneEngine.dispatch(
+        this.actions.clearQuerySuggest({
+          id: this.state.searchBoxId,
+        })
+      );
+    } else {
+      this.standaloneSearchBox?.selectSuggestion(value);
+    }
   };
 
   /**

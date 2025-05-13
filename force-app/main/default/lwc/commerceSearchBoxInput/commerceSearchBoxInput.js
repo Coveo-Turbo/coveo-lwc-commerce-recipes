@@ -9,6 +9,10 @@ import defaultSearchBoxInput from './templates/defaultSearchBoxInput.html';
 import expandableSearchBoxInput from './templates/expandableSearchBoxInput.html';
 
 /** @typedef {import("c/commerceSearchBoxSuggestionsList").default} commerceSearchBoxSuggestionsList */
+/** @typedef {import("coveo").Product} Product */
+/** @typedef {import("coveo").InstantProducts} InstantProducts */
+/** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager  */
+
 
 /**
  * @typedef Suggestion
@@ -16,6 +20,13 @@ import expandableSearchBoxInput from './templates/expandableSearchBoxInput.html'
  * @property {string} value
  * @property {string} rawValue
  */
+
+/**
+* @typedef ProductBindings
+* @property {InstantProducts} instantProductsController
+* @property {ProductTemplatesManager} productTemplatesManager
+* @property {string} engineId
+*/
 
 /**
  * The `CommerceSearchBoxInput` component renders the searchBox input.
@@ -78,6 +89,18 @@ export default class CommerceSearchBoxInput extends LightningElement {
    * @type {String[]}
    */
   @api recentQueries;
+  /**
+   * The list containing the product suggestions.
+   * @api
+   * @type {Product[]}
+   */
+  @api productSuggestions = [];
+  /**
+   * The list containing the product suggestions.
+   * @api
+   * @type {ProductBindings}
+   */
+  @api productBindings;
   /**
    * The maximum number of suggestions to display.
    * @api
@@ -198,10 +221,15 @@ export default class CommerceSearchBoxInput extends LightningElement {
   handleEnter(event) {
     const isLineBreak = this.textarea && event.shiftKey;
     if (!(this.ignoreNextEnterKeyPress || isLineBreak)) {
-      const selectedSuggestion =
-        this.suggestionListElement?.getCurrentSelectedValue();
+      const selectedSuggestion = this.suggestionListElement?.getCurrentSelectedValue();
       if (selectedSuggestion) {
-        this.sendSelectSuggestionEvent(selectedSuggestion);
+        const {isProductSuggestion = false, isSeeAllProductsButton, productSelectionIndex = -1} = selectedSuggestion;
+        
+        if (!isSeeAllProductsButton && isProductSuggestion && productSelectionIndex >= 0) {
+          this.suggestionListElement?.selectProduct(productSelectionIndex);
+        } else {
+          this.sendSelectSuggestionEvent(selectedSuggestion);
+        }
       } else {
         this.sendSubmitSearchEvent();
       }
@@ -262,6 +290,16 @@ export default class CommerceSearchBoxInput extends LightningElement {
         );
         break;
       }
+
+      case keys.ARROWRIGHT: {
+        this.handleArrowKey(event, 'Right');
+        break;
+      }
+
+      case keys.ARROWLEFT: {
+        this.handleArrowKey(event, 'Left');
+        break;
+      }
     }
     this.ignoreNextEnterKeyPress = false;
   }
@@ -283,6 +321,20 @@ export default class CommerceSearchBoxInput extends LightningElement {
     this.adjustTextAreaHeight();
   }
 
+  handleArrowKey(event, direction) {
+    event.preventDefault();
+    const {id, value} = direction === 'Right' ? this.suggestionListElement.selectionRight(): this.suggestionListElement.selectionLeft();
+    if (value) {
+      this.setDisplayedInputValue(value);
+    }
+    this.ariaActiveDescendant = id;
+    this.input.setAttribute(
+      'aria-activedescendant',
+      this.ariaActiveDescendant
+    );
+  }
+
+  
   handleSelection(event) {
     this.sendSelectSuggestionEvent(event.detail.selection);
     this.inputIsFocused = false;

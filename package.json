@@ -17,7 +17,7 @@
     "precommit": "lint-staged",
     "scratch:create": "sf org create scratch --set-default --duration-days 30 --definition-file config/project-scratch-def.json --alias \"LWC\"",
     "deploy:main": "sf project deploy start --target-org LWC --source-dir force-app/main",
-    "deploy:examples": "sf project deploy start --target-org LWC --source-dir force-app/examples",
+    "deploy:examples": "sf project deploy start --target-org LWC --source-dir force-app/examples --ignore-conflicts",
     "scratch:dev": "npm run scratch:create && npm run deploy:main && npm run deploy:examples",
     "package:version": "sf package version create --installation-key coveops --package \"coveo-lwc-commerce-recipes\" -c",
     "package:list": "sf package version list",

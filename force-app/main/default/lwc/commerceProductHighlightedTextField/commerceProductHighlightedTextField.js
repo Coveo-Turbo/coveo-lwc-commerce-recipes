@@ -61,7 +61,7 @@ export default class CommerceProductHighlightedTextField extends LightningElemen
   renderedCallback() {
     initializeWithHeadless(this, this.engineId, this.initialize);
     if (this.isValid && this.isInitialized) {
-      this.updatDisplayOfResultTextValue();
+      this.updateDisplayOfResultTextValue();
     }
   }
 
@@ -90,7 +90,7 @@ export default class CommerceProductHighlightedTextField extends LightningElemen
     });
   }
 
-  updatDisplayOfResultTextValue() {
+  updateDisplayOfResultTextValue() {
     const fieldValue = this.headless.ProductTemplatesHelpers.getProductProperty(
       this.product,
       this.field

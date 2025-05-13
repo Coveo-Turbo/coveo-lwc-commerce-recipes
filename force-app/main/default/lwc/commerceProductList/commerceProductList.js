@@ -165,9 +165,8 @@ export default class CommerceProductList extends LightningElement {
     return (
       this.state?.products?.map((product) => ({
         ...product,
-        keyProductList: `${responseId}_${product.permanentid}`,
-        interactiveProduct: this.controller.interactiveProduct,
-        // interactiveProductProps: ProductUtils.interactiveProductProps(this.controller, product),
+        key: `${responseId}_${product.permanentid}`,
+        interactiveProduct: this.controller.interactiveProduct
       })) || []
     );
   }

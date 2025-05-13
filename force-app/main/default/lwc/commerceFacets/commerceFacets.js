@@ -127,7 +127,6 @@ export default class CommerceFacets extends LightningElement {
         key: facet.state.facetId,
         props:{
           engineId: this.engineId,
-          facetId: facet.state.facetId,
           facet,
           field: facet.state.field,
           summary: this.summary,

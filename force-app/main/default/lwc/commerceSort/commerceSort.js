@@ -67,18 +67,18 @@ export default class CommerceSort extends LightningElement {
   @track sortState;
 
   /** @type {SortOption[]} */
-  defaultSortOptions;
+  defaultSortOptions = [];
   /** @type {Sort} */
   sort;
   options;
   /** @type {ProductListing | Search} */
-  listingOrSearch;
+  listingOrSearch = null;
   /** @type {Function} */
   unsubscribe;
   /** @type {CoveoHeadlessCommerce} */
   headless;
   /** @type {Bindings} */
-  bindings;
+  bindings = {};
   /** @type {boolean} */
   hasInitializationError = false;
 
@@ -179,9 +179,12 @@ export default class CommerceSort extends LightningElement {
    * @returns {SortOption[]} The specified custom sort options.
    */
   get sortOptions() {
-    return this.sortState?.availableSorts.map((sort) => ({
-      label:this.getLabel(sort), value: this.getLabel(sort), criterion: sort})
-    );
+    return this.sortState?.availableSorts.map((sort, index) => ({
+      key: index,
+      label: this.getLabel(sort), 
+      value: this.getLabel(sort), 
+      criterion: sort})
+    ) || [];
   }
   /**
   * @param {SortCriterion} sort

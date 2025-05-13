@@ -3,6 +3,8 @@ import {LightningElement, api} from 'lwc';
 import fullLayout from './templates/full.html';
 // @ts-ignore
 import compactLayout from './templates/compact.html';
+// @ts-ignore
+import miniLayout from './templates/mini.html';
 
 /**
  * The `CommerceProductTemplate` component is used to construct product templates using predefined and formatted [slots](https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.create_components_slots).
@@ -31,7 +33,7 @@ export default class CommerceProductTemplate extends LightningElement {
   /**
    * The variant of the component. Accepted variants are `full` and `compact`.
    * @api
-   * @type {'full' | 'compact'}
+   * @type {'full' | 'compact' | 'mini'}
    */
   @api variant = 'full';
 
@@ -76,6 +78,14 @@ export default class CommerceProductTemplate extends LightningElement {
   }
 
   render() {
-    return this.variant === 'full' ? fullLayout : compactLayout;
+    if (this.variant === 'mini') {
+      return miniLayout;
+    } else if (this.variant === 'full') {
+      return fullLayout;
+    } else if (this.variant === 'compact') {
+      return compactLayout;
+    } 
+    // Fallback to full layout if variant is not recognized
+    return fullLayout;
   }
 }

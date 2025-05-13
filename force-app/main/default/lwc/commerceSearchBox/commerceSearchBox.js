@@ -9,14 +9,25 @@ import {LightningElement, api, track} from 'lwc';
 import errorTemplate from './templates/errorTemplate.html';
 // @ts-ignore
 import searchBox from './templates/searchBox.html';
+// @ts-ignore
+import productSuggestionTemplate from './templates/productSuggestionTemplate.html';
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
 /** @typedef {import("coveo").SearchBoxState} SearchBoxState */
 /** @typedef {import("coveo").SearchBox} SearchBox */
 /** @typedef {import("coveo").SearchBoxOptions} SearchBoxOptions */
 /** @typedef {import("coveo").RecentQueriesList} RecentQueriesList */
+/** @typedef {import("coveo").Product} Product */
+/** @typedef {import("coveo").InstantProducts} InstantProducts */
+/** @typedef {import("coveo").ProductTemplatesManager} ProductTemplatesManager  */
 /** @typedef {import('c/commerceSearchBoxSuggestionsList').default} commerceSearchBoxSuggestionsList */
 /** @typedef {import("c/commerceSearchBoxInput").default} commerceSearchBoxInput */
+/**
+* @typedef ProductBindings
+* @property {InstantProducts} instantProductsController
+* @property {ProductTemplatesManager} productTemplatesManager
+* @property {string} engineId
+*/
 
 /**
  * The `CommerceSearchBox` component creates a search box with built-in support for query suggestions.
@@ -67,6 +78,13 @@ export default class CommerceSearchBox extends LightningElement {
    */
   @api disableRecentQueries = false;
   /**
+   * Whether to disable rendering the product suggestions as suggestions.
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api disableProductSuggestions = false;
+  /**
    * Whether to keep all active query filters when the end user submits a new query from the search box.
    * @api
    * @type {boolean}
@@ -79,8 +97,14 @@ export default class CommerceSearchBox extends LightningElement {
 
   /** @type {SearchBox} */
   searchBox;
+  /** @type {InstantProducts} */
+  instantProducts;
   /** @type {Function} */
   unsubscribe;
+  /** @type {Function} */
+  unsubscribeInstantProducts;
+  /** @type {Function} */
+  unsubscribeRecentQueriesList;
   /** @type {CoveoHeadlessCommerce} */
   headless;
   /** @type {Array} */
@@ -91,6 +115,11 @@ export default class CommerceSearchBox extends LightningElement {
   recentQueriesList;
   /** @type {String[]} */
   recentQueries;
+  /** @type {Product[]} */
+  productSuggestions = [];
+  /** @type {ProductBindings} */
+  productBindings;
+
 
   /**
    * @param {CommerceEngine} engine
@@ -129,8 +158,43 @@ export default class CommerceSearchBox extends LightningElement {
         this.updateRecentQueriesListState()
       );
     }
+
+    if (!this.disableProductSuggestions && this.headless.buildInstantProducts) {
+
+      this.instantProducts = this.headless.buildInstantProducts(engine, {
+        options: {},
+      });
+
+      this.productTemplatesManager = this.headless.buildProductTemplatesManager();
+      this.registerTemplates();
+
+      this.productBindings = {
+        instantProductsController: this.instantProducts,
+        productTemplatesManager: this.productTemplatesManager,
+        engineId: this.engineId
+      };
+
+      this.unsubscribeInstantProducts = this.instantProducts.subscribe(() =>
+        this.updateInstantProductsState()
+      );
+    }
+
     this.unsubscribe = this.searchBox.subscribe(() => this.updateState());
+    
   };
+
+  registerTemplates() {
+    this.productTemplatesManager.registerTemplates({
+      content: productSuggestionTemplate,
+      conditions: [],
+    });
+    this.dispatchEvent(
+      new CustomEvent('commerce__registerproductsuggestiontemplates', {
+        bubbles: true,
+        detail: this.productTemplatesManager,
+      })
+    );
+  }
 
   connectedCallback() {
     registerComponentForInit(this, this.engineId);
@@ -141,6 +205,7 @@ export default class CommerceSearchBox extends LightningElement {
     this.addEventListener('commerce__submitsearch', this.handleSubmit);
     this.addEventListener('commerce__showsuggestions', this.showSuggestion);
     this.addEventListener('commerce__selectsuggestion', this.selectSuggestion);
+    this.addEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   renderedCallback() {
@@ -149,16 +214,16 @@ export default class CommerceSearchBox extends LightningElement {
 
   disconnectedCallback() {
     this.unsubscribe?.();
+    this.unsubscribeInstantProducts?.();
+    this.unsubscribeRecentQueriesList?.();
     this.removeEventListener(
       'commerce__inputvaluechange',
       this.handleInputValueChange
     );
     this.removeEventListener('commerce__submitsearch', this.handleSubmit);
     this.removeEventListener('commerce__showsuggestions', this.showSuggestion);
-    this.removeEventListener(
-      'commerce__selectsuggestion',
-      this.selectSuggestion
-    );
+    this.removeEventListener('commerce__selectsuggestion',this.selectSuggestion);
+    this.removeEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   get searchBoxValue() {
@@ -173,6 +238,17 @@ export default class CommerceSearchBox extends LightningElement {
         rawValue: suggestion.rawValue,
         value: suggestion.highlightedValue,
       })) ?? [];
+  }
+
+  updateInstantProductsState() {
+    const state = this.instantProducts.state;
+    if (!state.isLoading) {
+      if (state.products.length) {
+        this.productSuggestions = state.products;
+      } else {
+        this.productSuggestions = [];
+      }
+    }
   }
 
   updateRecentQueriesListState() {
@@ -214,14 +290,22 @@ export default class CommerceSearchBox extends LightningElement {
     this.searchBox?.showSuggestions();
   };
 
+  suggestedQueryChange = (event) => {
+    event.stopPropagation();
+    const {rawValue} = event.detail;
+    this.instantProducts.updateQuery(rawValue);
+  }
+
   /**
    * Handles the selection of a suggestion or a recent query.
    */
   selectSuggestion = (event) => {
     event.stopPropagation();
-    const {value, isRecentQuery, isClearRecentQueryButton} =
-      event.detail.selectedSuggestion;
-    if (isClearRecentQueryButton) {
+    const {value, isRecentQuery, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
+    
+    if (isSeeAllProductsButton) {
+      this.searchBox?.selectSuggestion(this.instantProducts.state.query);
+    } else if (isClearRecentQueryButton) {
       this.recentQueriesList.clear();
     } else if (isRecentQuery) {
       this.recentQueriesList.executeRecentQuery(
