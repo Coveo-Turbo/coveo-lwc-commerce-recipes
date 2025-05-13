@@ -17,7 +17,7 @@
         ></lightning-button>
         
         <template for:each={currentPagesObjects} for:item="page">
-          <c-commerce-number-button key={page.number} number={page.number} selected={page.selected} oncommerce__select={goto} aria-label-value={page.ariaLabelValue}></c-commerce-number-button>
+          <c-commerce-number-button key={page.key} number={page.number} selected={page.selected} oncommerce__select={goto} aria-label-value={page.ariaLabelValue}></c-commerce-number-button>
         </template>
 
         <lightning-button

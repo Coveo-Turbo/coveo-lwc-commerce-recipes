@@ -8,7 +8,7 @@ import {
   getHeadlessBundle,
   getHeadlessBindings
 } from 'c/commerceHeadlessLoader';
-import {I18nUtils} from 'c/commerceUtils';
+import {I18nUtils, getCurrentPagesRange} from 'c/commerceUtils';
 import {LightningElement, api, track} from 'lwc';
 
 /** @typedef {import("coveo").Pagination} Pagination */
@@ -91,7 +91,11 @@ export default class CommercePager extends LightningElement {
   }
 
   updateState() {
-    this.currentPages = Array.from({ length: this.numberOfPages }, (_, i) => i + 1);
+    this.currentPages = getCurrentPagesRange(
+      this.pager.state.page,
+      this.numberOfPages,
+      this.pager.state.totalPages - 1
+    );
     this.currentPage = this.pager.state.page + 1;
     this.hasItems = this.pager.state.totalPages > 1;
   }
@@ -116,7 +120,7 @@ export default class CommercePager extends LightningElement {
    * @param {CustomEvent<number>} event
    */
   goto(event) {
-    this.pager.selectPage(event.detail);
+    this.pager.selectPage(event.detail - 1);
   }
 
   get nextDisabled() {
@@ -129,9 +133,10 @@ export default class CommercePager extends LightningElement {
 
   get currentPagesObjects() {
     return this.currentPages.map((page) => ({
-      number: page,
-      selected: page === this.currentPage,
-      ariaLabelValue: I18nUtils.format(this.labels.goToPage, page),
+      key: page,
+      number: page + 1,
+      selected: page === this.pager.state.page,
+      ariaLabelValue: I18nUtils.format(this.labels.goToPage, page + 1),
     }));
   }
 
