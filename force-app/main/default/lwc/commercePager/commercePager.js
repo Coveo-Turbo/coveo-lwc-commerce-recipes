@@ -91,7 +91,6 @@ export default class CommercePager extends LightningElement {
   }
 
   updateState() {
-    // this.currentPages = Array.from({ length: Math.min(this.numberOfPages, this.pager.state.totalPages) }, (_, i) => i + 1);
     this.currentPages = getCurrentPagesRange(
       this.pager.state.page,
       this.numberOfPages,
