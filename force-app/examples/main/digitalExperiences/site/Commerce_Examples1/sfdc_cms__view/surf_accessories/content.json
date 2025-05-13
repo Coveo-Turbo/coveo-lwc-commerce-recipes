@@ -23,6 +23,7 @@
             "children" : [ {
               "attributes" : {
                 "backgroundColor" : "",
+                "dxpStyle" : { },
                 "isLinkable" : false,
                 "linkAssistiveText" : "",
                 "paddingHorizontal" : "x-large",
@@ -35,19 +36,6 @@
               "definition" : "dxp_base:textBlock",
               "id" : "7dad2f9c-ff44-40b3-9ca3-2ca7ecc2358e",
               "type" : "component"
-            }, {
-              "attributes" : {
-                "commerceUrl" : "https://sports.barca.group/browse/promotions/surf-accessories",
-                "country" : "US",
-                "currency" : "USD",
-                "disableStateInUrl" : false,
-                "engineId" : "example-commerce-engine",
-                "language" : "en",
-                "trackingId" : "sports-ui-samples"
-              },
-              "definition" : "c:exampleCommerceListing",
-              "id" : "c98f99ca-a652-442f-8bbc-cc6dd9afffb4",
-              "type" : "component"
             } ],
             "id" : "6e8134b0-70d6-4192-8165-836938c3a8aa",
             "name" : "col1",
@@ -56,6 +44,107 @@
           } ],
           "definition" : "community_layout:section",
           "id" : "8136c278-7a48-4be8-a077-9da9d911df19",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "920px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"f4bc41b4-60f7-4a02-82bb-1448273a8521\",\"columns\":[{\"UUID\":\"88f56a8b-d22a-4e14-bdf5-d5c88cf6ed3f\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/commerce-search",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "numberOfSuggestions" : 5,
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "c55c744f-a70f-4af3-81a2-b3c6dd78b685",
+              "type" : "component"
+            } ],
+            "id" : "88f56a8b-d22a-4e14-bdf5-d5c88cf6ed3f",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "f4bc41b4-60f7-4a02-82bb-1448273a8521",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"563e4939-9396-4eab-8cbb-d15d4d73a8a8\",\"columns\":[{\"UUID\":\"f7a35c1f-6f37-4e9d-b56f-b6d2ad1b0c5e\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/browse/promotions/surf-accessories",
+                "country" : "US",
+                "currency" : "USD",
+                "disableStateInUrl" : false,
+                "dxpStyle" : { },
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "trackingId" : "sports-ui-samples"
+              },
+              "definition" : "c:exampleCommerceListing",
+              "id" : "c98f99ca-a652-442f-8bbc-cc6dd9afffb4",
+              "type" : "component"
+            } ],
+            "id" : "f7a35c1f-6f37-4e9d-b56f-b6d2ad1b0c5e",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "563e4939-9396-4eab-8cbb-d15d4d73a8a8",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"871459a5-cb3c-4749-9ee5-cb462840a9d1\",\"columns\":[{\"UUID\":\"616d1b37-1f5b-4a1a-93dd-df83535cfe80\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "616d1b37-1f5b-4a1a-93dd-df83535cfe80",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "871459a5-cb3c-4749-9ee5-cb462840a9d1",
           "type" : "component"
         } ],
         "id" : "dcb2ed58-4dcc-4438-b117-b46ddbffb31c",

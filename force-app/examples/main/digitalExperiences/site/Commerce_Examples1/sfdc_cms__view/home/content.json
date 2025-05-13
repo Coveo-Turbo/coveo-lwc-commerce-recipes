@@ -9,6 +9,7 @@
             "backgroundImageConfig" : "",
             "backgroundImageOverlay" : "rgba(0,0,0,0)",
             "componentSpacerSize" : "",
+            "dxpStyle" : { },
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
             "layoutDirectionTablet" : "column",
@@ -22,6 +23,7 @@
             "children" : [ {
               "attributes" : {
                 "backgroundColor" : "",
+                "dxpStyle" : { },
                 "isLinkable" : false,
                 "linkAssistiveText" : "",
                 "paddingHorizontal" : "x-large",
@@ -64,6 +66,7 @@
                 "commerceUrl" : "https://sports.barca.group/commerce-search",
                 "country" : "US",
                 "currency" : "USD",
+                "dxpStyle" : { },
                 "engineId" : "example-commerce-engine",
                 "language" : "en",
                 "numberOfSuggestions" : 5,
@@ -89,6 +92,7 @@
             "backgroundImageConfig" : "",
             "backgroundImageOverlay" : "rgba(0,0,0,0)",
             "componentSpacerSize" : "",
+            "dxpStyle" : { },
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
             "layoutDirectionTablet" : "column",
@@ -104,6 +108,7 @@
                 "commerceUrl" : "https://sports.barca.group",
                 "country" : "US",
                 "currency" : "USD",
+                "dxpStyle" : { },
                 "engineId" : "example-commerce-recommendation-engine",
                 "language" : "en",
                 "trackingId" : "sports-ui-samples"

@@ -9,6 +9,86 @@
             "backgroundImageConfig" : "",
             "backgroundImageOverlay" : "rgba(0,0,0,0)",
             "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"4d52c089-7e60-452f-8217-b858b46d42d2\",\"columns\":[{\"UUID\":\"873d229d-7445-42b6-ad39-b7e1c936b7db\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "backgroundColor" : "",
+                "dxpStyle" : { },
+                "isLinkable" : false,
+                "linkAssistiveText" : "",
+                "paddingHorizontal" : "x-large",
+                "paddingVertical" : "none",
+                "text" : "Towels",
+                "textAlign" : "left",
+                "textDecoration" : "{\"bold\":false}",
+                "textDisplayInfo" : "{\"textStyle\":\"heading-xlarge\",\"headingTag\":\"h1\"}"
+              },
+              "definition" : "dxp_base:textBlock",
+              "id" : "bddf4c5d-c16f-4a19-91d8-4b8884768021",
+              "type" : "component"
+            } ],
+            "id" : "873d229d-7445-42b6-ad39-b7e1c936b7db",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "4d52c089-7e60-452f-8217-b858b46d42d2",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "920px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"53e0177f-1567-441f-874f-856d0de3c96a\",\"columns\":[{\"UUID\":\"5952ccd2-dcc0-4cd4-bf05-ee6ba3bdee4b\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/commerce-search",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "numberOfSuggestions" : 5,
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "059d841a-3d7e-4d0b-bb5d-221ce51570c3",
+              "type" : "component"
+            } ],
+            "id" : "5952ccd2-dcc0-4cd4-bf05-ee6ba3bdee4b",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "53e0177f-1567-441f-874f-856d0de3c96a",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
             "dxpStyle" : { },
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
@@ -22,25 +102,11 @@
           "children" : [ {
             "children" : [ {
               "attributes" : {
-                "backgroundColor" : "",
-                "isLinkable" : false,
-                "linkAssistiveText" : "",
-                "paddingHorizontal" : "x-large",
-                "paddingVertical" : "none",
-                "text" : "Towels",
-                "textAlign" : "left",
-                "textDecoration" : "{\"bold\":false}",
-                "textDisplayInfo" : "{\"textStyle\":\"heading-xlarge\",\"headingTag\":\"h1\"}"
-              },
-              "definition" : "dxp_base:textBlock",
-              "id" : "bddf4c5d-c16f-4a19-91d8-4b8884768021",
-              "type" : "component"
-            }, {
-              "attributes" : {
                 "commerceUrl" : "https://sports.barca.group/browse/promotions/accessories/towels",
                 "country" : "US",
                 "currency" : "USD",
                 "disableStateInUrl" : false,
+                "dxpStyle" : { },
                 "engineId" : "example-commerce-engine",
                 "language" : "en",
                 "trackingId" : "sports-ui-samples"

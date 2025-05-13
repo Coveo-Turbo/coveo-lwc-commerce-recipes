@@ -6,6 +6,7 @@
     "definitionName" : "talon-template-byo:branding",
     "values" : {
       "BackgroundColor" : "#ffffff",
+      "BaseFont" : "var(--dxp-g-root-font-family)",
       "BaseFontSize" : "1rem",
       "BodyFont" : "Salesforce Sans",
       "BodyFontSize" : "1rem",

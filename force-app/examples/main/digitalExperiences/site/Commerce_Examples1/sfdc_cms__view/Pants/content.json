@@ -23,6 +23,7 @@
             "children" : [ {
               "attributes" : {
                 "backgroundColor" : "",
+                "dxpStyle" : { },
                 "isLinkable" : false,
                 "linkAssistiveText" : "",
                 "paddingHorizontal" : "x-large",
@@ -35,19 +36,6 @@
               "definition" : "dxp_base:textBlock",
               "id" : "43ee724d-b8a7-4ec1-abc8-f578fafbf7bb",
               "type" : "component"
-            }, {
-              "attributes" : {
-                "commerceUrl" : "https://sports.barca.group/browse/promotions/clothing/pants",
-                "country" : "US",
-                "currency" : "USD",
-                "disableStateInUrl" : false,
-                "engineId" : "example-commerce-engine",
-                "language" : "en",
-                "trackingId" : "sports-ui-samples"
-              },
-              "definition" : "c:exampleCommerceListing",
-              "id" : "beac1b0d-7be3-4072-a657-26ac1ca31ea5",
-              "type" : "component"
             } ],
             "id" : "d76f61ef-c3af-4e40-97c4-dd5823e76ded",
             "name" : "col1",
@@ -56,6 +44,84 @@
           } ],
           "definition" : "community_layout:section",
           "id" : "6f6bcd67-2f30-4cc8-915f-c551d03496a5",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "920px",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"88fce727-a9c3-4444-a4c9-d03315b47f41\",\"columns\":[{\"UUID\":\"a2fa0231-e4bc-4d00-81f9-3d6db9677a28\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/commerce-search",
+                "country" : "US",
+                "currency" : "USD",
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "numberOfSuggestions" : 5,
+                "redirectUrl" : "/global-search/%40uri",
+                "textarea" : false,
+                "trackingId" : "sports-ui-samples",
+                "withoutSubmitButton" : false
+              },
+              "definition" : "c:commerceStandaloneSearchBox",
+              "id" : "1e9256af-72ef-403a-94d3-125277bba7d0",
+              "type" : "component"
+            } ],
+            "id" : "a2fa0231-e4bc-4d00-81f9-3d6db9677a28",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "88fce727-a9c3-4444-a4c9-d03315b47f41",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"78a84f52-dfc5-4855-99aa-0b4fc7953377\",\"columns\":[{\"UUID\":\"456da508-05f4-4150-84d6-28ecba9f5e4d\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "commerceUrl" : "https://sports.barca.group/browse/promotions/clothing/pants",
+                "country" : "US",
+                "currency" : "USD",
+                "disableStateInUrl" : false,
+                "dxpStyle" : { },
+                "engineId" : "example-commerce-engine",
+                "language" : "en",
+                "trackingId" : "sports-ui-samples"
+              },
+              "definition" : "c:exampleCommerceListing",
+              "id" : "beac1b0d-7be3-4072-a657-26ac1ca31ea5",
+              "type" : "component"
+            } ],
+            "id" : "456da508-05f4-4150-84d6-28ecba9f5e4d",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "78a84f52-dfc5-4855-99aa-0b4fc7953377",
           "type" : "component"
         } ],
         "id" : "8f59fd95-0711-4e0d-b858-09de4e0c2b83",
