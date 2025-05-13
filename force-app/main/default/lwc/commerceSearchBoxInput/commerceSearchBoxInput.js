@@ -292,30 +292,12 @@ export default class CommerceSearchBoxInput extends LightningElement {
       }
 
       case keys.ARROWRIGHT: {
-        event.preventDefault();
-        const {id, value} = this.suggestionListElement.selectionRight();
-        if (value) {
-          this.setDisplayedInputValue(value);
-        }
-        this.ariaActiveDescendant = id;
-        this.input.setAttribute(
-          'aria-activedescendant',
-          this.ariaActiveDescendant
-        );
+        this.handleArrowKey(event, 'Right');
         break;
       }
 
       case keys.ARROWLEFT: {
-        event.preventDefault();
-        const {id, value} = this.suggestionListElement.selectionLeft();
-        if (value) {
-          this.setDisplayedInputValue(value);
-        }
-        this.ariaActiveDescendant = id;
-        this.input.setAttribute(
-          'aria-activedescendant',
-          this.ariaActiveDescendant
-        );
+        this.handleArrowKey(event, 'Left');
         break;
       }
     }
