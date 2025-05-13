@@ -10,10 +10,13 @@ Commerce Examples Community : `https://jfallaire-dev-ed.my.site.com/`
 
 ![Commerce Examples - Home](example_home.png)
 
-
 ### Product Search Page 
 
 ![Commerce Examples - Search](example_search.png)
+
+### Search Box with Instant Product 
+
+![Commerce Examples - SearchBox](example_searchBox.png)
 
 ### Listing Page
 
