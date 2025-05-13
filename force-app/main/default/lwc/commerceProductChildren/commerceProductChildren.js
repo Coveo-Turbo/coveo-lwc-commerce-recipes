@@ -69,13 +69,12 @@ export default class CommerceProductChildren extends LightningElement {
     return (
       this.product.children.map((child, i) => ({
         ...child,
-        key: i,
+        key: child.permanentid,
         imageUrl: this.getImageUrl(child),
         productName: child.ec_name || undefined,
         cssClass: this.getCssClass(child),
         isLastChild: i === this.nbOfChildrenToDisplay - 1,
         remainingChildren: this.product.children.length - (this.nbOfChildrenToDisplay - 1)
-        // interactiveProductProps: ProductUtils.interactiveProductProps(this.controller, product),
       })) || []
     );
   }

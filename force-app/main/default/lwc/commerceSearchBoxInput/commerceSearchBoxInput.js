@@ -321,6 +321,20 @@ export default class CommerceSearchBoxInput extends LightningElement {
     this.adjustTextAreaHeight();
   }
 
+  handleArrowKey(event, direction) {
+    event.preventDefault();
+    const {id, value} = direction === 'Right' ? this.suggestionListElement.selectionRight(): this.suggestionListElement.selectionLeft();
+    if (value) {
+      this.setDisplayedInputValue(value);
+    }
+    this.ariaActiveDescendant = id;
+    this.input.setAttribute(
+      'aria-activedescendant',
+      this.ariaActiveDescendant
+    );
+  }
+
+  
   handleSelection(event) {
     this.sendSelectSuggestionEvent(event.detail.selection);
     this.inputIsFocused = false;
