@@ -90,8 +90,10 @@ export default class ExampleCommerceCart extends LightningElement {
       this.cartItems = this.cartItems.map(item => {
           if (String(item.id) === itemId) {
               if (action === 'increase') {
+                  this.updateCartItemQuantity(itemId, item.quantity, item.quantity + 1);
                   return { ...item, quantity: item.quantity + 1 };
               } else if (action === 'decrease' && item.quantity > 1) {
+                  this.updateCartItemQuantity(itemId, item.quantity, item.quantity - 1);
                   return { ...item, quantity: item.quantity - 1 };
               }
           }
@@ -117,5 +119,35 @@ export default class ExampleCommerceCart extends LightningElement {
           priority: 1
         }
       );
+    }
+
+    updateCartItemQuantity(productId, oldQty, newQty) {
+      
+      const product = this.cartItems.find(item => item.id === productId);
+      
+      if (!product) return;
+
+      const delta = newQty - oldQty;
+
+      if (delta === 0) return; // No change
+
+
+      const updateGTMdataLayer = new CustomEvent('commerce__updategtmdatalayer', {
+        detail: {
+          event: delta > 0 ? "add_to_cart" : "remove_from_cart",
+          ecommerce: {
+            items: [{
+              item_id: productId,
+              item_name: product.name,
+              price: product.price,
+              quantity: Math.abs(delta)
+            }]
+          }
+        },
+        bubbles: true
+      });
+          
+      this.dispatchEvent(updateGTMdataLayer);
+      
     }
 }
