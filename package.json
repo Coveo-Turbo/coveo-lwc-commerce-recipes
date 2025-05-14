@@ -21,7 +21,7 @@
     "scratch:dev": "npm run scratch:create && npm run deploy:main && npm run deploy:examples",
     "package:version": "sf package version create --installation-key-bypass --package \"coveo-lwc-commerce-recipes\" -c",
     "package:list": "sf package version list",
-    "package:install": "sf package install --package 04tKi0000004f0vIAA  --target-org jfallaire.dev@coveo.com"
+    "package:install": "sf package install --package 04tKi0000004f15IAA  --target-org jfallaire.dev@coveo.com"
   },
   "dependencies": {
     "@coveo/bueno": "1.0.5",
