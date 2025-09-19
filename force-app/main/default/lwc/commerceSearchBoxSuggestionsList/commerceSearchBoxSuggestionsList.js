@@ -319,7 +319,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         isSelected: this.selectionIndex === 0,
         isClearRecentQueryButton: true,
         onClick: (event) => {
-          this.handleSelection(event, 0);
+          this.handleSelection(event, 0, false);
         },
       };
       options.unshift(clearRecentQueriesOption);
@@ -344,7 +344,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         engineId: null,
         containerCSSClass: null,
         onClick: (event) => {
-          this.handleSelection(event, options.length-1);
+          this.handleSelection(event, options.length-1, true);
         }
       }
       options.push(showAllProductsOption);
@@ -377,7 +377,7 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
         ? this.labels.recentQueryAriaLabel
         : this.labels.querySuggestionAriaLabel,
       onClick: (event) => {
-        this.handleSelection(event, optionIndex);
+        this.handleSelection(event, optionIndex, false);
       }
     };
   };
@@ -437,11 +437,11 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
     productElement?.click();
   }
 
-  handleSelection = (event, index) => {
+  handleSelection = (event, index, isProduct) => {
     event.preventDefault();
 
-    const {rawValue, isClearRecentQueryButton, isRecentQuery} = this.allOptions[index];
-    const {isSeeAllProductsButton} = this.productOptions?.[index] || {};
+    const {rawValue, isClearRecentQueryButton, isRecentQuery} = !isProduct ? this.allOptions[index] : {};
+    const {isSeeAllProductsButton} = isProduct ? (this.productOptions?.[index] || {}) : {};
     const selection = {
       value: rawValue,
       isClearRecentQueryButton: isClearRecentQueryButton,
