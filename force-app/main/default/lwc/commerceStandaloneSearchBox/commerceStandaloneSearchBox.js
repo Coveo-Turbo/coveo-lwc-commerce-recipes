@@ -3,7 +3,6 @@ import {
   initializeWithHeadless,
   getHeadlessBindings,
   getHeadlessBundle,
-  destroyEngine,
 } from 'c/commerceHeadlessLoader';
 import {STANDALONE_SEARCH_BOX_STORAGE_KEY, getItemFromLocalStorage, setItemInLocalStorage} from 'c/commerceUtils';
 import {CurrentPageReference, NavigationMixin} from 'lightning/navigation';
@@ -212,9 +211,6 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     this.isStandalone = !window.location.href.includes(this.redirectUrl);
     if (!this.isStandalone && this.standaloneEngine) {
       this.initialize(this.standaloneEngine);
-    }
-    if (this.isStandalone) {
-      destroyEngine(this.engineId);
     }
   }
 
