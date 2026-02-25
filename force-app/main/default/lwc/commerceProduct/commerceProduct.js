@@ -81,9 +81,16 @@ export default class CommerceProduct extends LightningElement {
     return defaultTemplate;
   }
 
-  handleClick() {
+  handleClick(event) {
     // @ts-ignore
     console.log('Product clicked', this.product, this.linkContainer);
+    // If the click originated from an anchor element (e.g. product title link),
+    // the analytics event has already been fired by the product link component.
+    // Avoid triggering a duplicate analytics event by not clicking the hidden link.
+    const composedPath = event.composedPath();
+    if (composedPath.some((el) => el.tagName === 'A')) {
+      return;
+    }
     // @ts-ignore
     this.linkContainer?.click();
   }
