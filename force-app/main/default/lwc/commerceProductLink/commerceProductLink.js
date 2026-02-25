@@ -128,6 +128,7 @@ export default class CommerceProductLink extends NavigationMixin(
   };
 
   handleClick(event) {
+    event.stopPropagation();
     if (this.isSalesforceLink) {
       event.preventDefault();
       this.navigateToSalesforceRecord(event);
