@@ -30,14 +30,14 @@ Commerce Examples Community : `https://jfallaire-dev-ed.my.site.com/`
 
 This library is released as an [unlocked package](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_unlocked_pkg_install_pkg.htm). You can install it using the following links:
 
-* [Install coveo-lwc-commerce-recipes in a production environment](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000O1PZAA0).
+* [Install coveo-lwc-commerce-recipes in a production environment](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000ObRRAA0).
 
-* [Install coveo-lwc-commerce-recipes in a sandbox environment](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000O1PZAA0).
+* [Install coveo-lwc-commerce-recipes in a sandbox environment](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000ObRRAA0).
 
 You can also install coveo-lwc-commerce-recipes with the Salesforce CLI package install command:
 
 ```
-sf package install --package 04tak000000O1PZAA0 --target-org <USER_NAME>
+sf package install --package 04tak000000ObRRAA0 --target-org <USER_NAME>
 ```
 
 where you replace `<USER_NAME>` with your username in the target Salesforce organization.
@@ -45,7 +45,7 @@ where you replace `<USER_NAME>` with your username in the target Salesforce orga
 > Note: 
 > You should always keep your Apex code clean and compiled. However, if you only want to compile the package Apex code during the installation, use the --apex-compile package option.
 >```
-> sf package install --apex-compile package --package 04tak000000O1PZAA0 --target-org <USER_NAME>
+> sf package install --apex-compile package --package 04tak000000ObRRAA0 --target-org <USER_NAME>
 > ```
 
 
@@ -138,5 +138,4 @@ The fix I discovered elsewhere suggests that because tile menus can (or used to)
 
 I just ran into this again today when attempting to use a tile menu to display a menu within a new Experience (LWR) site and was stumped. In my testing even opening all the permissions for navigation items, the tile menus (and only tile menus) would not display to unauthenticated guest users until this permission was opened up.
 ```
-
 
