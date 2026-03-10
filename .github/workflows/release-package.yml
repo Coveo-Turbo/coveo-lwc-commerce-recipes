@@ -1,0 +1,182 @@
+name: Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: Semver release version, for example 1.0.11
+        required: true
+        type: string
+      promote:
+        description: Promote the created package version
+        required: true
+        default: true
+        type: boolean
+      create_git_tag:
+        description: Create and push tag v<release_version> after promotion
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-package-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release-package:
+    runs-on: ubuntu-latest
+    env:
+      DEV_HUB_ALIAS: github-dev-hub
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate release branch naming
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == release/* && "${GITHUB_REF_NAME}" != "release/${RELEASE_VERSION}" ]]; then
+            echo "Expected branch release/${RELEASE_VERSION}, got ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli@2.x
+
+      - name: Authenticate Dev Hub
+        env:
+          SF_DEV_HUB_SFDX_URL: ${{ secrets.SF_DEV_HUB_SFDX_URL }}
+        run: |
+          if [[ -z "${SF_DEV_HUB_SFDX_URL}" ]]; then
+            echo "Missing required secret SF_DEV_HUB_SFDX_URL" >&2
+            exit 1
+          fi
+          printf '%s' "${SF_DEV_HUB_SFDX_URL}" | sf org login sfdx-url --sfdx-url-stdin --set-default-dev-hub --alias "${DEV_HUB_ALIAS}"
+
+      - name: Bump release version files
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          npm version "${RELEASE_VERSION}" --no-git-tag-version
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'sfdx-project.json';
+          const releaseVersion = process.env.RELEASE_VERSION;
+          const project = JSON.parse(fs.readFileSync(path, 'utf8'));
+          project.packageDirectories = project.packageDirectories.map((dir) =>
+            dir.default ? {...dir, versionNumber: `${releaseVersion}.NEXT`} : dir
+          );
+          fs.writeFileSync(path, JSON.stringify(project, null, 2) + '\n');
+          NODE
+
+      - name: Create package version
+        id: create_package
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          sf package version create \
+            --installation-key-bypass \
+            --package "coveo-lwc-commerce-recipes" \
+            --code-coverage \
+            --target-dev-hub "${DEV_HUB_ALIAS}" \
+            --json \
+            --wait 120 > create-package-result.json
+          node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('create-package-result.json', 'utf8'));
+          const packageId = data.result.SubscriberPackageVersionId;
+          const packageVersion = data.result.VersionNumber;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `subscriber_package_version_id=${packageId}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `package_version=${packageVersion}\n`);
+          NODE
+
+      - name: Promote package version
+        if: ${{ inputs.promote }}
+        env:
+          PACKAGE_ID: ${{ steps.create_package.outputs.subscriber_package_version_id }}
+        run: sf package version promote --package "${PACKAGE_ID}" --target-dev-hub "${DEV_HUB_ALIAS}" --no-prompt
+
+      - name: Update release metadata files
+        env:
+          PACKAGE_ID: ${{ steps.create_package.outputs.subscriber_package_version_id }}
+          PACKAGE_VERSION: ${{ steps.create_package.outputs.package_version }}
+          PROMOTE: ${{ inputs.promote }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const packageId = process.env.PACKAGE_ID;
+          const packageVersion = process.env.PACKAGE_VERSION;
+          const shouldUpdateInstallRefs = process.env.PROMOTE === 'true';
+
+          const packageJsonPath = 'package.json';
+          const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+          if (shouldUpdateInstallRefs) {
+            packageJson.scripts['package:install'] =
+              `sf package install --package ${packageId} --target-org jfallaire.dev@coveo.com`;
+          }
+          fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+
+          const sfdxProjectPath = 'sfdx-project.json';
+          const sfdxProject = JSON.parse(fs.readFileSync(sfdxProjectPath, 'utf8'));
+          const aliasVersion = packageVersion.replace(/\.(\d+)$/, '-$1');
+          sfdxProject.packageAliases = {
+            ...sfdxProject.packageAliases,
+            [`coveo-lwc-commerce-recipes@${aliasVersion}`]: packageId,
+          };
+          fs.writeFileSync(sfdxProjectPath, JSON.stringify(sfdxProject, null, 2) + '\n');
+
+          if (shouldUpdateInstallRefs) {
+            const readmePath = 'README.md';
+            const readme = fs.readFileSync(readmePath, 'utf8');
+            fs.writeFileSync(readmePath, readme.replace(/04t[a-zA-Z0-9]{12,15}/g, packageId));
+          }
+          NODE
+
+      - name: Commit and push release metadata
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json sfdx-project.json README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): prepare ${RELEASE_VERSION}"
+            git push
+          fi
+
+      - name: Create git tag
+        if: ${{ inputs.promote && inputs.create_git_tag }}
+        env:
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          git tag "v${RELEASE_VERSION}"
+          git push origin "v${RELEASE_VERSION}"
+
+      - name: Publish workflow summary
+        env:
+          PACKAGE_ID: ${{ steps.create_package.outputs.subscriber_package_version_id }}
+          PACKAGE_VERSION: ${{ steps.create_package.outputs.package_version }}
+        run: |
+          {
+            echo "### Package release"
+            echo "- Git ref: \`${GITHUB_REF_NAME}\`"
+            echo "- Release version: \`${{ inputs.release_version }}\`"
+            echo "- Salesforce package version: \`${PACKAGE_VERSION}\`"
+            echo "- Subscriber package version id: \`${PACKAGE_ID}\`"
+            echo "- Promoted: \`${{ inputs.promote }}\`"
+            echo "- Git tag created: \`${{ inputs.promote && inputs.create_git_tag }}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
