@@ -7,8 +7,7 @@ const copy = async (source, dest) => {
   try {
     return await ncp(source, dest);
   } catch (e) {
-    console.log(`Failed to copy: ${source}\nDoes the resource exist?`);
-    process.exit(1);
+    throw new Error(`Failed to copy: ${source}\nDoes the resource exist?\n${e.message}`);
   }
 };
 
@@ -18,12 +17,14 @@ const copyFirstAvailable = async (sources, dest) => {
       await access(source);
       return await copy(source, dest);
     } catch (e) {
-      // Try the next candidate path.
+      if (e.code !== 'ENOENT' && e.code !== 'ENOTDIR') {
+        throw e;
+      }
+      // Path not found; try the next candidate.
     }
   }
 
-  console.log(`Failed to copy any of these sources:\n${sources.join('\n')}`);
-  process.exit(1);
+  throw new Error(`Failed to copy any of these sources:\n${sources.join('\n')}`);
 };
 
 const main = async () => {
@@ -86,4 +87,7 @@ const copyBueno = async () => {
 
 main().then(() => {
   console.info('Copy done!');
+}).catch((e) => {
+  console.error(e);
+  process.exit(1);
 });
