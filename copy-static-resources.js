@@ -1,14 +1,30 @@
 const {promisify} = require('util');
 const ncp = promisify(require('ncp'));
 const mkdir = promisify(require('fs').mkdir);
+const access = promisify(require('fs').access);
 
 const copy = async (source, dest) => {
   try {
     return await ncp(source, dest);
   } catch (e) {
-    console.log(`Failed to copy: ${source}\nDoes the resource exist?`);
-    process.exit(1);
+    throw new Error(`Failed to copy: ${source}\nDoes the resource exist?\n${e.message}`);
   }
+};
+
+const copyFirstAvailable = async (sources, dest) => {
+  for (const source of sources) {
+    try {
+      await access(source);
+      return await copy(source, dest);
+    } catch (e) {
+      if (e.code !== 'ENOENT' && e.code !== 'ENOTDIR') {
+        throw e;
+      }
+      // Path not found; try the next candidate.
+    }
+  }
+
+  throw new Error(`Failed to copy any of these sources:\n${sources.join('\n')}`);
 };
 
 const main = async () => {
@@ -54,8 +70,11 @@ const copyBueno = async () => {
       recursive: true,
     }
   );
-  await copy(
-    './node_modules/@coveo/bueno/dist/browser/bueno.js',
+  await copyFirstAvailable(
+    [
+      './node_modules/@coveo/bueno/dist/browser/bueno.js',
+      './node_modules/@coveo/bueno/dist/bueno.js',
+    ],
     './force-app/main/default/staticresources/coveobuenocommerce/browser/bueno.js'
   );
   await copy(
@@ -68,4 +87,7 @@ const copyBueno = async () => {
 
 main().then(() => {
   console.info('Copy done!');
+}).catch((e) => {
+  console.error(e);
+  process.exit(1);
 });
