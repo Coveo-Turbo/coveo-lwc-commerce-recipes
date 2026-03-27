@@ -160,10 +160,10 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
-          commit-message: chore(release): prepare ${{ inputs.release_version }}
+          commit-message: "chore(release): prepare ${{ inputs.release_version }}"
           branch: release-metadata/${{ inputs.release_version }}
           delete-branch: true
-          title: chore(release): prepare ${{ inputs.release_version }}
+          title: "chore(release): prepare ${{ inputs.release_version }}"
           body: |
             ## Summary
             - update release metadata for package version `${{ steps.create_package.outputs.package_version }}`
