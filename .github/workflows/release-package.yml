@@ -13,7 +13,7 @@ on:
         default: true
         type: boolean
       create_git_tag:
-        description: Create and push tag v<release_version> after promotion
+        description: Create Git tag and GitHub release v<release_version> after promotion
         required: true
         default: false
         type: boolean
@@ -175,13 +175,38 @@ jobs:
             sfdx-project.json
             README.md
 
-      - name: Create git tag
+      - name: Create GitHub release
         if: ${{ inputs.promote && inputs.create_git_tag }}
-        env:
-          RELEASE_VERSION: ${{ inputs.release_version }}
-        run: |
-          git tag "v${RELEASE_VERSION}"
-          git push origin "v${RELEASE_VERSION}"
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.release_version }}
+          name: Release v${{ inputs.release_version }}
+          body: |
+            ## Coveo LWC Commerce Library v${{ inputs.release_version }}
+
+            ### Salesforce package
+
+            - Salesforce package version: `${{ steps.create_package.outputs.package_version }}`
+            - Subscriber package version id: `${{ steps.create_package.outputs.subscriber_package_version_id }}`
+
+            ### Install links
+
+            - Production / Developer Org:
+              https://login.salesforce.com/packaging/installPackage.apexp?p0=${{ steps.create_package.outputs.subscriber_package_version_id }}
+            - Sandbox:
+              https://test.salesforce.com/packaging/installPackage.apexp?p0=${{ steps.create_package.outputs.subscriber_package_version_id }}
+
+            ### Install with Salesforce CLI
+
+            ```bash
+            sf package install --package ${{ steps.create_package.outputs.subscriber_package_version_id }} --target-org <your-org-alias> --wait 10
+            ```
+
+            ```bash
+            sf package install --apex-compile package --package ${{ steps.create_package.outputs.subscriber_package_version_id }} --target-org <your-org-alias> --wait 10
+            ```
+          draft: false
+          prerelease: false
 
       - name: Publish workflow summary
         env:
@@ -195,5 +220,5 @@ jobs:
             echo "- Salesforce package version: \`${PACKAGE_VERSION}\`"
             echo "- Subscriber package version id: \`${PACKAGE_ID}\`"
             echo "- Promoted: \`${{ inputs.promote }}\`"
-            echo "- Git tag created: \`${{ inputs.promote && inputs.create_git_tag }}\`"
+            echo "- GitHub release created: \`${{ inputs.promote && inputs.create_git_tag }}\`"
           } >> "${GITHUB_STEP_SUMMARY}"
