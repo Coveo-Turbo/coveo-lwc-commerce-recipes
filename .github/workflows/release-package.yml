@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build static resources
+        run: npm run build:staticresources
+
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli@2.x
 
@@ -88,13 +91,19 @@ jobs:
         env:
           RELEASE_VERSION: ${{ inputs.release_version }}
         run: |
+          set +e
           sf package version create \
             --installation-key-bypass \
             --package "coveo-lwc-commerce-recipes" \
             --code-coverage \
             --target-dev-hub "${DEV_HUB_ALIAS}" \
             --json \
-            --wait 120 > create-package-result.json
+            --wait 120 > create-package-result.json 2>&1
+          status=$?
+          if [[ $status -ne 0 ]]; then
+            cat create-package-result.json
+            exit $status
+          fi
           node <<'NODE'
           const fs = require('fs');
           const data = JSON.parse(fs.readFileSync('create-package-result.json', 'utf8'));
