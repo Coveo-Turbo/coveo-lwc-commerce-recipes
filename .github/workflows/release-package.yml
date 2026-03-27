@@ -20,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: release-package-${{ github.ref_name }}
@@ -155,17 +156,24 @@ jobs:
           }
           NODE
 
-      - name: Commit and push release metadata
-        env:
-          RELEASE_VERSION: ${{ inputs.release_version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json sfdx-project.json README.md
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(release): prepare ${RELEASE_VERSION}"
-            git push
-          fi
+      - name: Create release metadata pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          commit-message: chore(release): prepare ${{ inputs.release_version }}
+          branch: release-metadata/${{ inputs.release_version }}
+          delete-branch: true
+          title: chore(release): prepare ${{ inputs.release_version }}
+          body: |
+            ## Summary
+            - update release metadata for package version `${{ steps.create_package.outputs.package_version }}`
+            - record subscriber package version id `${{ steps.create_package.outputs.subscriber_package_version_id }}`
+            - refresh install references in `package.json`, `sfdx-project.json`, and `README.md`
+          add-paths: |
+            package.json
+            package-lock.json
+            sfdx-project.json
+            README.md
 
       - name: Create git tag
         if: ${{ inputs.promote && inputs.create_git_tag }}
