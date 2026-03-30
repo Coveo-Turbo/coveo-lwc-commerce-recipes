@@ -1,30 +1,58 @@
+const fs = require('fs');
+const path = require('path');
+const esbuild = require('esbuild');
 const {promisify} = require('util');
 const ncp = promisify(require('ncp'));
-const mkdir = promisify(require('fs').mkdir);
-const access = promisify(require('fs').access);
+const mkdir = promisify(fs.mkdir);
+const access = promisify(fs.access);
 
 const copy = async (source, dest) => {
   try {
     return await ncp(source, dest);
   } catch (e) {
-    throw new Error(`Failed to copy: ${source}\nDoes the resource exist?\n${e.message}`);
+    throw new Error(
+      `Failed to copy: ${source}\nDoes the resource exist?\n${e.message}`
+    );
   }
 };
 
-const copyFirstAvailable = async (sources, dest) => {
-  for (const source of sources) {
-    try {
-      await access(source);
-      return await copy(source, dest);
-    } catch (e) {
-      if (e.code !== 'ENOENT' && e.code !== 'ENOTDIR') {
-        throw e;
-      }
-      // Path not found; try the next candidate.
-    }
-  }
+const resolveLibraryPath = (packageName, relativePath) =>
+  path.resolve(path.dirname(require.resolve(packageName)), relativePath);
 
-  throw new Error(`Failed to copy any of these sources:\n${sources.join('\n')}`);
+const pathExists = async (source) => {
+  try {
+    await access(source);
+    return true;
+  } catch (e) {
+    if (e.code === 'ENOENT' || e.code === 'ENOTDIR') {
+      return false;
+    }
+    throw e;
+  }
+};
+
+const buildBuenoBrowserBundle = async (source, dest) => {
+  try {
+    await esbuild.build({
+      entryPoints: [source],
+      outfile: dest,
+      bundle: true,
+      platform: 'browser',
+      format: 'iife',
+      globalName: 'Bueno',
+      legalComments: 'inline',
+      tsconfigRaw: {
+        compilerOptions: {},
+      },
+      define: {
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      },
+    });
+  } catch (e) {
+    throw new Error(
+      `Failed to build Bueno browser bundle from: ${source}\n${e.message}`
+    );
+  }
 };
 
 const main = async () => {
@@ -60,23 +88,30 @@ const copyHeadless = async () => {
 
 const copyBueno = async () => {
   console.info('Begin copy Bueno.');
+  const browserBundleSource = resolveLibraryPath('@coveo/bueno', '../cdn/bueno.js');
+  const esmBundleSource = resolveLibraryPath('@coveo/bueno', './bueno.esm.js');
+  const browserBundleDestination =
+    './force-app/main/default/staticresources/coveobuenocommerce/browser/bueno.js';
 
-  await mkdir('./force-app/main/default/staticresources/coveobuenocommerce/browser', {
-    recursive: true,
-  });
+  await mkdir(
+    './force-app/main/default/staticresources/coveobuenocommerce/browser',
+    {
+      recursive: true,
+    }
+  );
   await mkdir(
     './force-app/main/default/staticresources/coveobuenocommerce/definitions',
     {
       recursive: true,
     }
   );
-  await copyFirstAvailable(
-    [
-      './node_modules/@coveo/bueno/dist/browser/bueno.js',
-      './node_modules/@coveo/bueno/dist/bueno.js',
-    ],
-    './force-app/main/default/staticresources/coveobuenocommerce/browser/bueno.js'
-  );
+
+  if (await pathExists(browserBundleSource)) {
+    await copy(browserBundleSource, browserBundleDestination);
+  } else {
+    await buildBuenoBrowserBundle(esmBundleSource, browserBundleDestination);
+  }
+
   await copy(
     './node_modules/@coveo/bueno/dist/definitions',
     './force-app/main/default/staticresources/coveobuenocommerce/definitions'
@@ -85,9 +120,11 @@ const copyBueno = async () => {
   console.info('Bueno copied.');
 };
 
-main().then(() => {
-  console.info('Copy done!');
-}).catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main()
+  .then(() => {
+    console.info('Copy done!');
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
