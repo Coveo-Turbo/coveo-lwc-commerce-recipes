@@ -24,7 +24,7 @@
     "package:install": "sf package install --package 04tak000000PXNNAA4 --target-org jfallaire.dev@coveo.com"
   },
   "dependencies": {
-    "@coveo/bueno": "^1.1.7",
+    "@coveo/bueno": "^1.1.8",
     "@coveo/headless": "^3.47.0"
   },
   "engines": {
@@ -38,6 +38,7 @@
     "@salesforce/eslint-plugin-lightning": "^1.0.0",
     "@salesforce/sfdx-lwc-jest": "^3.1.0",
     "dotenv": "^16.4.5",
+    "esbuild": "0.27.4",
     "eslint": "^8.11.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^27.6.0",
