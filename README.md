@@ -138,3 +138,11 @@ The fix I discovered elsewhere suggests that because tile menus can (or used to)
 
 I just ran into this again today when attempting to use a tile menu to display a menu within a new Experience (LWR) site and was stumped. In my testing even opening all the permissions for navigation items, the tile menus (and only tile menus) would not display to unauthenticated guest users until this permission was opened up.
 ```
+
+### Facet counts can differ from grouped search results
+
+In the sample search experience, searching for `t-shirt` can show `Brand > Calvin Klein (41)`. If you then search within the `Brand` facet for `Cal` and select `Calvin Klein`, the result list drops to 6 grouped products and the selected facet count becomes `Calvin Klein (6)`.
+
+This mismatch is not caused by missing query propagation in the LWC layer. Request traces for this repro show that the active query (`t-shirt`) is sent in both the main commerce `search` request and the commerce `facet?type=SEARCH` request.
+
+The most likely explanation is a grouped-count mismatch between parent product cards in the result list and variant or item-level facet counts returned by the Commerce platform. Before changing `commerceFacet`, `commerceCategoryFacet`, or `commerceInterface`, verify the example catalog product-grouping configuration in Coveo, especially the grouping field behavior and the `Use cache for nested queries` setting.
