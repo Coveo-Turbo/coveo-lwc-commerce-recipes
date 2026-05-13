@@ -138,3 +138,13 @@ The fix I discovered elsewhere suggests that because tile menus can (or used to)
 
 I just ran into this again today when attempting to use a tile menu to display a menu within a new Experience (LWR) site and was stumped. In my testing even opening all the permissions for navigation items, the tile menus (and only tile menus) would not display to unauthenticated guest users until this permission was opened up.
 ```
+
+### Facet counts can differ from grouped search results
+
+In the sample search experience, searching for `t-shirt` can show `Brand > Calvin Klein (41)`. If you then search within the `Brand` facet for `Cal` and select `Calvin Klein`, the result list drops to 6 grouped products and the selected facet count becomes `Calvin Klein (6)`.
+
+This mismatch is not caused by missing query propagation in the LWC layer. Request traces for this repro show that the active query (`t-shirt`) is sent in both the main commerce `search` request and the commerce `facet?type=SEARCH` request.
+
+The root cause in this case was the grouping field `ec_item_group_id` not having `Use cache for nested queries` enabled. After enabling that option on the facet field, the facet counts aligned correctly with the grouped commerce results.
+
+This lines up with documented `filterFacetCount` behavior in the Search API, where folded parent results can be excluded from facet count estimation only when the target folding field is also a facet field with `Use cache for nested queries` enabled. In Commerce API flows, this parameter is not exposed directly through CMH Facet Collections, but the grouped facet count behavior depends on the same field configuration.
