@@ -1,12 +1,14 @@
 import clear from '@salesforce/label/c.commerce_Clear';
 import search from '@salesforce/label/c.commerce_Search';
 import searchFieldWithSuggestions from '@salesforce/label/c.commerce_SearchFieldWithSuggestions';
-import {keys} from 'c/commerceUtils';
+import {Debouncer, keys} from 'c/commerceUtils';
 import {LightningElement, api} from 'lwc';
 // @ts-ignore
 import defaultSearchBoxInput from './templates/defaultSearchBoxInput.html';
 // @ts-ignore
 import expandableSearchBoxInput from './templates/expandableSearchBoxInput.html';
+
+const INPUT_VALUE_CHANGE_DEBOUNCE_DELAY_IN_MS = 300;
 
 /** @typedef {import("c/commerceSearchBoxSuggestionsList").default} commerceSearchBoxSuggestionsList */
 /** @typedef {import("coveo").Product} Product */
@@ -117,6 +119,11 @@ export default class CommerceSearchBoxInput extends LightningElement {
   inputIsFocused = false;
   /** @type {string} */
   _inputValue = '';
+  debouncer = new Debouncer();
+  sendInputValueChangeEventDebounced = this.debouncer.debounce(
+    this.sendInputValueChangeEvent.bind(this),
+    INPUT_VALUE_CHANGE_DEBOUNCE_DELAY_IN_MS
+  );
 
   connectedCallback() {
     this.addEventListener(
@@ -126,6 +133,7 @@ export default class CommerceSearchBoxInput extends LightningElement {
   }
 
   disconnectedCallback() {
+    this.debouncer.clearTimeout();
     this.removeEventListener(
       'commerce__suggestionlistrender',
       this.handleSuggestionListEvent
@@ -179,6 +187,7 @@ export default class CommerceSearchBoxInput extends LightningElement {
    * Sends the "commerce__submitSearch" event.
    */
   sendSubmitSearchEvent() {
+    this.debouncer.clearTimeout();
     if (this._inputValue !== this.input.value) {
       this.sendInputValueChangeEvent(this.input.value);
     }
@@ -238,7 +247,7 @@ export default class CommerceSearchBoxInput extends LightningElement {
   }
 
   handleValueChange() {
-    this.sendInputValueChangeEvent(this.input.value);
+    this.sendInputValueChangeEventDebounced(this.input.value);
   }
 
   onSubmit(event) {
@@ -317,7 +326,7 @@ export default class CommerceSearchBoxInput extends LightningElement {
   }
 
   onTextAreaInput() {
-    this.sendInputValueChangeEvent(this.input.value);
+    this.sendInputValueChangeEventDebounced(this.input.value);
     this.adjustTextAreaHeight();
   }
 
@@ -362,6 +371,7 @@ export default class CommerceSearchBoxInput extends LightningElement {
   }
 
   clearInput() {
+    this.debouncer.clearTimeout();
     this.sendInputValueChangeEvent('');
     this.setDisplayedInputValue('');
     this.input.removeAttribute('aria-activedescendant');
