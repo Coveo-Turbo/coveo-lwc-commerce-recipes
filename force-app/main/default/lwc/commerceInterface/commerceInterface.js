@@ -244,7 +244,7 @@ export default class CommerceInterface extends LightningElement {
 
 
   initUrlManager() {
-    if (!this.disableStateInUrl) {
+    if (this.disableStateInUrl) {
       return;
     }
 
