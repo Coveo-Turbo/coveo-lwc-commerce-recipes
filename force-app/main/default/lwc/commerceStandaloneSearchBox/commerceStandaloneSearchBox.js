@@ -5,6 +5,7 @@ import {
   getHeadlessBundle,
 } from 'c/commerceHeadlessLoader';
 import {STANDALONE_SEARCH_BOX_STORAGE_KEY, getItemFromLocalStorage, setItemInLocalStorage} from 'c/commerceUtils';
+import {shouldRedirectToSearchPage} from './redirectUtils';
 import {CurrentPageReference, NavigationMixin} from 'lightning/navigation';
 import {LightningElement, api, track, wire} from 'lwc';
 // @ts-ignore
@@ -308,7 +309,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
 
     // Check for redirect
     const {redirectTo, value} = this.standaloneSearchBox.state;
-    if (!redirectTo) {
+    if (!shouldRedirectToSearchPage({redirectTo, value})) {
       return;
     }
 
