@@ -1,28 +1,43 @@
 /* eslint-disable no-import-assign */
-import QuanticSearchBox from 'c/quanticSearchBox';
-// @ts-ignore
+import CommerceSearchBox from 'c/commerceSearchBox';
 import {createElement} from 'lwc';
-import * as mockHeadlessLoader from 'c/quanticHeadlessLoader';
+import * as mockHeadlessLoader from 'c/commerceHeadlessLoader';
 
-jest.mock('c/quanticHeadlessLoader');
+jest.mock('c/commerceHeadlessLoader');
+
+jest.mock('c/commerceSearchBoxStyle', () => () => '', {virtual: true});
 
 let isInitialized = false;
 
-const exampleEngine = {
-  id: 'dummy engine',
-};
+const exampleEngine = {id: 'dummy-engine'};
 
 const functionsMocks = {
   buildSearchBox: jest.fn(() => ({
-    state: {},
+    state: {
+      value: '',
+      suggestions: [],
+    },
     subscribe: functionsMocks.subscribe,
   })),
-  loadQuerySuggestActions: jest.fn(() => {}),
+  loadQuerySuggestActions: jest.fn(() => ({})),
+  buildInstantProducts: jest.fn(() => ({
+    state: {isLoading: false, products: []},
+    updateQuery: functionsMocks.updateQuery,
+    subscribe: functionsMocks.instantProductsSubscribe,
+  })),
+  buildProductTemplatesManager: jest.fn(() => ({
+    registerTemplates: jest.fn(),
+  })),
   subscribe: jest.fn((cb) => {
     cb();
     return functionsMocks.unsubscribe;
   }),
-  unsubscribe: jest.fn(() => {}),
+  instantProductsSubscribe: jest.fn((cb) => {
+    cb();
+    return functionsMocks.unsubscribe;
+  }),
+  updateQuery: jest.fn(),
+  unsubscribe: jest.fn(),
 };
 
 const defaultOptions = {
@@ -35,39 +50,35 @@ const defaultOptions = {
   keepFiltersOnSearch: false,
 };
 
+function prepareHeadlessState() {
+  mockHeadlessLoader.getHeadlessBundle = () => ({
+    buildSearchBox: functionsMocks.buildSearchBox,
+    loadQuerySuggestActions: functionsMocks.loadQuerySuggestActions,
+    buildInstantProducts: functionsMocks.buildInstantProducts,
+    buildProductTemplatesManager: functionsMocks.buildProductTemplatesManager,
+  });
+}
+
 function createTestComponent(options = defaultOptions) {
   prepareHeadlessState();
-
-  const element = createElement('c-quantic-search-box', {
-    is: QuanticSearchBox,
+  const element = createElement('c-commerce-search-box', {
+    is: CommerceSearchBox,
   });
-  for (const [key, value] of Object.entries(options)) {
+  Object.entries(options).forEach(([key, value]) => {
     element[key] = value;
-  }
+  });
   document.body.appendChild(element);
   return element;
 }
 
-function prepareHeadlessState() {
-  // @ts-ignore
-  mockHeadlessLoader.getHeadlessBundle = () => {
-    return {
-      buildSearchBox: functionsMocks.buildSearchBox,
-      loadQuerySuggestActions: functionsMocks.loadQuerySuggestActions,
-    };
-  };
-}
-
-// Helper function to wait until the microtask queue is empty.
-function flushPromises() {
-  // eslint-disable-next-line @lwc/lwc/no-async-operation
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
+const flushPromises = async () => {
+  await Promise.resolve();
+  await Promise.resolve();
+};
 
 function mockSuccessfulHeadlessInitialization() {
-  // @ts-ignore
   mockHeadlessLoader.initializeWithHeadless = (element, _, initialize) => {
-    if (element instanceof QuanticSearchBox && !isInitialized) {
+    if (element instanceof CommerceSearchBox && !isInitialized) {
       isInitialized = true;
       initialize(exampleEngine);
     }
@@ -75,7 +86,6 @@ function mockSuccessfulHeadlessInitialization() {
 }
 
 function cleanup() {
-  // The jsdom instance is shared across test cases in a single file so reset the DOM
   while (document.body.firstChild) {
     document.body.removeChild(document.body.firstChild);
   }
@@ -83,7 +93,7 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-search-box', () => {
+describe('c-commerce-search-box', () => {
   beforeAll(() => {
     mockSuccessfulHeadlessInitialization();
   });
@@ -92,45 +102,22 @@ describe('c-quantic-search-box', () => {
     cleanup();
   });
 
-  describe('controller initialization', () => {
-    it('should subscribe to the headless state changes', async () => {
-      createTestComponent();
-      await flushPromises();
-
-      expect(functionsMocks.subscribe).toHaveBeenCalledTimes(1);
+  it('does not update instant product query when suggestions change', async () => {
+    const element = createTestComponent({
+      ...defaultOptions,
+      disableProductSuggestions: false,
     });
+    await flushPromises();
+    element.dispatchEvent(
+      new CustomEvent('commerce__suggestedquerychange', {
+        detail: {rawValue: 'query'},
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await flushPromises();
 
-    describe('when keepFiltersOnSearch is false (default)', () => {
-      it('should properly initialize the controller with clear filters enabled', async () => {
-        createTestComponent();
-        await flushPromises();
-
-        expect(functionsMocks.buildSearchBox).toHaveBeenCalledTimes(1);
-        expect(functionsMocks.buildSearchBox).toHaveBeenCalledWith(
-          exampleEngine,
-          expect.objectContaining({
-            options: expect.objectContaining({clearFilters: true}),
-          })
-        );
-      });
-    });
-
-    describe('when keepFiltersOnSearch is true', () => {
-      it('should properly initialize the controller with clear filters disabled', async () => {
-        createTestComponent({
-          ...defaultOptions,
-          keepFiltersOnSearch: true,
-        });
-        await flushPromises();
-
-        expect(functionsMocks.buildSearchBox).toHaveBeenCalledTimes(1);
-        expect(functionsMocks.buildSearchBox).toHaveBeenCalledWith(
-          exampleEngine,
-          expect.objectContaining({
-            options: expect.objectContaining({clearFilters: false}),
-          })
-        );
-      });
-    });
+    expect(functionsMocks.buildInstantProducts).toHaveBeenCalledTimes(1);
+    expect(functionsMocks.updateQuery).not.toHaveBeenCalled();
   });
 });

@@ -190,7 +190,6 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     this.addEventListener('commerce__submitsearch', this.handleSubmit);
     this.addEventListener('commerce__showsuggestions', this.showSuggestions);
     this.addEventListener('commerce__selectsuggestion', this.selectSuggestion);
-    this.addEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   renderedCallback() {
@@ -290,7 +289,6 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     this.removeEventListener('commerce__submitsearch', this.handleSubmit);
     this.removeEventListener('commerce__showsuggestions', this.showSuggestions);
     this.removeEventListener('commerce__selectsuggestion', this.selectSuggestion);
-    this.removeEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   get searchBoxValue() {
@@ -407,12 +405,6 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     event.stopPropagation();
     this.standaloneSearchBox?.showSuggestions();
   };
-
-  suggestedQueryChange = (event) => {
-    event.stopPropagation();
-    const {rawValue} = event.detail;
-    this.instantProducts.updateQuery(rawValue);
-  }
 
   /**
    * Handles the selection of a suggestion.

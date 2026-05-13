@@ -1,48 +1,77 @@
 /* eslint-disable no-import-assign */
-import QuanticStandaloneSearchBox from 'c/quanticStandaloneSearchBox';
-// @ts-ignore
+import CommerceStandaloneSearchBox from 'c/commerceStandaloneSearchBox';
 import {createElement} from 'lwc';
-import * as mockHeadlessLoader from 'c/quanticHeadlessLoader';
-import {CurrentPageReference} from 'lightning/navigation';
-import getHeadlessConfiguration from '@salesforce/apex/HeadlessController.getHeadlessConfiguration';
+import * as mockHeadlessLoader from 'c/commerceHeadlessLoader';
 
-const nonStandaloneURL = 'https://www.example.com/global-search/%40uri';
-const defaultHeadlessConfiguration = JSON.stringify({
-  organization: 'testOrgId',
-  accessToken: 'testAccessToken',
-});
+jest.mock('c/commerceHeadlessLoader');
 
-jest.mock('c/quanticHeadlessLoader');
-
+jest.mock('c/commerceSearchBoxStyle', () => () => '', {virtual: true});
 jest.mock(
-  '@salesforce/apex/HeadlessController.getHeadlessConfiguration',
-  () => ({
-    default: jest.fn(),
-  }),
+  'c/commerceInterface',
+  () => {
+    const {LightningElement} = require('lwc');
+    return {
+      __esModule: true,
+      default: class extends LightningElement {},
+    };
+  },
+  {virtual: true}
+);
+jest.mock(
+  'c/commerceSearchBoxInput',
+  () => {
+    const {LightningElement} = require('lwc');
+    return {
+      __esModule: true,
+      default: class extends LightningElement {},
+    };
+  },
+  {virtual: true}
+);
+jest.mock(
+  'c/commerceSearchBox',
+  () => {
+    const {LightningElement} = require('lwc');
+    return {
+      __esModule: true,
+      default: class extends LightningElement {},
+    };
+  },
   {virtual: true}
 );
 
-mockHeadlessLoader.loadDependencies = () =>
-  new Promise((resolve) => {
-    resolve();
-  });
-
 let isInitialized = false;
 
-const exampleEngine = {
-  id: 'engineId',
-};
+const exampleEngine = {id: 'engine-id'};
 
 const functionsMocks = {
   buildStandaloneSearchBox: jest.fn(() => ({
-    state: {},
+    state: {
+      value: '',
+      suggestions: [],
+      redirectTo: null,
+    },
     subscribe: functionsMocks.subscribe,
+  })),
+  loadQuerySuggestActions: jest.fn(() => ({})),
+  buildInstantProducts: jest.fn(() => ({
+    state: {isLoading: false, products: []},
+    updateQuery: functionsMocks.updateQuery,
+    subscribe: functionsMocks.instantProductsSubscribe,
+  })),
+  buildProductTemplatesManager: jest.fn(() => ({
+    registerTemplates: jest.fn(),
   })),
   subscribe: jest.fn((cb) => {
     cb();
     return functionsMocks.unsubscribe;
   }),
-  unsubscribe: jest.fn(() => {}),
+  instantProductsSubscribe: jest.fn((cb) => {
+    cb();
+    return functionsMocks.unsubscribe;
+  }),
+  updateQuery: jest.fn(),
+  unsubscribe: jest.fn(),
 };
 
 const defaultOptions = {
@@ -56,35 +85,35 @@ const defaultOptions = {
   redirectUrl: '/global-search/%40uri',
 };
 
+function prepareHeadlessState() {
+  mockHeadlessLoader.getHeadlessBundle = () => ({
+    buildStandaloneSearchBox: functionsMocks.buildStandaloneSearchBox,
+    loadQuerySuggestActions: functionsMocks.loadQuerySuggestActions,
+    buildInstantProducts: functionsMocks.buildInstantProducts,
+    buildProductTemplatesManager: functionsMocks.buildProductTemplatesManager,
+  });
+}
+
 function createTestComponent(options = defaultOptions) {
   prepareHeadlessState();
-  const element = createElement('c-quantic-standalone-search-box', {
-    is: QuanticStandaloneSearchBox,
+  const element = createElement('c-commerce-standalone-search-box', {
+    is: CommerceStandaloneSearchBox,
   });
-  for (const [key, value] of Object.entries(options)) {
+  Object.entries(options).forEach(([key, value]) => {
     element[key] = value;
-  }
+  });
   document.body.appendChild(element);
   return element;
 }
 
-function prepareHeadlessState() {
-  // @ts-ignore
-  global.CoveoHeadless = {
-    buildStandaloneSearchBox: functionsMocks.buildStandaloneSearchBox,
-  };
-}
-
-// Helper function to wait until the microtask queue is empty.
-function flushPromises() {
-  // eslint-disable-next-line @lwc/lwc/no-async-operation
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
+const flushPromises = async () => {
+  await Promise.resolve();
+  await Promise.resolve();
+};
 
 function mockSuccessfulHeadlessInitialization() {
-  // @ts-ignore
   mockHeadlessLoader.initializeWithHeadless = (element, _, initialize) => {
-    if (element instanceof QuanticStandaloneSearchBox && !isInitialized) {
+    if (element instanceof CommerceStandaloneSearchBox && !isInitialized) {
       isInitialized = true;
       initialize(exampleEngine);
     }
@@ -92,7 +121,6 @@ function mockSuccessfulHeadlessInitialization() {
 }
 
 function cleanup() {
-  // The jsdom instance is shared across test cases in a single file so reset the DOM
   while (document.body.firstChild) {
     document.body.removeChild(document.body.firstChild);
   }
@@ -100,9 +128,8 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-standalone-search-box', () => {
-  beforeEach(() => {
-    getHeadlessConfiguration.mockResolvedValue(defaultHeadlessConfiguration);
+describe('c-commerce-standalone-search-box', () => {
+  beforeAll(() => {
     mockSuccessfulHeadlessInitialization();
   });
 
@@ -110,77 +137,22 @@ describe('c-quantic-standalone-search-box', () => {
     cleanup();
   });
 
-  describe('controller initialization', () => {
-    it('should subscribe to the headless state changes', async () => {
-      createTestComponent();
-      await flushPromises();
-
-      expect(functionsMocks.subscribe).toHaveBeenCalledTimes(1);
+  it('does not update instant product query when suggestions change', async () => {
+    const element = createTestComponent({
+      ...defaultOptions,
+      disableProductSuggestions: false,
     });
+    await flushPromises();
+    element.dispatchEvent(
+      new CustomEvent('commerce__suggestedquerychange', {
+        detail: {rawValue: 'query'},
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await flushPromises();
 
-    describe('when the current page reference changes', () => {
-      beforeAll(() => {
-        // This is needed to mock the window.location.href property to test the keepFiltersOnSearch property in the quanticSearchBox.
-        // https://stackoverflow.com/questions/54021037/how-to-mock-window-location-href-with-jest-vuejs
-        Object.defineProperty(window, 'location', {
-          writable: true,
-          value: {href: nonStandaloneURL},
-        });
-      });
-
-      it('should properly pass the keepFiltersOnSearch property to the quanticSearchBox', async () => {
-        const element = createTestComponent({
-          ...defaultOptions,
-          keepFiltersOnSearch: false,
-        });
-        // eslint-disable-next-line @lwc/lwc/no-unexpected-wire-adapter-usages
-        CurrentPageReference.emit({url: nonStandaloneURL});
-        await flushPromises();
-
-        const searchBox = element.shadowRoot.querySelector(
-          'c-quantic-search-box'
-        );
-
-        expect(searchBox).not.toBeNull();
-        expect(searchBox.keepFiltersOnSearch).toEqual(false);
-      });
-    });
-
-    describe('when keepFiltersOnSearch is false (default)', () => {
-      it('should properly initialize the controller with clear filters enabled', async () => {
-        createTestComponent();
-        await flushPromises();
-
-        expect(functionsMocks.buildStandaloneSearchBox).toHaveBeenCalledTimes(
-          1
-        );
-        expect(functionsMocks.buildStandaloneSearchBox).toHaveBeenCalledWith(
-          exampleEngine,
-          expect.objectContaining({
-            options: expect.objectContaining({clearFilters: true}),
-          })
-        );
-      });
-    });
-
-    describe('when keepFiltersOnSearch is true', () => {
-      it('should properly initialize the controller with clear filters disabled', async () => {
-        createTestComponent({
-          ...defaultOptions,
-          keepFiltersOnSearch: true,
-        });
-        await flushPromises();
-
-        expect(functionsMocks.buildStandaloneSearchBox).toHaveBeenCalledTimes(
-          1
-        );
-        expect(functionsMocks.buildStandaloneSearchBox).toHaveBeenCalledWith(
-          exampleEngine,
-          expect.objectContaining({
-            options: expect.objectContaining({clearFilters: false}),
-          })
-        );
-      });
-    });
+    expect(functionsMocks.buildInstantProducts).toHaveBeenCalledTimes(1);
+    expect(functionsMocks.updateQuery).not.toHaveBeenCalled();
   });
 });

@@ -205,7 +205,6 @@ export default class CommerceSearchBox extends LightningElement {
     this.addEventListener('commerce__submitsearch', this.handleSubmit);
     this.addEventListener('commerce__showsuggestions', this.showSuggestion);
     this.addEventListener('commerce__selectsuggestion', this.selectSuggestion);
-    this.addEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   renderedCallback() {
@@ -223,7 +222,6 @@ export default class CommerceSearchBox extends LightningElement {
     this.removeEventListener('commerce__submitsearch', this.handleSubmit);
     this.removeEventListener('commerce__showsuggestions', this.showSuggestion);
     this.removeEventListener('commerce__selectsuggestion',this.selectSuggestion);
-    this.removeEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
   }
 
   get searchBoxValue() {
@@ -289,12 +287,6 @@ export default class CommerceSearchBox extends LightningElement {
     event.stopPropagation();
     this.searchBox?.showSuggestions();
   };
-
-  suggestedQueryChange = (event) => {
-    event.stopPropagation();
-    const {rawValue} = event.detail;
-    this.instantProducts.updateQuery(rawValue);
-  }
 
   /**
    * Handles the selection of a suggestion or a recent query.
