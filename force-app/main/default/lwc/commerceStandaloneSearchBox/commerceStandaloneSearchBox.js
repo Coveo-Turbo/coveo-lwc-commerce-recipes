@@ -175,6 +175,8 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   productSuggestions = [];
   /** @type {ProductBindings} */
   productBindings;
+  /** @type {boolean} */
+  hasPendingRedirect = false;
 
   /** @type {string} */
   get standaloneEngineId() {
@@ -309,9 +311,20 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
 
     // Check for redirect
     const {redirectTo, value} = this.standaloneSearchBox.state;
-    if (!shouldRedirectToSearchPage({redirectTo, value})) {
+    if (this.hasPendingRedirect && !value?.trim()) {
+      this.hasPendingRedirect = false;
       return;
     }
+    if (
+      !shouldRedirectToSearchPage({
+        hasPendingRedirect: this.hasPendingRedirect,
+        redirectTo,
+        value,
+      })
+    ) {
+      return;
+    }
+    this.hasPendingRedirect = false;
 
     localStorage.setItem(
       STANDALONE_SEARCH_BOX_STORAGE_KEY,
@@ -397,6 +410,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    */
   handleSubmit = (event) => {
     event.stopPropagation();
+    this.hasPendingRedirect = true;
     this.standaloneSearchBox?.submit();
   };
 
@@ -424,10 +438,13 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     const {value, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
 
     if (isSeeAllProductsButton) {
+      this.hasPendingRedirect = true;
       this.standaloneSearchBox?.selectSuggestion(this.instantProducts.state.query);
     } else if (isClearRecentQueryButton) {
+      this.hasPendingRedirect = false;
       this.recentQueriesList.clear();
     } else {
+      this.hasPendingRedirect = true;
       this.standaloneSearchBox?.selectSuggestion(value);
     }
   };

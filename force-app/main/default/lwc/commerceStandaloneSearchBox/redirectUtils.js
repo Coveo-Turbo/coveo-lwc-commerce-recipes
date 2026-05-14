@@ -1,2 +1,5 @@
-export const shouldRedirectToSearchPage = ({redirectTo, value}) =>
-  Boolean(redirectTo && value?.trim());
+export const shouldRedirectToSearchPage = ({
+  hasPendingRedirect,
+  redirectTo,
+  value,
+}) => Boolean(hasPendingRedirect && redirectTo && value?.trim());
