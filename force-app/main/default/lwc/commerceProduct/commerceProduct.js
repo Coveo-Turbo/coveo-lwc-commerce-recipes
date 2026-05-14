@@ -88,6 +88,13 @@ export default class CommerceProduct extends LightningElement {
     this.linkContainer?.click();
   }
 
+  handleContextMenu() {
+    // @ts-ignore
+    const product = {...this.product, additionalFields: {...this.product.additionalFields}};
+    // @ts-ignore
+    this.interactiveProduct?.({options: {product}})?.select();
+  }
+
   get productThumbnail() {
     return this.product?.ec_thumbnails?.[0];
   }

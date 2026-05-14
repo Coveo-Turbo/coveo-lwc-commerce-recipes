@@ -7,7 +7,7 @@
      <c-commerce-product-tag variant="featured" product={product}></c-commerce-product-tag>
    </div>
    <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
-     <img loading="lazy" src={productThumbnail}></img>
+     <img loading="lazy" src={productThumbnail} oncontextmenu={handleContextMenu}></img>
    </div>
    <div slot="name" class="slds-truncate slds-text-align_left">
     <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
