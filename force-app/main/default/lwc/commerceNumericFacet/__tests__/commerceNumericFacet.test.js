@@ -128,7 +128,7 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-numeric-facet', () => {
+describe('c-commerce-numeric-facet', () => {
   beforeAll(() => {
     mockSuccessfulHeadlessInitialization();
     mockBueno();

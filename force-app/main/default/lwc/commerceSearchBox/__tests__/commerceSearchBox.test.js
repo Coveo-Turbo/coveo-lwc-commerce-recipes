@@ -1,10 +1,10 @@
 /* eslint-disable no-import-assign */
-import QuanticSearchBox from 'c/quanticSearchBox';
+import CommerceSearchBox from 'c/commerceSearchBox';
 // @ts-ignore
 import {createElement} from 'lwc';
-import * as mockHeadlessLoader from 'c/quanticHeadlessLoader';
+import * as mockHeadlessLoader from 'c/commerceHeadlessLoader';
 
-jest.mock('c/quanticHeadlessLoader');
+jest.mock('c/commerceHeadlessLoader');
 
 let isInitialized = false;
 
@@ -38,8 +38,8 @@ const defaultOptions = {
 function createTestComponent(options = defaultOptions) {
   prepareHeadlessState();
 
-  const element = createElement('c-quantic-search-box', {
-    is: QuanticSearchBox,
+  const element = createElement('c-commerce-search-box', {
+    is: CommerceSearchBox,
   });
   for (const [key, value] of Object.entries(options)) {
     element[key] = value;
@@ -67,7 +67,7 @@ function flushPromises() {
 function mockSuccessfulHeadlessInitialization() {
   // @ts-ignore
   mockHeadlessLoader.initializeWithHeadless = (element, _, initialize) => {
-    if (element instanceof QuanticSearchBox && !isInitialized) {
+    if (element instanceof CommerceSearchBox && !isInitialized) {
       isInitialized = true;
       initialize(exampleEngine);
     }
@@ -83,7 +83,7 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-search-box', () => {
+describe('c-commerce-search-box', () => {
   beforeAll(() => {
     mockSuccessfulHeadlessInitialization();
   });

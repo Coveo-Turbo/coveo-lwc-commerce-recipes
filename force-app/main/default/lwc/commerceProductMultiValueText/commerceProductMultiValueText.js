@@ -9,7 +9,7 @@ import {LightningElement, api} from 'lwc';
 
 /**
  * The `CommerceProductMultiValueText` component displays a given result multi-value field value.
- * Make sure the field specified in this component is also included in the field array for the relevant template. See the this example: [Quantic usage](https://docs.coveo.com/en/quantic/latest/usage/#javascript).
+ * Make sure the field specified in this component is also included in the field array for the relevant template.
  * @category Product Template
  * @example
  * <template if:true={product.additionalFields.language}>

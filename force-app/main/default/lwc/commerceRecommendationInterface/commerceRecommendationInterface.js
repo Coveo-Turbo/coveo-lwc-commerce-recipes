@@ -131,7 +131,7 @@ export default class CommerceRecommendationInterface extends LightningElement {
   }
 
   renderedCallback() {
-    // if (!this.hasRendered && this.querySelector('c-quantic-aria-live')) {
+    // if (!this.hasRendered && this.querySelector('c-commerce-aria-live')) {
     //   this.bindAriaLiveEvents();
     // }
     this.hasRendered = true;

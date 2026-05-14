@@ -46,7 +46,7 @@ import {LightningElement, track, api} from 'lwc';
  * A facet is a list of values for a certain field occurring in the results, ordered using a configurable criterion (e.g., number of occurrences).
  * A `CommerceFacet` displays a facet of the results for the current query.
  * Custom captions can be provided by adding caption provider components to the `captions` named slot.
- * See [Create a custom caption provider component for Quantic facets](https://docs.coveo.com/en/quantic/latest/usage/create-custom-caption-provider-component/).
+ * See the custom caption provider documentation for facet captions.
  * @category Commerce
  * @example
  * <c-commerce-facet engine-id={engineId} field="filetype" facet={facetController} summary={summaryController} no-search is-collapsed></c-commerce-facet>
@@ -57,7 +57,7 @@ import {LightningElement, track, api} from 'lwc';
  *   <c-commerce-facet-caption slot="captions" value="html" caption="Web page"></c-commerce-facet-caption>
  * </c-commerce-facet>
  */
-export default class QuanticFacet extends LightningElement {
+export default class CommerceFacet extends LightningElement {
   /**
    * The ID of the engine instance the component registers to.
    * @api

@@ -1,10 +1,10 @@
 /* eslint-disable no-import-assign */
-import QuanticStandaloneSearchBox from 'c/quanticStandaloneSearchBox';
+import CommerceStandaloneSearchBox from 'c/commerceStandaloneSearchBox';
 // @ts-ignore
 import {createElement} from 'lwc';
-import * as mockHeadlessLoader from 'c/quanticHeadlessLoader';
+import * as mockHeadlessLoader from 'c/commerceHeadlessLoader';
 import {CurrentPageReference} from 'lightning/navigation';
-import getHeadlessConfiguration from '@salesforce/apex/HeadlessController.getHeadlessConfiguration';
+import getHeadlessConfiguration from '@salesforce/apex/CommerceController.getHeadlessConfiguration';
 
 const nonStandaloneURL = 'https://www.example.com/global-search/%40uri';
 const defaultHeadlessConfiguration = JSON.stringify({
@@ -12,10 +12,10 @@ const defaultHeadlessConfiguration = JSON.stringify({
   accessToken: 'testAccessToken',
 });
 
-jest.mock('c/quanticHeadlessLoader');
+jest.mock('c/commerceHeadlessLoader');
 
 jest.mock(
-  '@salesforce/apex/HeadlessController.getHeadlessConfiguration',
+  '@salesforce/apex/CommerceController.getHeadlessConfiguration',
   () => ({
     default: jest.fn(),
   }),
@@ -58,8 +58,8 @@ const defaultOptions = {
 
 function createTestComponent(options = defaultOptions) {
   prepareHeadlessState();
-  const element = createElement('c-quantic-standalone-search-box', {
-    is: QuanticStandaloneSearchBox,
+  const element = createElement('c-commerce-standalone-search-box', {
+    is: CommerceStandaloneSearchBox,
   });
   for (const [key, value] of Object.entries(options)) {
     element[key] = value;
@@ -84,7 +84,7 @@ function flushPromises() {
 function mockSuccessfulHeadlessInitialization() {
   // @ts-ignore
   mockHeadlessLoader.initializeWithHeadless = (element, _, initialize) => {
-    if (element instanceof QuanticStandaloneSearchBox && !isInitialized) {
+    if (element instanceof CommerceStandaloneSearchBox && !isInitialized) {
       isInitialized = true;
       initialize(exampleEngine);
     }
@@ -100,7 +100,7 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-standalone-search-box', () => {
+describe('c-commerce-standalone-search-box', () => {
   beforeEach(() => {
     getHeadlessConfiguration.mockResolvedValue(defaultHeadlessConfiguration);
     mockSuccessfulHeadlessInitialization();
@@ -120,7 +120,7 @@ describe('c-quantic-standalone-search-box', () => {
 
     describe('when the current page reference changes', () => {
       beforeAll(() => {
-        // This is needed to mock the window.location.href property to test the keepFiltersOnSearch property in the quanticSearchBox.
+        // This is needed to mock the window.location.href property to test the keepFiltersOnSearch property in the commerceSearchBox.
         // https://stackoverflow.com/questions/54021037/how-to-mock-window-location-href-with-jest-vuejs
         Object.defineProperty(window, 'location', {
           writable: true,
@@ -128,7 +128,7 @@ describe('c-quantic-standalone-search-box', () => {
         });
       });
 
-      it('should properly pass the keepFiltersOnSearch property to the quanticSearchBox', async () => {
+      it('should properly pass the keepFiltersOnSearch property to the commerceSearchBox', async () => {
         const element = createTestComponent({
           ...defaultOptions,
           keepFiltersOnSearch: false,
@@ -138,7 +138,7 @@ describe('c-quantic-standalone-search-box', () => {
         await flushPromises();
 
         const searchBox = element.shadowRoot.querySelector(
-          'c-quantic-search-box'
+          'c-commerce-search-box'
         );
 
         expect(searchBox).not.toBeNull();

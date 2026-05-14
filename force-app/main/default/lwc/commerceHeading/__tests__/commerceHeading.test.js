@@ -1,6 +1,6 @@
 // @ts-ignore
 import {createElement} from 'lwc';
-import QuanticHeading from '../commerceHeading';
+import CommerceHeading from '../commerceHeading';
 
 const exampleLabel = 'Example Label';
 const exampleLevel = 3;
@@ -14,8 +14,8 @@ const defaultOptions = {
 };
 
 function createTestComponent(options = defaultOptions) {
-  const element = createElement('c-quantic-heading', {
-    is: QuanticHeading,
+  const element = createElement('c-commerce-heading', {
+    is: CommerceHeading,
   });
 
   for (const [key, value] of Object.entries(options)) {
@@ -31,7 +31,7 @@ function flushPromises() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe('c-quantic-heading', () => {
+describe('c-commerce-heading', () => {
   function cleanup() {
     // The jsdom instance is shared across test cases in a single file so reset the DOM
     while (document.body.firstChild) {

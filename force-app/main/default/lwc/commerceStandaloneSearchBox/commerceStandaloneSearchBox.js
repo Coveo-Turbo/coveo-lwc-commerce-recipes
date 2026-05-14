@@ -33,7 +33,7 @@ import productSuggestionTemplate from './templates/productSuggestionTemplate.htm
 
 /**
  * The `CommerceStandaloneSearchBox` component creates a search box with built-in support for query suggestions.
- * See [Use a Standalone Search Box](https://docs.coveo.com/en/quantic/latest/usage/ssb-usage/).
+ * See the standalone search box usage documentation.
  * @category Commerce
  * @example
  * <c-commerce-standalone-search-box engine-id={engineId} placeholder="Enter a query..." without-submit-button number-of-suggestions="8" redirect-url="/my-search-page/%40uri" search-hub="myhub" pipeline="mypipeline"></c-commerce-standalone-search-box>
@@ -123,7 +123,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   @api disableProductSuggestions = false;
   /**
    * The url of the search page to redirect to when a query is made.
-   * The target search page should contain a `QuanticSearchInterface` with the same engine ID as the one specified for this component.
+   * The target search page should contain a `CommerceInterface` with the same engine ID as the one specified for this component.
    * @api
    * @type {string}
    * @defaultValue '/global-search/%40uri'

@@ -64,7 +64,7 @@ function mockSlotAssignedNodes(assignedElements) {
 const invalidPositiveIntegerProperty =
   'The value of the property must be an integer greater than 0.';
 jest.mock(
-  '@salesforce/label/c.quantic_InvalidPositiveIntegerProperty',
+  '@salesforce/label/c.commerce_InvalidPositiveIntegerProperty',
   () => ({default: invalidPositiveIntegerProperty}),
   {
     virtual: true,

@@ -5,11 +5,11 @@ import {LightningElement, api} from 'lwc';
 
 /**
  * The `CommerceProductText` component displays a given result field value.
- * Make sure the field specified in this component is also included in the field array for the relevant template. See the this example: [Quantic usage](https://docs.coveo.com/en/quantic/latest/usage/#javascript).
+ * Make sure the field specified in this component is also included in the field array for the relevant template.
  * @category Result Template
  * @example
- * <template if:true={result.raw.source}>
- *   <c-quantic-result-text result={result} label="Source" field="source"></c-quantic-result-text>
+ * <template if:true={product.additionalFields.source}>
+ *   <c-commerce-product-text product={product} label="Source" field="source"></c-commerce-product-text>
  * </template>
  */
 export default class CommerceProductText extends LightningElement {

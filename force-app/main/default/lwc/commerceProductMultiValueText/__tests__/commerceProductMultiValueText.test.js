@@ -164,7 +164,7 @@ describe('c-commerce-product-multi-value-text', () => {
         const fieldValueElement =
           element.shadowRoot.querySelector(valueSelector);
 
-        expect(fieldValueElement.textContent).toBe('One, Two, c.quantic_NMore');
+        expect(fieldValueElement.textContent).toBe('One, Two, c.commerce_NMore');
       });
     });
 
