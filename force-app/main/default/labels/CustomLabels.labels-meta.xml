@@ -1146,7 +1146,7 @@
     <value>{{0}} component error</value>
     <language>en_US</language>
     <protected>false</protected>
-    <shortDescription>c-quantic-pager component error</shortDescription>
+    <shortDescription>c-commerce-pager component error</shortDescription>
   </labels>
   <labels>
     <fullName>commerce_LookAtDeveloperConsole</fullName>

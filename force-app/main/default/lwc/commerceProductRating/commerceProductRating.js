@@ -6,11 +6,11 @@ import {LightningElement, api, track} from 'lwc';
 
 /**
  * The `CommerceProductRating` component displays a given result field value.
- * Make sure the field specified in this component is also included in the field array for the relevant template. See the this example: [Quantic usage](https://docs.coveo.com/en/quantic/latest/usage/#javascript).
+ * Make sure the field specified in this component is also included in the field array for the relevant template.
  * @category Result Template
  * @example
  * <template if:true={product.ec_rating}>
- *   <c-quantic-result-rating product={product}></c-quantic-result-rating>
+ *   <c-commerce-product-rating product={product}></c-commerce-product-rating>
  * </template>
  */
 export default class CommerceProductRating extends LightningElement {

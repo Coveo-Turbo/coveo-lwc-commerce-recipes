@@ -72,7 +72,7 @@ export default class CommerceProduct extends LightningElement {
   render() {
     const product = {
       ...this.product,
-      additionalFields: {...this.product.additionalFields, quantic__templateId: this.templateId},
+      additionalFields: {...this.product.additionalFields, commerce__templateId: this.templateId},
     };
     const template = this?.productTemplatesManager?.selectTemplate(product);
     if (template) {

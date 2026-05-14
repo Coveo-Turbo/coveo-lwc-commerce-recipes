@@ -72,7 +72,7 @@ function flushPromises() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe('c-quantic-result-highlighted-text-field', () => {
+describe('c-commerce-product-highlighted-text-field', () => {
   function cleanup() {
     // The jsdom instance is shared across test cases in a single file so reset the DOM
     while (document.body.firstChild) {

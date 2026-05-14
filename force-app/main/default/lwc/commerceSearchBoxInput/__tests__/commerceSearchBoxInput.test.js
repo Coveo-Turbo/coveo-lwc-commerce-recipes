@@ -1,6 +1,6 @@
 // @ts-ignore
 import {createElement} from 'lwc';
-import QuanticSearchBoxInput from '../quanticSearchBoxInput';
+import CommerceSearchBoxInput from '../commerceSearchBoxInput';
 
 const functionsMocks = {
   exampleHandleInputValueChange: jest.fn(() => {}),
@@ -32,7 +32,7 @@ const selectors = {
   searchBoxTextArea: '[data-cy="search-box-textarea"]',
   searchBoxSubmitBtn: '.searchbox__submit-button',
   searchBoxClearIcon: '.searchbox__clear-button',
-  searchBoxSuggestionsList: 'c-quantic-search-box-suggestions-list',
+  searchBoxSuggestionsList: 'c-commerce-search-box-suggestions-list',
   SuggestionsListBox: '[role="listbox"]',
   searchBoxContainer: '.searchbox__container',
   searchBoxComboBox: '.slds-combobox_container .slds-combobox',
@@ -44,26 +44,26 @@ const selectors = {
 
 function setupEventListeners(element) {
   element.addEventListener(
-    'quantic__inputvaluechange',
+    'commerce__inputvaluechange',
     functionsMocks.exampleHandleInputValueChange
   );
   element.addEventListener(
-    'quantic__submitsearch',
+    'commerce__submitsearch',
     functionsMocks.exampleHandleSubmitSearch
   );
   element.addEventListener(
-    'quantic__showsuggestions',
+    'commerce__showsuggestions',
     functionsMocks.exampleShowSuggestions
   );
   element.addEventListener(
-    'quantic__selectsuggestion',
+    'commerce__selectsuggestion',
     functionsMocks.exampleSelectSuggestion
   );
 }
 
 function createTestComponent(options = defaultOptions) {
-  const element = createElement('c-quantic-search-box-input', {
-    is: QuanticSearchBoxInput,
+  const element = createElement('c-commerce-search-box-input', {
+    is: CommerceSearchBoxInput,
   });
 
   for (const [key, value] of Object.entries(options)) {
@@ -78,7 +78,7 @@ function flushPromises() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe('c-quantic-search-box-input', () => {
+describe('c-commerce-search-box-input', () => {
   function cleanup() {
     // The jsdom instance is shared across test cases in a single file so reset the DOM
     while (document.body.firstChild) {
@@ -384,7 +384,7 @@ describe('c-quantic-search-box-input', () => {
       });
 
       describe('when the suggestions list is empty', () => {
-        it('should not display the quanticSearchBoxSuggestionsList component', async () => {
+        it('should not display the commerceSearchBoxSuggestionsList component', async () => {
           const element = createTestComponent({
             ...defaultOptions,
             suggestions: [],
@@ -400,7 +400,7 @@ describe('c-quantic-search-box-input', () => {
       });
 
       describe('when focusing on the input', () => {
-        it('should dispatch a #quantic__showsuggestions custom event', async () => {
+        it('should dispatch a #commerce__showsuggestions custom event', async () => {
           const element = createTestComponent({
             ...defaultOptions,
             textarea: textareaValue,
@@ -423,7 +423,7 @@ describe('c-quantic-search-box-input', () => {
         });
 
         describe('when selecting a suggestion from the suggestions list', () => {
-          it('should dispatch a #quantic__selectsuggestion event with the selected suggestion as payload', async () => {
+          it('should dispatch a #commerce__selectsuggestion event with the selected suggestion as payload', async () => {
             const element = createTestComponent({
               ...defaultOptions,
               suggestions: mockSuggestions,
@@ -473,7 +473,7 @@ describe('c-quantic-search-box-input', () => {
         });
 
         describe('when selecting the clear recent query option from the suggestions list', () => {
-          it('should dispatch a #quantic__selectsuggestion event with the selected suggestion as payload', async () => {
+          it('should dispatch a #commerce__selectsuggestion event with the selected suggestion as payload', async () => {
             const element = createTestComponent({
               ...defaultOptions,
               suggestions: mockSuggestions,
@@ -527,7 +527,7 @@ describe('c-quantic-search-box-input', () => {
         });
 
         describe('when selecting a recent query from the suggestions list', () => {
-          it('should dispatch a #quantic__selectsuggestion event with the selected recent query as payload', async () => {
+          it('should dispatch a #commerce__selectsuggestion event with the selected recent query as payload', async () => {
             const element = createTestComponent({
               ...defaultOptions,
               suggestions: mockSuggestions,
@@ -581,7 +581,7 @@ describe('c-quantic-search-box-input', () => {
       });
 
       describe('when typing something in the input', () => {
-        it('should dispatch a #quantic__inputvaluechange custom event with the input value as payload', async () => {
+        it('should dispatch a #commerce__inputvaluechange custom event with the input value as payload', async () => {
           const element = createTestComponent({
             ...defaultOptions,
             textarea: textareaValue,
@@ -609,7 +609,7 @@ describe('c-quantic-search-box-input', () => {
         });
 
         describe('when clicking on the submit button', () => {
-          it('should dispatch a #quantic__submitsearch custom event', async () => {
+          it('should dispatch a #commerce__submitsearch custom event', async () => {
             const element = createTestComponent({
               ...defaultOptions,
               textarea: textareaValue,
@@ -631,7 +631,7 @@ describe('c-quantic-search-box-input', () => {
         });
 
         describe('when pressing the ENTER key', () => {
-          it('should dispatch a #quantic__submitsearch custom event', async () => {
+          it('should dispatch a #commerce__submitsearch custom event', async () => {
             const element = createTestComponent({
               ...defaultOptions,
               textarea: textareaValue,
@@ -656,7 +656,7 @@ describe('c-quantic-search-box-input', () => {
 
           it(`${
             textareaValue ? 'should not' : 'should'
-          } dispatch a #quantic__submitsearch custom event when the shift key is pressed along with the enter key`, async () => {
+          } dispatch a #commerce__submitsearch custom event when the shift key is pressed along with the enter key`, async () => {
             const element = createTestComponent({
               ...defaultOptions,
               textarea: textareaValue,

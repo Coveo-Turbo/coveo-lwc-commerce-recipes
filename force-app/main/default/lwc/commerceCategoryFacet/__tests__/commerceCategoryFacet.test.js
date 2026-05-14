@@ -1,11 +1,11 @@
 /* eslint-disable no-import-assign */
 // @ts-ignore
 import {createElement} from 'lwc';
-import QuanticCategoryFacet from 'c/quanticCategoryFacet';
-import * as mockHeadlessLoader from 'c/quanticHeadlessLoader';
-import {generateFacetDependencyConditions} from 'c/quanticUtils';
+import CommerceCategoryFacet from 'c/commerceCategoryFacet';
+import * as mockHeadlessLoader from 'c/commerceHeadlessLoader';
+import {generateFacetDependencyConditions} from 'c/commerceUtils';
 
-jest.mock('c/quanticUtils', () => ({
+jest.mock('c/commerceUtils', () => ({
   generateFacetDependencyConditions: jest.fn(),
   Store: {
     facetTypes: {
@@ -16,7 +16,7 @@ jest.mock('c/quanticUtils', () => ({
     },
   },
 }));
-jest.mock('c/quanticHeadlessLoader');
+jest.mock('c/commerceHeadlessLoader');
 
 const selectors = {
   facetContent: '[data-test="facet-content"]',
@@ -37,8 +37,8 @@ const categoryFacetControllerMock = {
 function createTestComponent(options = defaultOptions) {
   prepareHeadlessState();
 
-  const element = createElement('c-quantic-category-facet', {
-    is: QuanticCategoryFacet,
+  const element = createElement('c-commerce-category-facet', {
+    is: CommerceCategoryFacet,
   });
   for (const [key, value] of Object.entries(options)) {
     element[key] = value;
@@ -82,7 +82,7 @@ let isInitialized = false;
 function mockSuccessfulHeadlessInitialization() {
   // @ts-ignore
   mockHeadlessLoader.initializeWithHeadless = (element, _, initialize) => {
-    if (element instanceof QuanticCategoryFacet && !isInitialized) {
+    if (element instanceof CommerceCategoryFacet && !isInitialized) {
       isInitialized = true;
       initialize(exampleEngine);
     }
@@ -98,7 +98,7 @@ function cleanup() {
   isInitialized = false;
 }
 
-describe('c-quantic-category-facet', () => {
+describe('c-commerce-category-facet', () => {
   beforeAll(() => {
     mockSuccessfulHeadlessInitialization();
   });
