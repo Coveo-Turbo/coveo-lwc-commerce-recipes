@@ -1,4 +1,6 @@
 /* eslint-disable no-import-assign */
+jest.mock('c/commerceSearchBoxStyle', () => () => '', {virtual: true});
+
 import CommerceStandaloneSearchBox from 'c/commerceStandaloneSearchBox';
 // @ts-ignore
 import {createElement} from 'lwc';
@@ -38,6 +40,7 @@ const functionsMocks = {
     state: {},
     subscribe: functionsMocks.subscribe,
   })),
+  loadQuerySuggestActions: jest.fn(() => ({})),
   subscribe: jest.fn((cb) => {
     cb();
     return functionsMocks.unsubscribe;
@@ -70,8 +73,11 @@ function createTestComponent(options = defaultOptions) {
 
 function prepareHeadlessState() {
   // @ts-ignore
-  global.CoveoHeadless = {
-    buildStandaloneSearchBox: functionsMocks.buildStandaloneSearchBox,
+  mockHeadlessLoader.getHeadlessBundle = () => {
+    return {
+      buildStandaloneSearchBox: functionsMocks.buildStandaloneSearchBox,
+      loadQuerySuggestActions: functionsMocks.loadQuerySuggestActions,
+    };
   };
 }
 
@@ -132,6 +138,7 @@ describe('c-commerce-standalone-search-box', () => {
         const element = createTestComponent({
           ...defaultOptions,
           keepFiltersOnSearch: false,
+          disableProductSuggestions: true,
         });
         // eslint-disable-next-line @lwc/lwc/no-unexpected-wire-adapter-usages
         CurrentPageReference.emit({url: nonStandaloneURL});
@@ -143,6 +150,7 @@ describe('c-commerce-standalone-search-box', () => {
 
         expect(searchBox).not.toBeNull();
         expect(searchBox.keepFiltersOnSearch).toEqual(false);
+        expect(searchBox.disableProductSuggestions).toEqual(true);
       });
     });
 
@@ -181,6 +189,26 @@ describe('c-commerce-standalone-search-box', () => {
           })
         );
       });
+    });
+  });
+
+  describe('when product suggestions are disabled', () => {
+    it('should ignore suggested query change events without throwing', async () => {
+      const element = createTestComponent({
+        ...defaultOptions,
+        disableProductSuggestions: true,
+      });
+      await flushPromises();
+
+      expect(() =>
+        element.dispatchEvent(
+          new CustomEvent('commerce__suggestedquerychange', {
+            detail: {rawValue: 'example search'},
+            bubbles: true,
+            composed: true,
+          })
+        )
+      ).not.toThrow();
     });
   });
 });

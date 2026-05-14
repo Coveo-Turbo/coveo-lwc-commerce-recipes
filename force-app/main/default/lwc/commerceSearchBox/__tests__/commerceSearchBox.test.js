@@ -1,4 +1,6 @@
 /* eslint-disable no-import-assign */
+jest.mock('c/commerceSearchBoxStyle', () => () => '', {virtual: true});
+
 import CommerceSearchBox from 'c/commerceSearchBox';
 // @ts-ignore
 import {createElement} from 'lwc';
@@ -131,6 +133,26 @@ describe('c-commerce-search-box', () => {
           })
         );
       });
+    });
+  });
+
+  describe('when product suggestions are disabled', () => {
+    it('should ignore suggested query change events without throwing', async () => {
+      const element = createTestComponent({
+        ...defaultOptions,
+        disableProductSuggestions: true,
+      });
+      await flushPromises();
+
+      expect(() =>
+        element.dispatchEvent(
+          new CustomEvent('commerce__suggestedquerychange', {
+            detail: {rawValue: 'example search'},
+            bubbles: true,
+            composed: true,
+          })
+        )
+      ).not.toThrow();
     });
   });
 });
