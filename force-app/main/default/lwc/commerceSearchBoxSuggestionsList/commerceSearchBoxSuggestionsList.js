@@ -5,7 +5,7 @@ import recentQueryAriaLabel from '@salesforce/label/c.commerce_RecentQueryAriaLa
 import suggestionFound from '@salesforce/label/c.commerce_SuggestionFound';
 import suggestionFound_plural from '@salesforce/label/c.commerce_SuggestionFound_Plural';
 import suggestionsNotFound from '@salesforce/label/c.commerce_SuggestionNotFound';
-import {AriaLiveRegion, I18nUtils, keys, RecentQueryUtils} from 'c/commerceUtils';
+import {AriaLiveRegion, I18nUtils, RecentQueryUtils} from 'c/commerceUtils';
 import {LightningElement, api} from 'lwc';
 
 const optionCSSClass =
@@ -154,6 +154,13 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
       return {};
     }
 
+    if (!this.hasProductSuggestions) {
+      return {
+        id: this.allOptionsHTMLElements[this.selectionIndex].getAttribute('id'),
+        value: this.allOptions[this.selectionIndex].rawValue,
+      };
+    }
+
     this.rightSideSelectionActivated = true;
     if (this.productSelectionIndex < 0) {
       this.productSelectionIndex = 0;
@@ -232,6 +239,10 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
   }
 
   renderedCallback() {
+    if (!this.hasProductSuggestions) {
+      this.rightSideSelectionActivated = false;
+      this.productSelectionIndex = -1;
+    }
 
     if (this.allOptions?.length) {
       const suggestedQuery = this.allOptions?.[this.selectionIndex] || this.allOptions?.[this.shouldDisplayRecentQueries ? 1 : 0]
@@ -499,6 +510,12 @@ export default class CommerceSearchBoxSuggestionsList extends LightningElement {
   }
 
   get querySuggestionsCssClass() {
-    return `slds-col slds-size_1-of-1`;
+    return this.hasProductSuggestions
+      ? 'slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2'
+      : 'slds-size_1-of-1';
+  }
+
+  get hasProductSuggestions() {
+    return !!this.productOptions.length;
   }
 }
