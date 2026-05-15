@@ -411,7 +411,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   suggestedQueryChange = (event) => {
     event.stopPropagation();
     const {rawValue} = event.detail;
-    this.instantProducts.updateQuery(rawValue);
+    this.instantProducts?.updateQuery(rawValue);
   }
 
   /**
