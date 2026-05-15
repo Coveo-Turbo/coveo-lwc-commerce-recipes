@@ -88,6 +88,16 @@ export default class CommerceProduct extends LightningElement {
     this.linkContainer?.click();
   }
 
+  handleContextMenu() {
+    // Destructuring transforms the Proxy object created by Salesforce to a normal object
+    // so no unexpected behaviour will occur with the Headless library.
+    // @ts-ignore
+    const product = {...this.product, additionalFields: {...this.product.additionalFields}};
+    // interactiveProduct is a factory function that creates the interactive product controller.
+    // @ts-ignore
+    this.interactiveProduct?.({options: {product}})?.select();
+  }
+
   get productThumbnail() {
     return this.product?.ec_thumbnails?.[0];
   }
