@@ -46,11 +46,14 @@ export default class CommerceSpotlightContent extends LightningElement {
   }
 
   handleClick() {
+    if (!this.result) {
+      return;
+    }
     // Destructuring transforms the Proxy object created by Salesforce to a normal object
     // so no unexpected behaviour will occur with the Headless library.
     // @ts-ignore
     const result = {
-      ...this.result
+      ...(this.result || {})
     };
     // interactiveSpotlightContent is a factory function that creates the interactive spotlight content controller.
     // @ts-ignore
