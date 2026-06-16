@@ -26,6 +26,34 @@ Commerce Examples Community : `https://jfallaire-dev-ed.my.site.com/`
 
 ![Commerce Examples - Cart](example_cart.png)
 
+## Features
+
+### Enable Spotlight Content
+
+The Commerce Library supports displaying Spotlight Content alongside regular product results in search and listing pages. This feature allows you to promote special content items (such as promotional banners, featured articles, or marketing materials) within your product search results.
+
+#### Configuration
+
+To enable Spotlight Content in your search or listing page:
+
+1. Navigate to the Experience Builder
+2. Select your Commerce Search or Listing page component
+3. In the component's configuration panel, locate the **Enable Spotlight Content** checkbox
+4. Check the box to enable Spotlight Content rendering
+
+<img width="680" alt="Enable Spotlight Content Configuration" src="https://github.com/user-attachments/assets/e7603ca2-eeb2-4efd-ade6-2711ac93b7c2" />
+
+#### How It Works
+
+When enabled, Spotlight Content items will be rendered inline with product results. Each Spotlight Content item displays:
+- A full-height background image (from the "Desktop Image" field)
+- Heading text overlaid on the image
+- Sub-heading or description text
+
+<img width="1728" alt="Spotlight Content in Search Results" src="https://github.com/user-attachments/assets/9c547db1-7165-46b1-a0b6-31dcc08ac97e" />
+
+The `c-commerce-spotlight-content` component handles the rendering of these special content items, while the `c-commerce-product-list` component intelligently switches between rendering products and content based on the result type.
+
 ## Using the Library
 
 This library is released as an [unlocked package](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_unlocked_pkg_install_pkg.htm). You can install it using the following links:
