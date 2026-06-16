@@ -12,15 +12,19 @@
     </template>
     <div class="slds-grid slds-grid_vertical-stretch slds-gutters slds-wrap">
       <template for:each={products} for:item="product">
-        <div 
+        <div
           key={product.key}
-          class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
+          class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4"
+        >
           <c-commerce-spotlight-content
             lwc:if={product.isResult}
             result={product}
             interactive-spotlight-content={product.interactiveSpotlightContent}
           ></c-commerce-spotlight-content>
-          <div lwc:else class="slds-box slds-theme_default">
+          <div
+            lwc:else
+            class="slds-box slds-theme_default product-item__container"
+          >
             <c-commerce-product
               product={product}
               interactive-product={product.interactiveProduct}
