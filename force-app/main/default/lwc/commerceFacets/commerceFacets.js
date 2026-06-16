@@ -32,7 +32,13 @@ export default class CommerceFacets extends LightningElement {
   * @type {number}
   */
   @api collapseFacetsAfter = 4;
-
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   /** @type {ProductListingSummaryState | SearchSummaryState} */
   @track summaryState;
@@ -76,7 +82,7 @@ export default class CommerceFacets extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
-    const controller = this.controllerBuilder(engine);
+    const controller = this.controllerBuilder(engine, { enableResults: this.enableResults });
     this.facetGenerator = controller.facetGenerator();
     this.summary = controller.summary();
 

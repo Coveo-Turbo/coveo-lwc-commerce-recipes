@@ -155,6 +155,7 @@
               "type" : "component"
             }, {
               "attributes" : {
+                "enableResults" : false,
                 "disableStateInUrl" : false,
                 "dxpStyle" : { },
                 "engineId" : "example-commerce-engine",

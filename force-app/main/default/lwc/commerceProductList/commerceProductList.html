@@ -10,12 +10,17 @@
         number-of-placeholders={numberOfPlaceholders}
       ></c-commerce-placeholder>
     </template>
-    <div class="slds-grid slds-gutters slds-wrap">
+    <div class="slds-grid slds-grid_vertical-stretch slds-gutters slds-wrap">
       <template for:each={products} for:item="product">
         <div 
-          key={product.key} 
+          key={product.key}
           class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
-          <div class="slds-box slds-theme_default slds-text-align_center slds-var-p-vertical_medium slds-var-m-bottom_medium product-item__content">
+          <c-commerce-spotlight-content
+            lwc:if={product.isResult}
+            result={product}
+            interactive-spotlight-content={product.interactiveSpotlightContent}
+          ></c-commerce-spotlight-content>
+          <div lwc:else class="slds-box slds-theme_default">
             <c-commerce-product
               product={product}
               interactive-product={product.interactiveProduct}

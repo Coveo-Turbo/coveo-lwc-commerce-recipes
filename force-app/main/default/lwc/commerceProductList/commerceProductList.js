@@ -42,6 +42,13 @@ export default class CommerceProductList extends LightningElement {
   * @type {number}
   */
   @api numberOfColumns = 4;
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   /** @type {ProductListingState | SearchState}*/
   @track state;
@@ -92,7 +99,7 @@ export default class CommerceProductList extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
-    this.controller = this.controllerBuilder(engine);
+    this.controller = this.controllerBuilder(engine, { enableResults: this.enableResults });
     this.summary = this.controller.summary();
     this.unsubscribeController = this.controller.subscribe(() => this.updateState());
     this.unsubscribeSummary = this.summary.subscribe(() => this.updateState());
@@ -162,11 +169,14 @@ export default class CommerceProductList extends LightningElement {
     // We need to add a unique key to each result to make sure to re-render the LWC when the results change.
     // If the unique key is only the result uniqueId, the LWC will not re-render when the results change AND the same result is still in the results.
     const responseId = this?.state?.responseId || Math.random();
+    const products = this.enableResults ? this.state?.results : this.state?.products;
     return (
-      this.state?.products?.map((product) => ({
+      products?.map((product) => ({
         ...product,
         key: `${responseId}_${product.permanentid}`,
-        interactiveProduct: this.controller.interactiveProduct
+        isResult: this.enableResults ? (product.resultType === 'spotlight') : false,
+        interactiveProduct: this.controller.interactiveProduct,
+        interactiveSpotlightContent: this.controller.interactiveSpotlightContent
       })) || []
     );
   }

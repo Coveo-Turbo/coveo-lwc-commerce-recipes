@@ -70,6 +70,13 @@ export default class CommerceInterface extends LightningElement {
    */
   @api currency = 'USD';
   /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
+  /**
    * Whether the state should not be reflected in the URL parameters.
    * @api
    * @type {boolean}
@@ -226,10 +233,10 @@ export default class CommerceInterface extends LightningElement {
 
   initRequestStatus(engine) {
     this.searchOrListing =
-    // @ts-ignore
-    this.type === 'product-listing'
-      ? CoveoHeadlessCommerce.buildProductListing(engine)
-      : CoveoHeadlessCommerce.buildSearch(engine);
+      // @ts-ignore
+      this.type === "product-listing"
+        ? CoveoHeadlessCommerce.buildProductListing(engine, { enableResults: this.enableResults })
+        : CoveoHeadlessCommerce.buildSearch(engine, { enableResults: this.enableResults });
   }
 
   initContext(engine) {

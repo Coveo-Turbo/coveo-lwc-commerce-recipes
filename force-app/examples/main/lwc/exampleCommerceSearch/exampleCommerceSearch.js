@@ -14,5 +14,7 @@ export default class ExampleCommerceSearch extends LightningElement {
   /** @type {string} */
   @api commerceUrl = 'https://sports.barca.group/commerce-search';
   /** @type {boolean} */
+  @api enableResults = false;
+  /** @type {boolean} */
   @api disableStateInUrl = false;
 }

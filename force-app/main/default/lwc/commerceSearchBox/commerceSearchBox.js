@@ -91,6 +91,13 @@ export default class CommerceSearchBox extends LightningElement {
    * @defaultValue false
    */
   @api keepFiltersOnSearch = false;
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   /** @type {SearchBoxState} */
   @track state;
@@ -129,6 +136,7 @@ export default class CommerceSearchBox extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.searchBox = this.headless.buildSearchBox(engine, {
       options: {
+        enableResults: this.enableResults,
         //numberOfSuggestions: Number(this.numberOfSuggestions),
         highlightOptions: {
           notMatchDelimiters: {
