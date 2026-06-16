@@ -1,33 +1,35 @@
 <template>
-  <c-commerce-product-template onclick={handleClick}>
-      <div slot="badges" class="slds-grid slds-grid_vertical-align-center slds-var-m-vertical_xx-small slds-var-m-right_small">
-        <div class="slds-var-m-right_xx-small">
-          <c-commerce-product-tag variant="recommended" product={product}></c-commerce-product-tag>
+  <div class="slds-box slds-theme_default slds-text-align_center slds-var-p-vertical_medium slds-var-m-bottom_medium product-item__content">
+    <c-commerce-product-template onclick={handleClick}>
+        <div slot="badges" class="slds-grid slds-grid_vertical-align-center slds-var-m-vertical_xx-small slds-var-m-right_small">
+          <div class="slds-var-m-right_xx-small">
+            <c-commerce-product-tag variant="recommended" product={product}></c-commerce-product-tag>
+          </div>
+          <c-commerce-product-tag variant="featured" product={product}></c-commerce-product-tag>
         </div>
-        <c-commerce-product-tag variant="featured" product={product}></c-commerce-product-tag>
-      </div>
-      <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
-        <img loading="lazy" src={productThumbnail} oncontextmenu={handleContextMenu}></img>
-      </div>
-      <div slot="name" class="slds-truncate slds-text-align_left">
+        <div slot="visual" class="slds-size_1-of-1 slds-var-m-top_xx-small slds-var-m-bottom_x-small">
+          <img loading="lazy" src={productThumbnail} oncontextmenu={handleContextMenu}></img>
+        </div>
+        <div slot="name" class="slds-truncate slds-text-align_left">
+          <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
+        </div>
+        <div slot="description" class="slds-line-clamp slds-text-align_left slds-var-m-top_x-small">
+          {product.ec_description}
+        </div>
+        <div slot="metadata" class="slds-var-m-top_x-small slds-text-body_small">
+          <c-commerce-product-text lwc:if={product.ec_brand} product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
+          <c-commerce-product-multi-value-text lwc:if={product.additionalFields.cat_available_sizes} product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
+          <c-commerce-product-rating lwc:if={product.ec_rating} product={product} class="slds-grid"></c-commerce-product-rating>
+        </div>
+        <div slot="emphasized" class="slds-var-m-top_x-small">
+          <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_large"></c-commerce-product-price>
+        </div>
+        <div slot="children" class="slds-var-m-top_x-small">
+          <c-commerce-product-children product={product} engine-id={engineId}></c-commerce-product-children>
+        </div>
+      </c-commerce-product-template>
+      <div class="slds-hide link-container">
         <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
       </div>
-      <div slot="description" class="slds-line-clamp slds-text-align_left slds-var-m-top_x-small">
-        {product.ec_description}
-      </div>
-      <div slot="metadata" class="slds-var-m-top_x-small slds-text-body_small">
-        <c-commerce-product-text lwc:if={product.ec_brand} product={product} field="ec_brand" class="slds-grid"></c-commerce-product-text>
-        <c-commerce-product-multi-value-text lwc:if={product.additionalFields.cat_available_sizes} product={product} field="cat_available_sizes" class="slds-grid"></c-commerce-product-multi-value-text>
-        <c-commerce-product-rating lwc:if={product.ec_rating} product={product} class="slds-grid"></c-commerce-product-rating>
-      </div>
-      <div slot="emphasized" class="slds-var-m-top_x-small">
-        <c-commerce-product-price engine-id={engineId} product={product} class="slds-text-heading_large"></c-commerce-product-price>
-      </div>
-      <div slot="children" class="slds-var-m-top_x-small">
-        <c-commerce-product-children product={product} engine-id={engineId}></c-commerce-product-children>
-      </div>
-    </c-commerce-product-template>
-    <div class="slds-hide link-container">
-      <c-commerce-product-link product={product} interactive-product={interactiveProductController} engine-id={engineId} data-cy="product-link" ></c-commerce-product-link>
     </div>
 </template>

@@ -60,6 +60,13 @@ export default class CommerceSort extends LightningElement {
    * @type {string}
    */
   @api engineId;
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   /** @type {ProductListingState | SearchState}*/
   @track searchOrListingState;
@@ -115,7 +122,7 @@ export default class CommerceSort extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
-    this.listingOrSearch = this.controllerBuilder(engine);
+    this.listingOrSearch = this.controllerBuilder(engine, { enableResults: this.enableResults });
 
     this.sort = this.listingOrSearch.sort();
     this.unsubscribe = this.listingOrSearch.subscribe(() => this.updateState());
@@ -135,7 +142,8 @@ export default class CommerceSort extends LightningElement {
   }
 
   get hasResults() {
-    return this.searchOrListingState?.products.length > 0 && this.sortState?.availableSorts.length > 1;
+    const results = this.enableResults ? this.searchOrListingState?.results : this.searchOrListingState?.products;
+    return results?.length > 0 && this.sortState?.availableSorts.length > 1;
   }
 
   get isProductListing() {

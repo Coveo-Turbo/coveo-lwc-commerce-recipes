@@ -36,6 +36,13 @@ export default class CommercePager extends LightningElement {
    * @defaultValue 5
    */
   @api numberOfPages = 5;
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   /** @type {number[]} */
   @track currentPages;
@@ -80,7 +87,7 @@ export default class CommercePager extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
-    this.listingOrSearch = this.controllerBuilder(engine);
+    this.listingOrSearch = this.controllerBuilder(engine, { enableResults: this.enableResults });
     
     this.pager = this.listingOrSearch.pagination();
     this.unsubscribe = this.pager.subscribe(() => this.updateState());

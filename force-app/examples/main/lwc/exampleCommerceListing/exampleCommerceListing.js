@@ -14,5 +14,7 @@ export default class ExampleCommerceListing extends LightningElement {
   /** @type {string} */
   @api commerceUrl;
   /** @type {boolean} */
+  @api enableResults = false;
+  /** @type {boolean} */
   @api disableStateInUrl = false;
 }

@@ -1,0 +1,18 @@
+<template>
+  <a
+    class="content__link slds-var-m-bottom_medium"
+    href={hrefValue}
+    style={backgroundImage}
+    onclick={handleClick}
+    oncontextmenu={handleClick}
+  >
+    <div class="content__name slds-truncate" style={nameColor}>{name}</div>
+    <div
+      class="content__description slds-line-clamp slds-var-m-top_x-small"
+      style={descriptionColor}
+    >
+      {description}
+    </div>
+    <div class="content__sr" role="img" aria-label={altText}></div>
+  </a>
+</template>

@@ -105,6 +105,7 @@
                 "commerceUrl" : "https://sports.barca.group/browse/promotions/clothing/pants",
                 "country" : "US",
                 "currency" : "USD",
+                "enableResults" : false,
                 "disableStateInUrl" : false,
                 "dxpStyle" : { },
                 "engineId" : "example-commerce-engine",

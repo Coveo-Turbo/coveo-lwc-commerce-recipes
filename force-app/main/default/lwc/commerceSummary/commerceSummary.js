@@ -35,6 +35,13 @@ export default class CommerceSummary extends LightningElement {
    * @type {string}
    */
   @api engineId;
+  /**
+   * Whether to enable results (required for Spotlight Content).
+   * @api
+   * @type {boolean}
+   * @defaultValue false
+   */
+  @api enableResults = false;
 
   // /** @type {ProductListingState | SearchState}*/
   // @track state;
@@ -80,7 +87,7 @@ export default class CommerceSummary extends LightningElement {
     this.headless = getHeadlessBundle(this.engineId);
     this.bindings = getHeadlessBindings(this.engineId);
 
-    this.listingOrSearch = this.controllerBuilder(engine);
+    this.listingOrSearch = this.controllerBuilder(engine, { enableResults: this.enableResults });
 
     this.summary = this.listingOrSearch.summary();
     this.summaryAriaMessage = AriaLiveRegion('summary', this);
