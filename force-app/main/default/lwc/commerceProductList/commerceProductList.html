@@ -20,13 +20,14 @@
             result={product}
             interactive-spotlight-content={product.interactiveSpotlightContent}
           ></c-commerce-spotlight-content>
-          <c-commerce-product
-            lwc:else
-            product={product}
-            interactive-product={product.interactiveProduct}
-            product-templates-manager={productTemplatesManager}
-            engine-id={engineId}
+          <div lwc:else class="slds-box slds-theme_default">
+            <c-commerce-product
+              product={product}
+              interactive-product={product.interactiveProduct}
+              product-templates-manager={productTemplatesManager}
+              engine-id={engineId}
             ></c-commerce-product>
+          </div>
         </div>
       </template>
     </div>
