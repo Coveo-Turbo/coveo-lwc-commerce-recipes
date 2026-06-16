@@ -89,11 +89,10 @@ describe("c-commerce-spotlight-content", () => {
     );
 
     expect(nameElement.textContent).toBe("");
-    expect(nameElement.style.color).toBe("");
+    expect(nameElement.style.color).toBe("inherit");
 
     expect(descriptionElement.textContent).toBe("");
-    expect(descriptionElement.style.color).toBe("");
-  });
+    expect(descriptionElement.style.color).toBe("inherit");
 
   it("calls interactiveSpotlightContent.select on click interaction", async () => {
     const mockSelect = jest.fn();
