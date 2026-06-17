@@ -44,6 +44,8 @@ export default class CommerceFacets extends LightningElement {
   @track summaryState;
   /** @type {FacetGeneratorState} */
   @track facetGeneratorState;
+  /** @type {Array<RegularFacet | NumericFacet | DateFacet | CategoryFacet>} */
+  @track generatedFacets = [];
 
   /** @type {FacetGenerator} */
   facetGenerator;
@@ -88,13 +90,12 @@ export default class CommerceFacets extends LightningElement {
 
     this.unsubscribeFacetGenerator = this.facetGenerator.subscribe(() => this.updateState());
     this.unsubscribeSummary = this.summary.subscribe(() => this.updateState());
-
-    console.log('Facet Generator:', this.facetGenerator.facets.length);
   }
 
   updateState() {
     this.summaryState = this.summary?.state;
     this.facetGeneratorState = this.facetGenerator?.state;
+    this.generatedFacets = [...(this.facetGenerator?.facets ?? [])];
     this.showPlaceholder =
       this.summaryState?.isLoading &&
       !this.summaryState?.hasError &&
@@ -124,11 +125,11 @@ export default class CommerceFacets extends LightningElement {
   }
 
   get facets() { 
-    if (!this.facetGeneratorState?.length) {
+    if (!this.generatedFacets.length) {
       return [];
     }
     return (
-      this.facetGenerator?.facets?.map((facet, index) => ({
+      this.generatedFacets.map((facet, index) => ({
         field: facet.state.field,
         key: facet.state.facetId,
         props:{
