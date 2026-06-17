@@ -262,16 +262,21 @@ describe("c-commerce-product-list", () => {
       const element = createTestComponent({ enableResults: true });
       await flushPromises();
 
+      const productColumn = element.shadowRoot.querySelector(".slds-col");
       const productContainer = element.shadowRoot.querySelector(
         ".product-item__container"
       );
       const productComponent =
         productContainer?.querySelector("c-commerce-product");
 
-      expect(productContainer).toBeTruthy();
-      expect(productContainer.classList.contains("slds-var-m-bottom_medium")).toBe(
+      expect(productColumn).toBeTruthy();
+      expect(productColumn.classList.contains("slds-var-m-bottom_medium")).toBe(
         true
       );
+      expect(productContainer).toBeTruthy();
+      expect(
+        productContainer.classList.contains("slds-var-m-bottom_medium")
+      ).toBe(false);
       expect(productComponent).toBeTruthy();
     });
 
@@ -306,10 +311,19 @@ describe("c-commerce-product-list", () => {
       const spotlightComponents = element.shadowRoot.querySelectorAll(
         "c-commerce-spotlight-content"
       );
+      const spotlightContainer = spotlightComponents[0]?.parentElement;
       const productComponents =
         element.shadowRoot.querySelectorAll("c-commerce-product");
 
       expect(spotlightComponents.length).toBe(1);
+      expect(
+        spotlightContainer?.classList.contains("product-item__container")
+      ).toBe(true);
+      expect(
+        spotlightContainer?.classList.contains(
+          "product-item__spotlight-container"
+        )
+      ).toBe(true);
       expect(productComponents.length).toBe(1);
     });
 
