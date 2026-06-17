@@ -240,7 +240,7 @@ describe("c-commerce-product-list", () => {
       expect(productComponents.length).toBe(2);
     });
 
-    it("renders product cards inside the styled outer container", async () => {
+    it("renders product cards inside the styled outer container with row spacing", async () => {
       mockControllerState = {
         responseId: "resp-4b",
         results: [
@@ -269,6 +269,9 @@ describe("c-commerce-product-list", () => {
         productContainer?.querySelector("c-commerce-product");
 
       expect(productContainer).toBeTruthy();
+      expect(productContainer.classList.contains("slds-var-m-bottom_medium")).toBe(
+        true
+      );
       expect(productComponent).toBeTruthy();
     });
 
