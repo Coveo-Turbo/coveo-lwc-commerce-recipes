@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 // @ts-ignore
-import getHeadlessConfiguration from '@salesforce/apex/CommerceController.getHeadlessConfiguration';
+import getHeadlessConfiguration from "@salesforce/apex/CommerceController.getHeadlessConfiguration";
 // @ts-ignore
 // import LOCALE from '@salesforce/i18n/locale';
 import {
@@ -9,10 +9,10 @@ import {
   setEngineOptions,
   HeadlessBundleNames,
   destroyEngine,
-  setInitializedCallback,
-} from 'c/commerceHeadlessLoader';
-import {STANDALONE_SEARCH_BOX_STORAGE_KEY} from 'c/commerceUtils';
-import {LightningElement, api} from 'lwc';
+  setInitializedCallback
+} from "c/commerceHeadlessLoader";
+import { STANDALONE_SEARCH_BOX_STORAGE_KEY } from "c/commerceUtils";
+import { LightningElement, api } from "lwc";
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
 /** @typedef {import("coveo").CommerceEngineOptions} CommerceEngineOptions */
@@ -21,13 +21,13 @@ import {LightningElement, api} from 'lwc';
 /** @typedef {import("coveo").ProductListing} ProductListing */
 
 /**
-* The `CommerceInterface` component handles the headless commerce engine configuration.
-* A single instance should be used for each instance of the Coveo Headless commerce engine.
-* @fires CustomEvent#commerceInterfaceinitialized
-* @category Commerce
-* @example
-* <c-commerce-interface engine-id={engineId}></c-commerce-interface>
-*/
+ * The `CommerceInterface` component handles the headless commerce engine configuration.
+ * A single instance should be used for each instance of the Coveo Headless commerce engine.
+ * @fires CustomEvent#commerceInterfaceinitialized
+ * @category Commerce
+ * @example
+ * <c-commerce-interface engine-id={engineId}></c-commerce-interface>
+ */
 export default class CommerceInterface extends LightningElement {
   /**
    * The ID of the engine instance the component registers to.
@@ -54,21 +54,21 @@ export default class CommerceInterface extends LightningElement {
    * @api
    * @type {string}
    */
-  @api language = 'en';
+  @api language = "en";
 
   /**
    * The country to add in context for your Coveo-powered ecommerce site or application.
    * @api
    * @type {string}
    */
-  @api country = 'US';
+  @api country = "US";
 
   /**
    * The currency to add in context for your Coveo-powered ecommerce site or application.
    * @api
    * @type {string}
    */
-  @api currency = 'USD';
+  @api currency = "USD";
   /**
    * Whether to enable results (required for Spotlight Content).
    * @api
@@ -98,7 +98,7 @@ export default class CommerceInterface extends LightningElement {
    * @type {'search' | 'product-listing'}
    * @defaultValue 'search'
    */
-  @api type = 'search';
+  @api type = "search";
 
   /** @type {CommerceEngineOptions} */
   engineOptions;
@@ -116,6 +116,8 @@ export default class CommerceInterface extends LightningElement {
   ariaLiveEventsBound = false;
 
   disconnectedCallback() {
+    this.unsubscribeUrlManager?.();
+    window.removeEventListener("hashchange", this.onHashChange);
     destroyEngine(this.engineId);
   }
 
@@ -126,7 +128,8 @@ export default class CommerceInterface extends LightningElement {
           getHeadlessConfiguration()
             .then((data) => {
               if (data) {
-                const {organizationId, accessToken, ...rest} = JSON.parse(data);
+                const { organizationId, accessToken, ...rest } =
+                  JSON.parse(data);
                 this.engineOptions = {
                   configuration: {
                     organizationId,
@@ -142,8 +145,8 @@ export default class CommerceInterface extends LightningElement {
                         url: this.commerceUrl
                       }
                     },
-                    ...rest,
-                  },
+                    ...rest
+                  }
                 };
                 setEngineOptions(
                   this.engineOptions,
@@ -152,13 +155,13 @@ export default class CommerceInterface extends LightningElement {
                   this,
                   CoveoHeadlessCommerce
                 );
-                this.input.setAttribute('is-initialized', 'true');
+                this.input.setAttribute("is-initialized", "true");
                 setInitializedCallback(this.initialize, this.engineId);
               }
             })
             .catch((error) => {
               console.error(
-                'Error loading Headless endpoint configuration',
+                "Error loading Headless endpoint configuration",
                 error
               );
             });
@@ -167,7 +170,7 @@ export default class CommerceInterface extends LightningElement {
         }
       })
       .catch((error) => {
-        console.error('Error loading Headless dependencies', error);
+        console.error("Error loading Headless dependencies", error);
       });
   }
 
@@ -182,50 +185,55 @@ export default class CommerceInterface extends LightningElement {
     if (this.initialized) {
       return;
     }
-    
+
     this.initRequestStatus(engine);
     this.initContext(engine);
     // this.initLanguage();
     this.initUrlManager();
-   
-    // @ts-ignore
-    if (this.type === 'search') {
+    this.executeInitialRequest(engine);
 
-      if (!this.skipFirstSearch) {
-
-        const redirectData = window.localStorage.getItem(
-          STANDALONE_SEARCH_BOX_STORAGE_KEY
-        );
-
-        if (!redirectData) {
-          // @ts-ignore
-          this.searchOrListing.executeFirstSearch();
-          return 
-        }
-
-        window.localStorage.removeItem(STANDALONE_SEARCH_BOX_STORAGE_KEY);
-        const {value} = JSON.parse(redirectData);
-
-        engine.dispatch(CoveoHeadlessCommerce.loadQueryActions(engine).updateQuery({query: value}));
-        // @ts-ignore
-        this.searchOrListing.executeFirstSearch();
-      }
-    } else {
-      // @ts-ignore
-      this.searchOrListing.executeFirstRequest();
-    }
-    
     this.dispatchEvent(
       new CustomEvent(`commerceInterfaceinitialized`, {
         detail: {
           engineId: this.engineId
         },
         bubbles: true,
-        composed: true,
+        composed: true
       })
     );
     this.initialized = true;
   };
+
+  executeInitialRequest(engine) {
+    // @ts-ignore
+    if (this.type !== "search") {
+      // @ts-ignore
+      this.searchOrListing.executeFirstRequest();
+      return;
+    }
+
+    if (this.skipFirstSearch) {
+      return;
+    }
+
+    const redirectData = window.localStorage.getItem(
+      STANDALONE_SEARCH_BOX_STORAGE_KEY
+    );
+
+    if (redirectData) {
+      window.localStorage.removeItem(STANDALONE_SEARCH_BOX_STORAGE_KEY);
+      const { value } = JSON.parse(redirectData);
+
+      engine.dispatch(
+        CoveoHeadlessCommerce.loadQueryActions(engine).updateQuery({
+          query: value
+        })
+      );
+    }
+
+    // @ts-ignore
+    this.searchOrListing.executeFirstSearch();
+  }
 
   get fragment() {
     return window.location.hash.slice(1);
@@ -235,8 +243,12 @@ export default class CommerceInterface extends LightningElement {
     this.searchOrListing =
       // @ts-ignore
       this.type === "product-listing"
-        ? CoveoHeadlessCommerce.buildProductListing(engine, { enableResults: this.enableResults })
-        : CoveoHeadlessCommerce.buildSearch(engine, { enableResults: this.enableResults });
+        ? CoveoHeadlessCommerce.buildProductListing(engine, {
+            enableResults: this.enableResults
+          })
+        : CoveoHeadlessCommerce.buildSearch(engine, {
+            enableResults: this.enableResults
+          });
   }
 
   initContext(engine) {
@@ -249,20 +261,22 @@ export default class CommerceInterface extends LightningElement {
   //   }
   // }
 
-
   initUrlManager() {
     if (this.disableStateInUrl) {
       return;
     }
 
+    this.unsubscribeUrlManager?.();
+    window.removeEventListener("hashchange", this.onHashChange);
+
     this.urlManager = this.searchOrListing.urlManager({
-      initialState: {fragment: this.fragment},
+      initialState: { fragment: this.fragment }
     });
 
     this.unsubscribeUrlManager = this.urlManager.subscribe(() =>
       this.updateHash()
     );
-    window.addEventListener('hashchange', this.onHashChange);
+    window.addEventListener("hashchange", this.onHashChange);
   }
 
   updateHash() {
@@ -281,7 +295,6 @@ export default class CommerceInterface extends LightningElement {
    * @returns {HTMLInputElement}
    */
   get input() {
-    return this.template.querySelector('input');
+    return this.template.querySelector("input");
   }
-
 }
