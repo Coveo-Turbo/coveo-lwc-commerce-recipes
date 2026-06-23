@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@coveo/bueno": "^1.1.8",
-    "@coveo/headless": "^3.51.5"
+    "@coveo/headless": "^3.52.0"
   },
   "engines": {
     "node": "^20.9.0 || ^22.11.0"
