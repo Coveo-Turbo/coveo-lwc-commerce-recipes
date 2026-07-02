@@ -10,7 +10,7 @@
 }
 
 .product-item__spotlight-container {
-  display: flex;
+  padding: 0;
 }
 
 .product-item__spotlight-container c-commerce-spotlight-content {

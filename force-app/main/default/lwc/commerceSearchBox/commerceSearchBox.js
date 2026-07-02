@@ -159,6 +159,7 @@ export default class CommerceSearchBox extends LightningElement {
           queries: getItemFromLocalStorage(this.localStorageKey) ?? [],
         },
         options: {
+          enableResults: this.enableResults,
           maxLength: 100,
         },
       });
