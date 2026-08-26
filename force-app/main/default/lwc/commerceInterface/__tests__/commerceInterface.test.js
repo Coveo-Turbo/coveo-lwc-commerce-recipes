@@ -15,6 +15,7 @@ jest.mock("c/commerceHeadlessLoader", () => ({
 describe("c-commerce-interface", () => {
   let addEventListenerSpy;
   let removeEventListenerSpy;
+  const originalCoveoHeadlessCommerce = window.CoveoHeadlessCommerce;
 
   beforeEach(() => {
     addEventListenerSpy = jest.spyOn(window, "addEventListener");
@@ -26,6 +27,8 @@ describe("c-commerce-interface", () => {
     removeEventListenerSpy.mockRestore();
     jest.clearAllMocks();
     window.location.hash = "";
+    window.localStorage.clear();
+    window.CoveoHeadlessCommerce = originalCoveoHeadlessCommerce;
   });
 
   it("should initialize the URL manager when state in URL is enabled", () => {
@@ -122,6 +125,38 @@ describe("c-commerce-interface", () => {
     });
 
     expect(executeFirstSearch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should consume a standalone query and execute one full search", () => {
+    const executeFirstSearch = jest.fn();
+    const dispatch = jest.fn();
+    const updateQueryAction = { type: "query/update" };
+    const updateQuery = jest.fn(() => updateQueryAction);
+    window.CoveoHeadlessCommerce = {
+      loadQueryActions: jest.fn(() => ({ updateQuery }))
+    };
+    window.localStorage.setItem(
+      "coveo-standalone-search-box",
+      JSON.stringify({ value: "Screens" })
+    );
+    const element = {
+      type: "search",
+      skipFirstSearch: false,
+      searchOrListing: {
+        executeFirstSearch
+      }
+    };
+
+    CommerceInterface.prototype.executeInitialRequest.call(element, {
+      dispatch
+    });
+
+    expect(updateQuery).toHaveBeenCalledWith({ query: "Screens" });
+    expect(dispatch).toHaveBeenCalledWith(updateQueryAction);
+    expect(executeFirstSearch).toHaveBeenCalledTimes(1);
+    expect(
+      window.localStorage.getItem("coveo-standalone-search-box")
+    ).toBeNull();
   });
 
   it("should tear down URL synchronization when disconnected", () => {

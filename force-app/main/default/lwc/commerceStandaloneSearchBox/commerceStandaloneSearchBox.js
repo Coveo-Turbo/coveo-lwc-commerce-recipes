@@ -2,17 +2,23 @@ import {
   registerComponentForInit,
   initializeWithHeadless,
   getHeadlessBindings,
-  getHeadlessBundle,
-} from 'c/commerceHeadlessLoader';
-import {STANDALONE_SEARCH_BOX_STORAGE_KEY, getItemFromLocalStorage, setItemInLocalStorage} from 'c/commerceUtils';
-import {CurrentPageReference, NavigationMixin} from 'lightning/navigation';
-import {LightningElement, api, track, wire} from 'lwc';
+  getHeadlessBundle
+} from "c/commerceHeadlessLoader";
+import {
+  STANDALONE_SEARCH_BOX_STORAGE_KEY,
+  getItemFromLocalStorage,
+  setItemInLocalStorage
+} from "c/commerceUtils";
+import { CurrentPageReference, NavigationMixin } from "lightning/navigation";
+import { LightningElement, api, track, wire } from "lwc";
 // @ts-ignore
-import errorTemplate from './templates/errorTemplate.html';
+import errorTemplate from "./templates/errorTemplate.html";
 // @ts-ignore
-import standaloneSearchBox from './templates/standaloneSearchBox.html';
+import standaloneSearchBox from "./templates/standaloneSearchBox.html";
 // @ts-ignore
-import productSuggestionTemplate from './templates/productSuggestionTemplate.html';
+import productSuggestionTemplate from "./templates/productSuggestionTemplate.html";
+
+const REDIRECT_TIMEOUT = 10000;
 
 /** @typedef {import("coveo").CommerceEngine} CommerceEngine */
 /** @typedef {import("coveo").StandaloneSearchBoxState} StandaloneSearchBoxState */
@@ -25,11 +31,11 @@ import productSuggestionTemplate from './templates/productSuggestionTemplate.htm
 /** @typedef {import("c/commerceSearchBoxInput").default} commerceSearchBoxInput */
 /** @typedef {{key: number, value: string}} Suggestion */
 /**
-* @typedef ProductBindings
-* @property {InstantProducts} instantProductsController
-* @property {ProductTemplatesManager} productTemplatesManager
-* @property {string} engineId
-*/
+ * @typedef ProductBindings
+ * @property {InstantProducts} instantProductsController
+ * @property {ProductTemplatesManager} productTemplatesManager
+ * @property {string} engineId
+ */
 
 /**
  * The `CommerceStandaloneSearchBox` component creates a search box with built-in support for query suggestions.
@@ -48,38 +54,38 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    */
   @api engineId;
   /**
-  * The ID of your Coveo-powered ecommerce site or application.
-  * @api
-  * @type {string}
-  */
+   * The ID of your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
   @api trackingId;
   /**
-  * The commerce url to add in context for your Coveo-powered ecommerce site or application.
-  * @api
-  * @type {string}
-  */
-   @api commerceUrl;
+   * The commerce url to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api commerceUrl;
 
-   /**
-    * The language to add in context for your Coveo-powered ecommerce site or application.
-    * @api
-    * @type {string}
-    */
-   @api language = 'en';
+  /**
+   * The language to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api language = "en";
 
-   /**
-    * The country to add in context for your Coveo-powered ecommerce site or application.
-    * @api
-    * @type {string}
-    */
-   @api country = 'US';
+  /**
+   * The country to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api country = "US";
 
-   /**
-    * The currency to add in context for your Coveo-powered ecommerce site or application.
-    * @api
-    * @type {string}
-    */
-   @api currency = 'USD';
+  /**
+   * The currency to add in context for your Coveo-powered ecommerce site or application.
+   * @api
+   * @type {string}
+   */
+  @api currency = "USD";
   /**
    * The placeholder text to display in the search box input area.
    * @api
@@ -128,7 +134,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    * @type {string}
    * @defaultValue '/global-search/%40uri'
    */
-  @api redirectUrl = '/global-search/%40uri';
+  @api redirectUrl = "/global-search/%40uri";
   /**
    * Whether to render the search box using a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) element.
    * The resulting component will expand to support multi-line queries.
@@ -142,12 +148,12 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   @track isStandalone = true;
   /** @type {StandaloneSearchBoxState} */
   @track state = {
-    searchBoxId: '',
+    searchBoxId: "",
     redirectTo: null,
     suggestions: [],
-    value: '',
+    value: "",
     isLoading: false,
-    isLoadingSuggestions: false,
+    isLoadingSuggestions: false
   };
 
   /** @type {CoveoHeadlessCommerce} */
@@ -174,6 +180,12 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   productSuggestions = [];
   /** @type {ProductBindings} */
   productBindings;
+  /** @type {string | null} */
+  pendingRedirectQuery = null;
+  /** @type {boolean} */
+  isRedirectControllerQuarantined = false;
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  redirectTimeout = null;
 
   /** @type {string} */
   get standaloneEngineId() {
@@ -184,13 +196,16 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     registerComponentForInit(this, this.standaloneEngineId);
 
     this.addEventListener(
-      'commerce__inputvaluechange',
+      "commerce__inputvaluechange",
       this.handleInputValueChange
     );
-    this.addEventListener('commerce__submitsearch', this.handleSubmit);
-    this.addEventListener('commerce__showsuggestions', this.showSuggestions);
-    this.addEventListener('commerce__selectsuggestion', this.selectSuggestion);
-    this.addEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
+    this.addEventListener("commerce__submitsearch", this.handleSubmit);
+    this.addEventListener("commerce__showsuggestions", this.showSuggestions);
+    this.addEventListener("commerce__selectsuggestion", this.selectSuggestion);
+    this.addEventListener(
+      "commerce__suggestedquerychange",
+      this.suggestedQueryChange
+    );
   }
 
   renderedCallback() {
@@ -201,7 +216,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
       !!this.commerceSearchBoxInput
     ) {
       // The is-initialized attribute is set to true for E2E tests
-      this.commerceSearchBoxInput.setAttribute('is-initialized', 'true');
+      this.commerceSearchBoxInput.setAttribute("is-initialized", "true");
       this.isInitialized = true;
     }
   }
@@ -224,17 +239,18 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
         numberOfSuggestions: Number(this.numberOfSuggestions),
         highlightOptions: {
           notMatchDelimiters: {
-            open: '<b>',
-            close: '</b>',
-          },
+            open: "<b>",
+            close: "</b>"
+          }
         },
         clearFilters: !this.keepFiltersOnSearch,
-        redirectionUrl: 'http://placeholder.com',
+        redirectionUrl: this.redirectUrl,
         overwrite: true
-      },
+      }
     });
+    this.isRedirectControllerQuarantined = false;
     this.actions = {
-      ...this.headless.loadQuerySuggestActions(engine),
+      ...this.headless.loadQuerySuggestActions(engine)
     };
     this.standaloneEngine = engine;
 
@@ -242,11 +258,11 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
       this.localStorageKey = `${this.engineId}_commerce-recent-queries`;
       this.recentQueriesList = this.headless.buildRecentQueriesList(engine, {
         initialState: {
-          queries: getItemFromLocalStorage(this.localStorageKey) ?? [],
+          queries: getItemFromLocalStorage(this.localStorageKey) ?? []
         },
         options: {
-          maxLength: 100,
-        },
+          maxLength: 100
+        }
       });
       this.unsubscribeRecentQueriesList = this.recentQueriesList.subscribe(() =>
         this.updateRecentQueriesListState()
@@ -254,12 +270,12 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     }
 
     if (!this.disableProductSuggestions && this.headless.buildInstantProducts) {
-
       this.instantProducts = this.headless.buildInstantProducts(engine, {
-        options: {},
+        options: {}
       });
 
-      this.productTemplatesManager = this.headless.buildProductTemplatesManager();
+      this.productTemplatesManager =
+        this.headless.buildProductTemplatesManager();
       this.registerTemplates();
 
       this.productBindings = {
@@ -273,28 +289,34 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
       );
     }
 
-
     this.unsubscribe = this.standaloneSearchBox.subscribe(() =>
       this.updateStandaloneState()
     );
   };
 
   disconnectedCallback() {
+    this.clearPendingRedirect();
     this.unsubscribe?.();
     this.unsubscribeInstantProducts?.();
     this.unsubscribeRecentQueriesList?.();
     this.removeEventListener(
-      'commerce__inputvaluechange',
+      "commerce__inputvaluechange",
       this.handleInputValueChange
     );
-    this.removeEventListener('commerce__submitsearch', this.handleSubmit);
-    this.removeEventListener('commerce__showsuggestions', this.showSuggestions);
-    this.removeEventListener('commerce__selectsuggestion', this.selectSuggestion);
-    this.removeEventListener('commerce__suggestedquerychange', this.suggestedQueryChange);
+    this.removeEventListener("commerce__submitsearch", this.handleSubmit);
+    this.removeEventListener("commerce__showsuggestions", this.showSuggestions);
+    this.removeEventListener(
+      "commerce__selectsuggestion",
+      this.selectSuggestion
+    );
+    this.removeEventListener(
+      "commerce__suggestedquerychange",
+      this.suggestedQueryChange
+    );
   }
 
   get searchBoxValue() {
-    return this.standaloneSearchBox?.state.value || '';
+    return this.standaloneSearchBox?.state.value || "";
   }
 
   updateStandaloneState() {
@@ -303,23 +325,77 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
       this.state?.suggestions?.map((s, index) => ({
         key: index,
         rawValue: s.rawValue,
-        value: s.highlightedValue,
+        value: s.highlightedValue
       })) ?? [];
 
-    // Check for redirect
-    const {redirectTo, value} = this.standaloneSearchBox.state;
-    if (!redirectTo) {
+    const { redirectTo } = this.standaloneSearchBox.state;
+    if (this.pendingRedirectQuery === null || !redirectTo) {
       return;
     }
 
+    const value = this.pendingRedirectQuery;
+    this.clearPendingRedirect();
+    this.standaloneSearchBox.afterRedirection();
+
+    if (redirectTo !== this.redirectUrl) {
+      window.location.replace(redirectTo);
+      return;
+    }
+
+    this.navigateToSearchResults(value);
+  }
+
+  navigateToSearchResults(value) {
     localStorage.setItem(
       STANDALONE_SEARCH_BOX_STORAGE_KEY,
       JSON.stringify({
-        value,
+        value
       })
     );
-    this.navigateToSearchPage();
+    this.navigateToSearchPage(value);
   }
+
+  beginRedirect(value) {
+    if (
+      this.pendingRedirectQuery !== null ||
+      this.isRedirectControllerQuarantined ||
+      !value?.trim() ||
+      !this.standaloneSearchBox
+    ) {
+      return false;
+    }
+
+    if (this.standaloneSearchBox.state.redirectTo) {
+      this.standaloneSearchBox.afterRedirection();
+    }
+    this.pendingRedirectQuery = value;
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    this.redirectTimeout = setTimeout(
+      this.handleRedirectTimeout,
+      REDIRECT_TIMEOUT
+    );
+    return true;
+  }
+
+  clearPendingRedirect() {
+    this.pendingRedirectQuery = null;
+    if (this.redirectTimeout !== null) {
+      clearTimeout(this.redirectTimeout);
+      this.redirectTimeout = null;
+    }
+  }
+
+  handleRedirectTimeout = () => {
+    if (this.pendingRedirectQuery === null) {
+      return;
+    }
+
+    const value = this.pendingRedirectQuery;
+    this.isRedirectControllerQuarantined = true;
+    this.clearPendingRedirect();
+    this.standaloneSearchBox.afterRedirection();
+    this.navigateToSearchResults(value);
+  };
 
   updateInstantProductsState() {
     const state = this.instantProducts.state;
@@ -343,12 +419,12 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
   registerTemplates() {
     this.productTemplatesManager.registerTemplates({
       content: productSuggestionTemplate,
-      conditions: [],
+      conditions: []
     });
     this.dispatchEvent(
-      new CustomEvent('commerce__registerproductsuggestiontemplates', {
+      new CustomEvent("commerce__registerproductsuggestiontemplates", {
         bubbles: true,
-        detail: this.productTemplatesManager,
+        detail: this.productTemplatesManager
       })
     );
   }
@@ -358,22 +434,21 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
     if (!engine) {
       return;
     }
-    const {updateQuery} = this.headless.loadQueryActions(engine);
+    const { updateQuery } = this.headless.loadQueryActions(engine);
 
-    engine.dispatch(updateQuery({query: ''}));
+    engine.dispatch(updateQuery({ query: "" }));
   }
 
-  navigateToSearchPage() {
-    const value = this.standaloneSearchBox.state.value;
+  navigateToSearchPage(value) {
     this.resetStandaloneSearchboxState();
     this[NavigationMixin.Navigate](
       {
-        type: 'standard__webPage',
+        type: "standard__webPage",
         attributes: {
           url: `${this.redirectUrl}${
-            value ? `#q=${encodeURIComponent(value)}` : ''
-          }`,
-        },
+            value ? `#q=${encodeURIComponent(value)}` : ""
+          }`
+        }
       },
       false
     );
@@ -396,7 +471,9 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    */
   handleSubmit = (event) => {
     event.stopPropagation();
-    this.standaloneSearchBox?.submit();
+    if (this.beginRedirect(this.searchBoxValue)) {
+      this.standaloneSearchBox.submit();
+    }
   };
 
   /**
@@ -410,24 +487,30 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
 
   suggestedQueryChange = (event) => {
     event.stopPropagation();
-    const {rawValue} = event.detail;
+    const { rawValue } = event.detail;
     this.instantProducts?.updateQuery(rawValue);
-  }
+  };
 
   /**
    * Handles the selection of a suggestion.
    */
   selectSuggestion = (event) => {
     event.stopPropagation();
-  
-    const {value, isClearRecentQueryButton, isSeeAllProductsButton} = event.detail.selectedSuggestion;
+
+    const { value, isClearRecentQueryButton, isSeeAllProductsButton } =
+      event.detail.selectedSuggestion;
 
     if (isSeeAllProductsButton) {
-      this.standaloneSearchBox?.selectSuggestion(this.instantProducts.state.query);
+      const query = this.instantProducts.state.query;
+      if (this.beginRedirect(query)) {
+        this.standaloneSearchBox.selectSuggestion(query);
+      }
     } else if (isClearRecentQueryButton) {
       this.recentQueriesList.clear();
     } else {
-      this.standaloneSearchBox?.selectSuggestion(value);
+      if (this.beginRedirect(value)) {
+        this.standaloneSearchBox.selectSuggestion(value);
+      }
     }
   };
 
@@ -436,7 +519,7 @@ export default class CommerceStandaloneSearchBox extends NavigationMixin(
    */
   get commerceSearchBoxInput() {
     // @ts-ignore
-    return this.template.querySelector('c-commerce-search-box-input');
+    return this.template.querySelector("c-commerce-search-box-input");
   }
 
   /**
