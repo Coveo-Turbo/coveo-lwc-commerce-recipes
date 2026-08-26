@@ -3,8 +3,10 @@ import LOCALE from '@salesforce/i18n/locale';
 import noResults from '@salesforce/label/c.commerce_NoResults';
 import noResultsFor from '@salesforce/label/c.commerce_NoResultsFor';
 import showingResultsOf from '@salesforce/label/c.commerce_ShowingResultsOf';
+import showingResultsOf_zero from '@salesforce/label/c.commerce_ShowingResultsOf_zero';
 import showingResultsOfWithQuery from '@salesforce/label/c.commerce_ShowingResultsOfWithQuery';
 import showingResultsOfWithQuery_plural from '@salesforce/label/c.commerce_ShowingResultsOfWithQuery_plural';
+import showingResultsOfWithQuery_zero from '@salesforce/label/c.commerce_ShowingResultsOfWithQuery_zero';
 import showingResultsOf_plural from '@salesforce/label/c.commerce_ShowingResultsOf_plural';
 import {
   registerComponentForInit,
@@ -68,8 +70,10 @@ export default class CommerceSummary extends LightningElement {
     noResultsFor,
     showingResultsOf,
     showingResultsOf_plural,
+    showingResultsOf_zero,
     showingResultsOfWithQuery,
     showingResultsOfWithQuery_plural,
+    showingResultsOfWithQuery_zero,
   };
 
   connectedCallback() {
