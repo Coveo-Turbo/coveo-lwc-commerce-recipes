@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "versionName": "Version 1.0",
-      "versionNumber": "1.4.4.NEXT",
+      "versionNumber": "1.4.5.NEXT",
       "path": "force-app/main",
       "default": true,
       "package": "coveo-lwc-commerce-recipes",
@@ -29,6 +29,7 @@
     "coveo-lwc-commerce-recipes@1.4.1-1": "04tak000000URCTAA4",
     "coveo-lwc-commerce-recipes@1.4.2-1": "04tak000000UTFtAAO",
     "coveo-lwc-commerce-recipes@1.4.3-1": "04tak000000UWLpAAO",
-    "coveo-lwc-commerce-recipes@1.4.4-1": "04tak000000VlnRAAS"
+    "coveo-lwc-commerce-recipes@1.4.4-1": "04tak000000VlnRAAS",
+    "coveo-lwc-commerce-recipes@1.4.5-1": "04tak000000dXddAAE"
   }
 }
