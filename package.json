@@ -30,6 +30,11 @@
   "engines": {
     "node": "^20.9.0 || ^22.11.0"
   },
+  "overrides": {
+    "@lwc/eslint-plugin-lwc": {
+      "fast-xml-parser": "5.7.0"
+    }
+  },
   "devDependencies": {
     "@lwc/eslint-plugin-lwc": "^2.0.0",
     "@prettier/plugin-xml": "^3.2.2",
